@@ -1,0 +1,32 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+*:focus {
+    outline: none;
+  }
+  
+/* width */
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+/* Track */
+::-webkit-scrollbar {
+    background: transparent;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+ 
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+}
