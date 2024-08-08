@@ -1,13 +1,13 @@
 <template>
 <body class="text-gray-800 bg-gray-50 h-full w-">
 <Navbar @toggle-sidebar="toggleSidebar" :user="user" :userFile="userFile" :loading="loading"/>
-<main class="w-full md:w-[calc(100%)] md:ml-80 mx-auto min-h-screen transition-all">
+<main class="w-full md:w-[calc(70%)] md:ml-80 mx-auto min-h-screen transition-all">
 <Sidebar :is-sidebar-visible="isSidebarVisible" :user="user" :userFile="userFile" :loading="loading"/>
  <div class="py-4 mt-16 mx-6">
  <router-view />
 </div>
 <Footer />
-  </main>
+</main>
 </body>
 </template>
 <script>
@@ -20,7 +20,7 @@ import Footer from '@/components/Footer/Footer.vue';
 import { useToast } from "vue-toastification";
 import axios from 'axios';
 import { refreshToken } from '@/services/refreshToken/refreshToken.js';
-import { getUsersById } from '@/services/Pengguna.js';
+import { getUsersById  } from '@/services/pengguna/Pengguna.js';
 
 export default {
   name: "admin-layout",
@@ -93,7 +93,7 @@ export default {
   },
   async mounted() {
     await this.refreshToken();
-    await this.fetchDataUser(this.token);
+    // await this.fetchDataUser(this.token);
     await this.fetchFoto(this.user?.user_id)
     this.loading = false;
   },

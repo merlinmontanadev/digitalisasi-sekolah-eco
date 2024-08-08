@@ -212,7 +212,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 </template>
 
 <script>
-import apiClient from '@/services/axios/axios.js';
+import { logoutUser } from '@/services/auth/auth.js';
 import { useToast } from "vue-toastification";
 import Cookies from 'js-cookie';
 
@@ -241,7 +241,7 @@ export default {
   methods: {
     async logout() {
       try {
-       await apiClient.delete('http://localhost:9000/logout');
+       await logoutUser();
        Cookies.remove('auth');
        this.toast.info("Logout Berhasil");
        this.$router.push('/login')  

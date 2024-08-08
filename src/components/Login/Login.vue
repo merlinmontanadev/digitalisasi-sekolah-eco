@@ -64,8 +64,8 @@ import { LockClosedIcon,UserIcon, EyeIcon, EyeSlashIcon } from '@heroicons/vue/2
 <script>
 import { useToast } from "vue-toastification";
 import { ref } from 'vue';
-import axios from "axios";
 import Cookies from 'js-cookie';
+import { loginUser } from '@/services/auth/auth.js';
 
 export default {
   name: 'Login',
@@ -92,7 +92,7 @@ setup() {
                         password: this.password
                     };
       try {
-        const response = await axios.post('http://localhost:9000/login', data);
+        const response = await loginUser(data);
         Cookies.set('auth', true, { expires: 1/24}); // 1 hour
         this.toast.success("Login Berhasil");
         if (this.saveInfo) {

@@ -2,7 +2,7 @@
 import SideItem from './SideItem.vue';
 import { computed, onMounted } from 'vue';
 import { HomeIcon, UserGroupIcon, ClockIcon, CircleStackIcon, Cog6ToothIcon, TagIcon, BuildingOfficeIcon, ArrowLeftStartOnRectangleIcon} from "@heroicons/vue/24/outline"
-import apiClient from '@/services/axios/axios.js';
+import { logoutUser } from '@/services/auth/auth.js';
 import { useToast } from "vue-toastification";
 import Cookies from 'js-cookie';
 import mediumZoom from 'medium-zoom'
@@ -163,10 +163,10 @@ export default {
     },
     async logout() {
       try {
-       await apiClient.delete('http://localhost:9000/logout');
-       Cookies.remove('auth');
-       this.toast.info("Logout Berhasil");
-       this.$router.push('/login')  
+        await logoutUser();
+        Cookies.remove('auth');
+        this.toast.info("Logout Berhasil");
+        this.$router.push('/login')  
       } catch (error) {
         if(error.response){
           console.log(error.response.data.message)
@@ -190,21 +190,23 @@ export default {
     <Suspense>
     <template #default>
       <div class="flex flex-col justify-center items-center">
-        <template v-if="loading">
-        <div class="h-32 w-32 rounded-full shadow-md animate-pulse bg-gray-200">
-          <div className="w-32 h-32 object-cover rounded-full border border-gray-300 bg-gray-400 mb-2">&nbsp;</div>
+        <div v-if="loading" class="h-32 w-32 rounded-full shadow-md bg-gray-200">
+        <div class="animate-pulse">
+          <div className="w-32 h-32 object-cover rounded-full border border-gray-300 bg-gray-300 mb-2">&nbsp;</div>
         </div>
-        </template>
+        </div>
         
-        <template v-else>
+        <div v-else>
         <div class="h-32 w-32 rounded-full shadow-md">
           <img ref="zoomImage" :src="userFile" className="w-32 h-32 object-cover rounded-full border border-gray-200 mb-2"/>
         </div>
-        </template>
+        </div>
+
         <div class="py-1 flex flex-col justify-center items-center">
           <div class="text-lg font-bold bg-gradient-to-r from-blue-700 via-green-500 to-blue-500 inline-block text-transparent bg-clip-text">SMK Dharma Wirawan</div>
           <!-- <div class="flex items-center text-center justify-center"> -->
-          <div v-if="loading" class="w-full rounded-md bg-gray-200 h-full">
+          
+            <div v-if="loading" class="w-full rounded-md bg-gray-200 h-full">
             <div class="animate-pulse">
               <div class="bg-gray-300 rounded w-full text-lg">&nbsp;</div>
             </div>

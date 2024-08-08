@@ -112,7 +112,7 @@ import TambahPengguna from "./TambahPengguna.vue";
 import { useToast } from "vue-toastification";
 import LeadModal from "./ModalTambah/LeadModal.vue";
 import FilterRole from "./FilterRole.vue";
-import { getAllUsers, deleteUser } from '@/services/Pengguna.js';
+import { getAllUsers, deleteUser } from '@/services/pengguna/Pengguna.js';
 import { ChevronDownIcon, PencilSquareIcon, TrashIcon, EyeIcon, NoSymbolIcon, CalendarDaysIcon, SunIcon, MoonIcon} from '@heroicons/vue/20/solid';
 import { ClipboardDocumentIcon, ClockIcon } from '@heroicons/vue/24/outline';
 import Clipboard from 'clipboard';

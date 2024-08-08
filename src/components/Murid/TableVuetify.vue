@@ -113,7 +113,7 @@ import FilterJK from "./FilterJK.vue";
 import TambahMurid from "./TambahMurid.vue";
 import { useToast } from "vue-toastification";
 import LeadModal from "./ModalTambah/LeadModal.vue";
-import { getAllMurids, deleteMurid } from '@/services/Murid.js';
+import { getAllMurids, deleteMurid } from '@/services/murid/Murid.js';
 import { ChevronDownIcon, PencilSquareIcon, TrashIcon, EyeIcon, NoSymbolIcon, CalendarDaysIcon, SunIcon, MoonIcon} from '@heroicons/vue/20/solid';
 import FemaleIcon from 'vue-material-design-icons/GenderFemale.vue';
 import MaleIcon from 'vue-material-design-icons/GenderMale.vue';

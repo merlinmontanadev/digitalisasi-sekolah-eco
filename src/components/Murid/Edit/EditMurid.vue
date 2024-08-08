@@ -179,7 +179,6 @@
         import { getMuridsById } from '@/services/Murid.js';
         import NotFound from '../../NotFoundPage/NotFound.vue';
         import Swal from 'sweetalert2';
-        import axios from 'axios';
         
   export default {
     components: {

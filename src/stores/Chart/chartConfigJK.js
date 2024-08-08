@@ -1,4 +1,4 @@
-import { fetchCountDataMurid } from '@/services/countMurid.js'
+import { fetchCountDataMurid } from '@/services/murid/Murid.js'
 
 export async function fetchData() {
   try {

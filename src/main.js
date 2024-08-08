@@ -6,6 +6,7 @@ import App from "@/App.vue";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import axios from 'axios';
+
 axios.defaults.withCredentials = true;
 
 

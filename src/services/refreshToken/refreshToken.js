@@ -5,6 +5,6 @@ export const refreshToken = async () => {
         const response = await axios.get('http://localhost:9000/token');
         return response.data.accessToken;
     } catch (error) {
-        throw new Error('Failed to login');
+        console.log('Gagal Mendapatkan RefreshToken', error)
     }
 };

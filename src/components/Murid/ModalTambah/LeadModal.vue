@@ -472,9 +472,8 @@
 <script>
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import Joi from 'joi';
-import axios from 'axios';
 import Swal from 'sweetalert2';
-import { getAllMurids } from '@/services/Murid.js';
+import { getAllMurids, simpanMurid } from '@/services/murid/Murid.js';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
@@ -630,7 +629,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
             },       
             async handlerSimpan(data) {
                 try {
-                    const response = await axios.post('http://localhost:9000/api/v1/simpan/murid', data);
+                    const response = await simpanMurid(data);
                     console.log('Data berhasil diunggah:', data);
                     await Swal.fire({
                     icon: "success",

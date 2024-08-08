@@ -25,7 +25,7 @@ async function deleteMurid(id_murid) {
       const response = await axios.delete(`http://localhost:9000/api/v1/hapus/murid/${id_murid}`);
       return response.data;
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting murid:', error);
       throw error;
     }
   }
@@ -40,9 +40,31 @@ async function deleteMurid(id_murid) {
       });
       return response.data.data;
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error('Error fetching murid by id:', error);
       }
   }
 
-  
-export { getAllMurids, deleteMurid, getMuridsById};
+  async function simpanMurid(data){
+    try {
+      const response = await axios.post('http://localhost:9000/api/v1/simpan/murid', data);
+      return response.data; // Jika Anda ingin mengembalikan data respons
+      } catch (error) {
+        console.error('Error saving murid:', error);
+      }
+  }
+
+  async function fetchCountDataMurid(){
+    try {
+      const token = await refreshToken();
+      const response = await axios.get('http://localhost:9000/api/v1/murid', {
+          headers: {
+              'Authorization': `Bearer ${token}`
+          }
+      });return response.data;
+  } catch (error) {
+      console.error('Error counting data:', error);
+      throw error;
+  }
+  }
+
+export { getAllMurids, deleteMurid, getMuridsById, simpanMurid, fetchCountDataMurid};
