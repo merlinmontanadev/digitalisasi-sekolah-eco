@@ -194,26 +194,21 @@
                                                                         @change="handleFileUpload" />
                                                                 </label>
                                                             </div>
-                                                            <div v-if="cropView">
-                                                                <cropper
-                                                                :src="userFile64"
-                                                                @change="change" 
-                                                                /> 
-                                                            </div>
                                                             <ErrorMessage
                                                                 class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
                                                                 name="file" />
                                                         </div>
                                                     </div>
-                                                    
-                                                </div>
-                                                <div class="-mx-3 flex flex-wrap">
-    
+                                                    <!-- here -->
+                                                    <!-- Disini saya ingin menambahkan modal untuk crop dengan TransitionRoot dari headlessui -->
                                                 </div>
                                             </div>
                                         </div>
                                     </template>
                                     <div class="flex float-right gap-2 mt-2 mb-5">
+                                        <v-btn class="hover:shadow-form rounded-full bg-gradient-to-r from-blue-700 to-blue-500 px-4 py-2 text-center font-semibold text-sm text-white outline-none" type="button" @click="openModalFoto">
+                                            Open Modal Crop
+                                        </v-btn>
                                         <v-btn
                                             class="hover:shadow-form rounded-full border hover:bg-gray-50 border-blue-700 px-4 py-2 text-center font-base text-sm text-black outline-none"
                                             v-if="currentStep !== 0" type="button" @click="prevStep">
@@ -318,10 +313,8 @@
                 };
                 reader.readAsDataURL(uploadedFile);
             },
-            openModalFoto(data) {
-                 // Menampilkan gambar yang dipilih saat modal dibuka
-                this.cropView = true;
-                this.userFile64 = URL.createObjectURL(data);
+            openModalFoto() {
+               console.log('Halo')
             },
             convertToBase64(file) {
                 return new Promise((resolve, reject) => {
@@ -384,6 +377,9 @@
             },
             async fetchUserData() {
              await getAllUsers();
+            },
+            openModalCrop(){
+              
             },
             prevStep() {
                 if (this.currentStep <= 0) {

@@ -1,5 +1,5 @@
 <script setup>
-import { Bars3Icon, BellIcon, QuestionMarkCircleIcon, ArrowRightStartOnRectangleIcon, Cog6ToothIcon } from "@heroicons/vue/24/outline";
+import { Bars3Icon, BellIcon, QuestionMarkCircleIcon, ArrowRightStartOnRectangleIcon, Cog6ToothIcon, ArrowsPointingOutIcon } from "@heroicons/vue/24/outline";
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 </script>
 <template>
@@ -31,6 +31,15 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                         <div class="ml-2 text-normal text-white font-bold">Aplikasi masih dalam pengembangan!</div>
                     </div>
                 </li> -->
+                <li class="ml-3">
+                  <button type="button" data-tooltip="Perbesar Konten" class="dropdown-toggle text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-whi" @click="toggleFullContent">
+                        <ArrowsPointingOutIcon
+                            :class="[
+                            'h-6 w-6 shrink-0 text-white'
+                            ]"
+                        />
+                    </button>
+                </li>
                 <li class="ml-3">
                     <button type="button" class="dropdown-toggle text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-whi" @click="toggleDropNotif">
                         <BellIcon
@@ -256,6 +265,9 @@ export default {
     },
     toggleDropNotif() {
       this.showDropDownNotif = !this.showDropDownNotif;
+    },
+    toggleFullContent() {
+      this.$emit('toggle-full-content');
     },
     toggleSidebar() {
       this.$emit('toggle-sidebar');

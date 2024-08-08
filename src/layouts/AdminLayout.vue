@@ -1,8 +1,8 @@
 <template>
 <body class="text-gray-800 bg-gray-50 h-full w-">
-<Navbar @toggle-sidebar="toggleSidebar" :user="user" :userFile="userFile" :loading="loading"/>
-<main class="w-full md:w-[calc(70%)] md:ml-80 mx-auto min-h-screen transition-all">
+<Navbar @toggle-sidebar="toggleSidebar" @toggle-full-content="toggleFullContent" :user="user" :userFile="userFile" :loading="loading"/>
 <Sidebar :is-sidebar-visible="isSidebarVisible" :user="user" :userFile="userFile" :loading="loading"/>
+<main :class="mainClasses" class="md:ml-80 mx-auto min-h-screen transition-all">
  <div class="py-4 mt-16 mx-6">
  <router-view />
 </div>
@@ -39,12 +39,21 @@ export default {
       userFile: ref(null),
       foto: ref(null),
       loading: true,
+      isFullContent: localStorage.getItem("is_fullContent") === "true",
     };
   },
   setup() {
   const toast = useToast();
   return { toast }
 }, 
+computed: {
+    mainClasses() {
+      return {
+        'w-full': this.isFullContent,
+        'md:w-[calc(70%)]': !this.isFullContent,
+      };
+    },
+  },
   methods: {
     async fetchFoto(item){
       const userd = await getUsersById(item);
@@ -63,6 +72,10 @@ export default {
     toggleSidebar() {
       this.isSidebarVisible = !this.isSidebarVisible;
       localStorage.setItem("is_expanded", this.isSidebarVisible.toString());
+    },
+    toggleFullContent() {
+      this.isFullContent = !this.isFullContent;
+      localStorage.setItem("is_fullContent", this.isFullContent.toString());
     },
     async refreshToken() {
       try {

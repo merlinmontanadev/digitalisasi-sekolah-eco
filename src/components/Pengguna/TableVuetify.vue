@@ -276,6 +276,7 @@ computed: {
     },
     async HandlerDeleteUser(item) {
       try {
+        console.log('data :',item)
         if (item.role === 'Admin') {
           Swal.fire({
             title: "Error",
@@ -287,7 +288,11 @@ computed: {
 
         const whoLogged = await refreshToken();
         const decodedToken = jwtDecode(whoLogged);
-        if(decodedToken.role = "User"){
+
+        console.log('Role Anda :', decodedToken.role)
+        console.log('User ID Anda :', decodedToken.user_id)
+        
+        if(decodedToken.role === "User"){
           Swal.fire({
             title: "Error",
             text: `(Forbidden) Role user cannot deleted another user/admin.`,
@@ -295,7 +300,6 @@ computed: {
           });
           return; // Stop execution if user is Super Admin
         }
-
         const result = await Swal.fire({
           title: "Anda yakin?",
           text: `Anda tidak akan dapat mengembalikan ini!`,
@@ -307,7 +311,7 @@ computed: {
           cancelButtonText: "Batal"
         }).then((result) => {
           if (result.isConfirmed) {
-          deleteUser(item.user_id);
+          deleteUser(item.user_id, decodedToken.user_id);
           this.fetchAllUsers();
           Swal.fire({
             title: "Deleted!",
@@ -362,21 +366,14 @@ computed: {
       toogleModal() {
         this.isOpen = !this.isOpen;
       },
-      // toogleModalEdit(item){ 
-      //   const penggunaStores = useModalStore();
-      //   penggunaStores.setItemSelected(item);
-      // },
       toggleDropdown(index) {
       this.showDropdownIndex = this.showDropdownIndex === index ? null : index;
-      // console.log(this.showDropdownIndex)
       },
       viewItem(item) {
         console.log('Lihat:', item);
-        // Logic to handle view action
       },
       inActiveItem(item) {
         console.log('Nonaktifkan:', item);
-        // Logic to handle view action
       },
   },
   }

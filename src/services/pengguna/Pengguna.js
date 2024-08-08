@@ -34,9 +34,13 @@ async function getUsersById(user_id){
     }
 }
 
-async function deleteUser(user_id) {
+async function deleteUser(user_id, user_logged_id) {
   try {
-    const response = await axios.delete(`http://localhost:9000/api/v1/hapus/user/${user_id}`);
+    const response = await axios.delete(`http://localhost:9000/api/v1/hapus/user/${user_id}`, {
+      data: {
+        user_logged_id: user_logged_id
+      }
+    });
     return response.data;
   } catch (error) {
     console.error('Error deleting user:', error);
