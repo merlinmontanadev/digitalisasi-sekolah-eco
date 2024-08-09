@@ -42,14 +42,18 @@ export default {
         }, {
           href: "#",
           label: "Peserta Didik",
+          single: false,
+          group: "",
+          icon: CircleStackIcon,
           children: [{
               href: "/admin/manajemen-murid",
               label: "Semua Data Murid",
+              single: false,
+              group: "",
               children: [],
               icon: null
             },
           ],
-          icon: CircleStackIcon,
         }, {
           href: "#",
           label: "Guru & Tendik",
