@@ -107,8 +107,11 @@ setup() {
         this.$router.push('/admin/dashboard');  
         return response.data
       } catch (error) {
-        if(error.response){
+        if (error.response && error.response.data && error.response.data.message) {
           this.toast.error(error.response.data.message);
+        } else {
+          // Menampilkan pesan error default jika tidak ada pesan spesifik
+          this.toast.error('Terjadi kesalahan saat login. Silakan coba lagi.');
         }
       }
     }

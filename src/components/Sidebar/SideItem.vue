@@ -16,15 +16,12 @@ const props = defineProps({
     v-if="!item.children.length"
     :to="item.href"
     :class="[
-      'group flex w-full items-center rounded-md py-3 px-3 text-sm',
-      'hover:bg-gradient-to-r from-blue-700 to-blue-500 hover:text-white',
-      item.active ? 'font-semibold bg-gradient-to-r from-blue-700 to-blue-500 text-white' : 'text-gray-500',
+      'group flex w-full items-center rounded-md py-3 px-3 text-sm hover:bg-gradient-to-r from-blue-700 to-blue-500 hover:text-white text-gray-500',
     ]"
   >
     <component
       :class="[
-        'mr-2 h-6 w-6 shrink-0 group-hover:text-white',
-        item.active ? 'text-white' : 'text-gray-500',
+        'mr-2 h-6 w-6 shrink-0 group-hover:text-white text-gray-500'
       ]"
       :is="item.icon"
       v-if="item.icon"
@@ -35,17 +32,14 @@ const props = defineProps({
   <!--Start: Multi Menu-->
   <Disclosure
     v-else
-    v-slot="{open}"
-  >
-  <div v-if="item.mutli" class="py-3 px-3 text-gray-500 text-sm" >{{ item.group }}</div>
+    v-slot="{open}">
     <DisclosureButton
       :class="[
         'group flex w-full items-center rounded-md py-3 px-3 text-left text-sm my-1 hover:text-white hover:bg-gradient-to-r from-blue-700 to-blue-500 text-gray-500'
       ]">
       <component
         :class="[
-          'mr-2 h-6 w-6 shrink-0',
-          item.active ? 'text-white' : 'group-hover:text-white text-gray-500'
+          'mr-2 h-6 w-6 shrink-0 group-hover:text-white text-gray-500'
         ]"
         :is="item.icon"
         v-if="item.icon"
@@ -54,12 +48,12 @@ const props = defineProps({
       <span class="flex-1">{{ item.label }}</span>
       <ChevronRightIcon
         :class="[
-          'h-6 w-6 shrink-0',
-          item.active ? 'text-white' : 'group-hover:text-white text-gray-500',
+          'h-6 w-6 shrink-0 group-hover:text-white text-gray-500',
           open ? 'rotate-90 text-gray-500' : 'text-gray-500',
         ]"
 
       />
+      
     </DisclosureButton>
     <!--End: Multi Menu-->
     <!--Start: Sub Menu-->
