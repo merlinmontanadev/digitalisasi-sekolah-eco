@@ -4,7 +4,6 @@ import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs.vue';
 import { UserGroupIcon, ChevronLeftIcon } from "@heroicons/vue/24/outline";
 import { onMounted, ref } from "vue";
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import DisallowedRole from '@/components/DisallowedRole/DisallowedRole.vue';
 </script>
 <template>
         <router-link to="/admin/dashboard" >
@@ -25,6 +24,4 @@ import DisallowedRole from '@/components/DisallowedRole/DisallowedRole.vue';
 </div>
   <!-- Edit -->
 </div>
-
-<DisallowedRole />
 </template>

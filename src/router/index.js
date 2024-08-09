@@ -44,12 +44,6 @@ const routes = [
         props: true
       },
       {
-        path: 'pengguna-test',
-        alias: '/admin/manajemen-pengguna/test',
-        component: ()=> import('@/views/pengguna/TestInputPengguna.vue'),
-        meta: { title: 'Test' }
-      },
-      {
         path: 'image-test',
         alias: '/admin/manajemen-pengguna/show/images',
         component: ()=> import('@/views/pengguna/ImageShow.vue'),

@@ -12,7 +12,6 @@ async function getAllUsers(){
       });
       const users = [...response.data.data];
       const userFormatted = users.sort((b, a) => new Date(b.createdAt) - new Date(a.createdAt));
-      console.log(response.data.data)
       return userFormatted;
       } catch (error) {
         console.error('Error fetching user data:', error);

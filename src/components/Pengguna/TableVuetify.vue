@@ -276,7 +276,6 @@ computed: {
     },
     async HandlerDeleteUser(item) {
       try {
-        console.log('data :',item)
         if (item.role === 'Admin') {
           Swal.fire({
             title: "Error",
@@ -287,11 +286,7 @@ computed: {
         }
 
         const whoLogged = await refreshToken();
-        const decodedToken = jwtDecode(whoLogged);
-
-        console.log('Role Anda :', decodedToken.role)
-        console.log('User ID Anda :', decodedToken.user_id)
-        
+        const decodedToken = jwtDecode(whoLogged);        
         if(decodedToken.role === "User"){
           Swal.fire({
             title: "Error",
@@ -345,7 +340,6 @@ computed: {
           this.loading = false;
           return;
         }
-
         const user = await getAllUsers();
         this.items = user;
         this.userFile = user.map(user => {

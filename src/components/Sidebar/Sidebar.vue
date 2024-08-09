@@ -26,124 +26,11 @@ export default {
   data() {
     return {
       toast: useToast(),  
-      navItems: [
-        {
-          href: "/admin/dashboard",
-          label: "Dashboard",
-          children: [],
-          icon: HomeIcon
-        }, {
-          href: "/admin/manajemen-pengguna",
-          single: true,
-          label: "Pengguna",
-          group: "Master Data",
-          children: [],
-          icon: UserGroupIcon,
-        }, {
-          href: "#",
-          label: "Peserta Didik",
-          children: [{
-              href: "/admin/manajemen-murid",
-              label: "Semua Data Murid",
-              children: [],
-              icon: null
-            },
-          ],
-          icon: CircleStackIcon,
-        }, {
-          href: "#",
-          label: "Guru & Tendik",
-          children: [{
-              href: "/admin/manajemen-gtk",
-              label: "Semua Data Guru & Tendik",
-              children: [],
-              icon: null
-            },
-          ],
-          icon: CircleStackIcon
-        }, {
-          href: "#",
-          label: "Alumni",
-          children: [{
-              href: "/admin/manajemen-alumni",
-              label: "Semua Data Alumni",
-              children: [],
-              icon: null
-            },
-          ],
-          icon: CircleStackIcon
-        },
-        {
-          href: "#",
-          single: true,
-          label: "Absensi",
-          group: "Absensi",
-          children: [{
-              href: "/admin/absensi/gtk",
-              label: "Absensi GTK",
-              children: [],
-              icon: null
-            },
-            {
-              href: "/admin/absensi/murid",
-              label: "Absensi Murid",
-              children: [],
-              icon: null
-            },
-          ],
-          icon: ClockIcon
-        }, {
-          href: "/admin/pelanggaran",
-          single: true,
-          label: "Pelanggaran",
-          group: "Pelanggaran",
-          children: [],
-          icon: TagIcon
-        }, {
-          href: "/admin/poin/pelanggaran",
-          label: "Poin Pelanggaran",
-          children: [],
-          icon: TagIcon
-        }, {
-          href: "/admin/kategori-pelanggaran",
-          label: "Kategori Pelanggaran",
-          children: [],
-          icon: TagIcon
-        }, 
-        {
-          href: "#",
-          single: true,
-          label: "BKK",
-          group: "Bursa Kerja Khusus",
-          children: [{
-              href: "/admin/bkk/list",
-              label: "Data Bursa Kerja Khusus",
-              children: [],
-              icon: null
-            },
-            {
-              href: "/admin/bkk/perusahaan",
-              label: "Data Perusahaan",
-              children: [],
-              icon: null
-            },
-          ],
-          icon: BuildingOfficeIcon,
-        },{
-          href: "/admin/setting/sekolah",
-          single: true,
-          label: "Kelola Sekolah",
-          group: "Settings",
-          children: [],
-          icon: Cog6ToothIcon
-        },
-      ],
-    };
-  },
+  }
+},
   setup() {
     const toast = useToast();
     const zoomImage = ref(null);
-
     onMounted(() => {
       if (zoomImage.value) {
         mediumZoom(zoomImage.value, {
@@ -151,7 +38,6 @@ export default {
         });
       }
     });
-
     return {
       toast,
       zoomImage,
@@ -237,11 +123,7 @@ export default {
 </div>
 <div style="overflow: auto;">
   <nav class="pt-2 px-4" :style="{ paddingBottom: `calc(10rem + env(safe-area-inset-bottom))` }">
-    <SideItem
-      :item="item"
-      v-for="item in navItems"
-      :key="item.label"
-    />
+    <SideItem/>
   </nav>
 </div>
 

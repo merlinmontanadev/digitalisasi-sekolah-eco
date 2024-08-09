@@ -77,20 +77,6 @@ computed: {
       this.isFullContent = !this.isFullContent;
       localStorage.setItem("is_fullContent", this.isFullContent.toString());
     },
-    async refreshToken() {
-      try {
-        const dataUser = await refreshToken();
-        const decodedToken = jwtDecode(dataUser);
-        // console.log('ini adalah', decodedToken);
-        this.token = dataUser
-        this.user = decodedToken;
-      } catch (error) {
-        if(error.response){
-          console.log('ini error')
-          console.log(error.response)
-        }
-      }
-    },
     async fetchDataUser(token) {
       try {
         const response = await axios.get('http://localhost:9000/api/v1/user', {
@@ -105,7 +91,12 @@ computed: {
     }
   },
   async mounted() {
-    await this.refreshToken();
+    try {
+      this.token = await refreshToken()
+      this.user = jwtDecode(this.token);
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+    }
     // await this.fetchDataUser(this.token);
     await this.fetchFoto(this.user?.user_id)
     this.loading = false;

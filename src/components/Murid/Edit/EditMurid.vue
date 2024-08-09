@@ -176,7 +176,7 @@
                 ClipboardDocumentIcon,
                 ClockIcon
         } from '@heroicons/vue/24/outline';
-        import { getMuridsById } from '@/services/Murid.js';
+        import { getMuridsById } from '@/services/murid/Murid.js';
         import NotFound from '../../NotFoundPage/NotFound.vue';
         import Swal from 'sweetalert2';
         

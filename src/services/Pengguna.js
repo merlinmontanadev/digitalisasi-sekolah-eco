@@ -23,6 +23,7 @@ async function getAllUsers(){
 async function getUsersById(user_id){
   try {
     const token = await refreshToken();
+    console.log('Token berhasil diambil untuk get user by ID')
     const response = await axios.get(`http://localhost:9000/api/v1/user/${user_id}`, {
       headers: {
         'Authorization': `Bearer ${token}`
