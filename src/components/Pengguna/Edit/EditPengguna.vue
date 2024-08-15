@@ -296,10 +296,7 @@
           const file = this.DataURIToBlob(this.userFile64);
           const formData = new FormData();
           formData.append('file', file); // Tambahkan file ke FormData
-
           const response = await changeFoto(this.$route.params.user_id, formData);
-
-          this.confirmFile = false;
           await Swal.fire({
             icon: "success",
             title: "Foto berhasil diupdate",

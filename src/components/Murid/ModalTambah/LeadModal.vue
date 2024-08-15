@@ -44,7 +44,6 @@
                                 <Form 
                                 @submit="nextStep"
                                 keep-values
-                                v-slot="{ values }"
                                 >
                                 <!-- v-slot="{ values }" -->
                                 <template v-if="currentStep == 0">
@@ -294,13 +293,13 @@
                                                             Photo Profile<span class="text-red-500">*</span>
                                                         </label>
                                                         <div class="flex items-center justify-center w-full">
-                                                            <img id="uploaded-image" src="@assets/img/Person.jpg" className="w-64 h-64 mb-2" />
+                                                            <img id="uploaded-image" :src="defaultImage"  className="w-64 h-64 mb-2" />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="w-full px-3 sm:w-1/2">
                                                     <div class="mb-4">
-                                                        <div class="flex items-center justify-center w-full mt-8">
+                                                        <div class="flex items-center justify-center w-full mt-8" :class="{'hidden': file}">
                                                             <label for="file-upload" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg">
                                                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                                                     <PhotoIcon class="mb-4 h-8 w-8 text-gray-300"
@@ -310,11 +309,20 @@
                                                                     </p>
                                                                     <p class="text-xs text-gray-500" v-if="!file">JPEG, JPG</p>
                                                                 </div>
-                                                                
                                                                 <Field id="file-upload" type="file" class="hidden" accept="image/*" name="file" @change="handleFileUpload" :rules="validateFile"/>
                                                             </label>
                                                         </div>
-                                                        
+                                                        <cropper ref="cropper" id="cropper" class="h-64 w-64 mx-auto mt-8" v-if="file" 
+                                                                :src="userFiles"
+                                                                @change="change" 
+                                                                :aspectRatio="aspectRatio" 
+                                                                :resizeImage="false"
+                                                                :restrictPosition="true" 
+                                                                :stencil-props="{
+                                                                aspectRatio: 1,
+                                                                movable: true,
+                                                                resizable: false  
+                                                                }" />
                                                     </div>
                                                 </div>
                                                 
@@ -458,7 +466,6 @@
 
                                     <v-btn class="hover:shadow-form rounded-full bg-gradient-to-r from-blue-700 to-blue-500 px-4 py-2 text-center font-semibold text-sm text-white outline-none" v-if="currentStep === 3" type="submit">Submit</v-btn>
                                 </div>
-                                <pre>{{ values }}</pre>
                             </Form>
                             </div>
                         </DialogPanel>
@@ -476,11 +483,19 @@ import Swal from 'sweetalert2';
 import { getAllMurids, simpanMurid } from '@/services/murid/Murid.js';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import PersonImage from '@/assets/img/Person.jpg';
+import {
+        Cropper
+    } from 'vue-advanced-cropper';
+    import 'vue-advanced-cropper/dist/style.css';
 
     export default {
         components: { Field, ErrorMessage, VueDatePicker },
         data() {
             return {
+            userFiles: '',
+            userFile64: '',
+            defaultImage: PersonImage,
             provinsiList: [],
             selectedProvinsi: "",
             kabupatenList: [],
@@ -602,31 +617,35 @@ import '@vuepic/vue-datepicker/dist/main.css'
         console.error("Silakan pilih file PDF.");
       }
     },
+    change({coordinates,canvas}) {
+                const hoi = canvas.toDataURL();
+                this.defaultImage = hoi
+                this.userFile64 = hoi
+                console.log(this.userFile64)
+    },
             handleFileUpload(event) {
-                const uploadedFile = event.target.files[0];
-                this.file = uploadedFile;
-                console.log(this.file);
-                const uploadedImage = document.getElementById("uploaded-image");
-                uploadedImage.src = "";
-                uploadedImage.alt = uploadedFile.name;
-                //dari sini sudah benar
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    this.uploadedImageUrl = event.target.result;
-                    uploadedImage.src = event.target.result;
-                    // console.log(uploadedImage.src);
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'Image uploaded successfully',
-                        icon: 'success'
-                    });
-                    // Lakukan sesuatu dengan uploadedImage
-                };
-                reader.onerror = (error) => {
-                    console.error('Error:', error);
-                };
-                reader.readAsDataURL(uploadedFile);
+                const file = event.target.files[0];
+                this.file = file; // Simpan file untuk digunakan saat upload
+                if (this.file) {
+                this.userFiles = URL.createObjectURL(this.file); // Menampilkan gambar yang dipilih saat modal dibuka
+                } else {
+                // Handle case where no file is selected
+                alert("Please select a file first");
+                }
             },       
+            DataURIToBlob(dataURL) {
+                const splitDataURI = dataURL.split(',')
+                const byteString = splitDataURI[0].indexOf('base64') >= 0 ? atob(splitDataURI[1]) : decodeURI(splitDataURI[1])
+                const mimeString = splitDataURI[0].split(':')[1].split(';')[0]
+
+                const ia = new Uint8Array(byteString.length)
+                for (let i = 0; i < byteString.length; i++)
+                ia[i] = byteString.charCodeAt(i)
+
+                return new Blob([ia], {
+                type: mimeString
+                })
+            },
             async handlerSimpan(data) {
                 try {
                     const response = await simpanMurid(data);
@@ -684,7 +703,8 @@ import '@vuepic/vue-datepicker/dist/main.css'
                 formData.append('t_lulus', values.t_lulus);
                 formData.append('t_smp', values.t_smp);
                 formData.append('i_smp', updatedValues);
-                formData.append('file', this.file);
+                const file = this.DataURIToBlob(this.userFile64);
+                formData.append('file', file);
                 // console.log(formData)
                 this.handlerSimpan(formData);
                 this.closeModal();
@@ -1080,4 +1100,8 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
     -moz-appearance: textfield;
 }
+.cropper {
+        height: 600px;
+        background: #DDD;
+    }
 </style>

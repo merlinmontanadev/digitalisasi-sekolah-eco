@@ -210,13 +210,13 @@ export default {
           <div class="text-lg font-bold bg-gradient-to-r from-blue-700 via-green-500 to-blue-500 inline-block text-transparent bg-clip-text">SMK Dharma Wirawan</div>
           <!-- <div class="flex items-center text-center justify-center"> -->
           
-            <div v-if="loading" class="w-full rounded-md bg-gray-200 h-full">
+            <div v-if="loading" class="w-full rounded-md bg-gray-200 h-[20px]">
             <div class="animate-pulse">
-              <div class="bg-gray-300 rounded w-full text-lg">&nbsp;</div>
+              <div class="bg-gray-300 rounded w-full text-lg h-[20px]">&nbsp;</div>
             </div>
           </div>
           <div v-else>
-            <div class="text-lg font-semibold">
+            <div class="text-lg font-semibold h-[20px]">
             {{ upper(user?.username) }} 
           </div>
         </div>

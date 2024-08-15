@@ -4,7 +4,7 @@
 <Sidebar :is-sidebar-visible="isSidebarVisible" :user="user" :userFile="userFile" :loading="loading"/>
 <main :class="mainClasses" class="md:ml-80 mx-auto min-h-screen transition-all">
  <div class="py-4 mt-16 mx-6">
- <router-view />
+ <router-view @photo-updated="updateUserFile"/>
 </div>
 <Footer />
 </main>
@@ -55,6 +55,9 @@ computed: {
     },
   },
   methods: {
+    updateUserFile(newPhoto) {
+      this.userFile = newPhoto;
+    },
     async fetchFoto(item){
       const userd = await getUsersById(item);
       this.foto = userd;

@@ -159,19 +159,19 @@
                                                     </v-stepper-header>
                                                 </v-stepper>
                                                 <div class="-mx-3 flex flex-wrap">
-                                                    <div class="w-full px-3">
+                                                    <div class="w-full px-3 sm:w-1/2">
                                                         <div class="mb-4">
                                                             <label for="cover-photo" class="block font-semibold pb-2">
                                                                 Photo Profile
                                                             </label>
                                                             <div class="flex items-center justify-center w-full">
                                                                 <img id="uploaded-image"
-                                                                    :src="defaultImage ? defaultImage : userFile64" 
+                                                                    :src="defaultImage" 
                                                                     className="w-64 h-64 mb-2" />
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="w-full px-3 sm:1/2">
+                                                    <div class="w-full px-3 sm:w-1/2">
                                                         <div class="mb-4">
                                                             <div class="flex items-center justify-center w-full mt-8" :class="{'hidden': file}">
                                                                 <label for="file-upload"
@@ -194,6 +194,22 @@
                                                                         @change="handleFileUpload" />
                                                                 </label>
                                                             </div>
+                                                            <cropper ref="cropper" id="cropper" class="h-64 w-64 mx-auto mt-8" v-if="file" 
+                                                                :src="userFiles"
+                                                                @change="change" 
+                                                                :aspectRatio="aspectRatio" 
+                                                                :resizeImage="false"
+                                                                :restrictPosition="true" 
+                                                                :stencil-props="{
+                                                                aspectRatio: 1,
+                                                                movable: true,
+                                                                resizable: false  
+                                                                }" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="w-full px-3 sm:1/2">
+                                                        <div class="mb-4">
+
                                                             <ErrorMessage
                                                                 class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
                                                                 name="file" />
@@ -206,9 +222,6 @@
                                         </div>
                                     </template>
                                     <div class="flex float-right gap-2 mt-2 mb-5">
-                                        <v-btn class="hover:shadow-form rounded-full bg-gradient-to-r from-blue-700 to-blue-500 px-4 py-2 text-center font-semibold text-sm text-white outline-none" type="button" @click="openModalFoto">
-                                            Open Modal Crop
-                                        </v-btn>
                                         <v-btn
                                             class="hover:shadow-form rounded-full border hover:bg-gray-50 border-blue-700 px-4 py-2 text-center font-base text-sm text-black outline-none"
                                             v-if="currentStep !== 0" type="button" @click="prevStep">
@@ -273,56 +286,40 @@
                 nohp: '',
                 jk: '',
                 role: '',
-                userFile64: '',
                 defaultImage: PersonImage,
-                cropView: false,
-                img: 'https://images.pexels.com/photos/4323307/pexels-photo-4323307.jpeg',
+                userFiles: '',
+                userFile64: ''
             }
         },
         methods: {
             change({coordinates,canvas}) {
                 const hoi = canvas.toDataURL();
+                this.defaultImage = hoi
                 this.userFile64 = hoi
                 console.log(this.userFile64)
             },
             handleFileUpload(event) {
-                const uploadedFile = event.target.files[0];
-                this.openModalFoto(uploadedFile);
-                this.file = uploadedFile;
-                const uploadedImage = document.getElementById("uploaded-image");
-                uploadedImage.src = "";
-                uploadedImage.alt = uploadedFile.name;
-                //dari sini sudah benar
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    uploadedImage.src = event.target.result;
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'Image uploaded successfully',
-                        icon: 'success'
-                    });
-                    // Lakukan sesuatu dengan uploadedImage
-                };
-                if (uploadedFile) {
-                    this.convertToBase64(uploadedFile).then(base64 => {
-                        this.userFile64 = base64;
-                    });
+                const file = event.target.files[0];
+                this.file = file; // Simpan file untuk digunakan saat upload
+                if (this.file) {
+                this.userFiles = URL.createObjectURL(this.file); // Menampilkan gambar yang dipilih saat modal dibuka
+                } else {
+                // Handle case where no file is selected
+                alert("Please select a file first");
                 }
-                reader.onerror = (error) => {
-                    console.error('Error:', error);
-                };
-                reader.readAsDataURL(uploadedFile);
             },
-            openModalFoto() {
-               console.log('Halo')
-            },
-            convertToBase64(file) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => resolve(reader.result);
-                    reader.onerror = reject;
-                    reader.readAsDataURL(file);
-                });
+            DataURIToBlob(dataURL) {
+                const splitDataURI = dataURL.split(',')
+                const byteString = splitDataURI[0].indexOf('base64') >= 0 ? atob(splitDataURI[1]) : decodeURI(splitDataURI[1])
+                const mimeString = splitDataURI[0].split(':')[1].split(';')[0]
+
+                const ia = new Uint8Array(byteString.length)
+                for (let i = 0; i < byteString.length; i++)
+                ia[i] = byteString.charCodeAt(i)
+
+                return new Blob([ia], {
+                type: mimeString
+                })
             },
             async handlerSimpan(data) {
                 try {
@@ -368,7 +365,8 @@
                     formData.append('nohp', values.nohp);
                     formData.append('jk', values.jk);
                     formData.append('role', values.role);
-                    formData.append('file', this.file);
+                    const file = this.DataURIToBlob(this.userFile64);
+                    formData.append('file', file);
                     this.handlerSimpan(formData);
                     this.closeModal();
                     return;
@@ -377,9 +375,6 @@
             },
             async fetchUserData() {
              await getAllUsers();
-            },
-            openModalCrop(){
-              
             },
             prevStep() {
                 if (this.currentStep <= 0) {

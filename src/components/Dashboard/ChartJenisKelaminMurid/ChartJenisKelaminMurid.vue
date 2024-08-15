@@ -18,8 +18,9 @@ import { ChartPieIcon } from "@heroicons/vue/24/solid";
         class="h-full w-full relative md:h-full md:w-full"
       ></apexchart>
             </div>
+
           </div>
-        </div>
+    </div>
 </template>
 <script>
 import { fetchData } from '@/stores/Chart/chartConfigJK.js'
@@ -27,8 +28,8 @@ import { fetchData } from '@/stores/Chart/chartConfigJK.js'
 export default {
   data: function() {
     return {
-      series: null,
-          chartOptions: {
+      series: [],
+      chartOptions: {
             chart: {
               type: 'pie',
             },
@@ -57,16 +58,16 @@ export default {
     try {
       const data = await fetchData();
       // Update series and labels with fetched data
-      if (data.seriesData.length === 0) {
+      if (data.seriesData[0] === 0 && data.seriesData[1] === 0) {
         this.series = []; // Set series to null to trigger noData option
       } else {
         this.series = data.seriesData;
         this.chartOptions.labels = data.labels;
       }
-
       this.$nextTick(() => {
         if (this.$refs.chart) {
           this.$refs.chart.updateOptions({
+            series: this.series,
             labels: this.chartOptions.labels
           });
         }

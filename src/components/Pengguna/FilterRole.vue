@@ -47,16 +47,6 @@ const filter = (value) => {
                 Semua role
               </button>
             </MenuItem>
-            <MenuItem v-slot="{ SuperAdmin }">
-              <button
-                :class="[
-                  SuperAdmin ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white' : 'text-gray-900',
-                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                ]" @click="filter('Super Admin')"
-              >
-                Super Admin
-              </button>
-            </MenuItem>
             <MenuItem v-slot="{ Admin }">
               <button
                 :class="[
