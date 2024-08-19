@@ -357,21 +357,30 @@
                     throw error; // Melempar kembali error untuk ditangani di luar fungsi ini jika perlu
                 }
             },
-            nextStep(values) {
-                if (this.currentStep === 1) {
-                    const formData = new FormData();
-                    formData.append('username', values.username);
-                    formData.append('email', values.email);
-                    formData.append('nohp', values.nohp);
-                    formData.append('jk', values.jk);
-                    formData.append('role', values.role);
-                    const file = this.DataURIToBlob(this.userFile64);
-                    formData.append('file', file);
-                    this.handlerSimpan(formData);
-                    this.closeModal();
-                    return;
+            async nextStep(values) {
+                const users = await getAllUsers();
+                    const allUsers = users.data.data;
+                    const filteredUsers = allUsers.filter(user => user.username === values.username);
+                    if (filteredUsers.length === 1){
+                        console.log('Username Sudah ada')
+                        return
+                    }else{
+                        if (this.currentStep === 1) {
+                        const formData = new FormData();
+                        formData.append('username', values.username);
+                        formData.append('email', values.email);
+                        formData.append('nohp', values.nohp);
+                        formData.append('jk', values.jk);
+                        formData.append('role', values.role);
+                        const file = this.DataURIToBlob(this.userFile64);
+                        formData.append('file', file);
+                        this.handlerSimpan(formData);
+                        this.closeModal();
+                        return;
+                        }
+                        this.currentStep++;
                 }
-                this.currentStep++;
+
             },
             async fetchUserData() {
              await getAllUsers();
@@ -382,21 +391,32 @@
                 }
                 this.currentStep--;
             },
-            validateUsername(value) {
+            async validateUsername(value) {
                 const schema = Joi.string().pattern(new RegExp('^[a-z0-9]{3,30}$')).required().messages({
                     'string.pattern.base': 'Username harus terdiri dari huruf kecil dan angka, dengan panjang 3-30 karakter',
                     'any.required': 'Username tidak boleh kosong',
                     'string.empty': 'Username tidak boleh kosong'
                 });
-                const {
-                    error
-                } = schema.validate(value);
+
+                let errorMessage = '';
+
+                const {error} = schema.validate(value);
                 if (error) {
-                    return error.message;
+                    errorMessage = error.message;
+                }
+                const users = await getAllUsers(); // Assuming getAllUsers is a method in your component
+                const allUsers = users.data.data;
+                const filteredUsers = allUsers.filter(user => user.username === value);
+
+                if (filteredUsers.length === 1) {
+                    if (errorMessage) {
+                        errorMessage += ' dan '; // Combine messages
+                    }
+                    errorMessage += 'Username sudah ada, silakan pilih username lain';
                 }
 
-                // All is good
-                return true;
+                // Return the combined error message or true if valid
+                return errorMessage || true;
             },
             validateEmail(value) {
                 const schema = Joi.string().email({

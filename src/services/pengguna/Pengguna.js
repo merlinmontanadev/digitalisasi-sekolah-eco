@@ -10,9 +10,7 @@ async function getAllUsers(){
           'Authorization': `Bearer ${token}`
         }
       });
-      const users = [...response.data.data];
-      const userFormatted = users.sort((b, a) => new Date(b.createdAt) - new Date(a.createdAt));
-      return userFormatted;
+      return response;
       } catch (error) {
         console.error('Error fetching user data:', error);
         throw error;

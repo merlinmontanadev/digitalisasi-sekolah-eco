@@ -22,7 +22,6 @@
     "joi": "^17.12.3",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
-    "medium-zoom": "^1.1.0",
     "pinia": "^2.1.7",
     "sweetalert2": "^11.10.8",
     "v-blur": "^1.0.4",

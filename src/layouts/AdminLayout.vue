@@ -4,7 +4,7 @@
 <Sidebar :is-sidebar-visible="isSidebarVisible" :user="user" :userFile="userFile" :loading="loading"/>
 <main :class="mainClasses" class="md:ml-80 mx-auto min-h-screen transition-all">
  <div class="py-4 mt-16 mx-6">
- <router-view @photo-updated="updateUserFile"/>
+ <router-view />
 </div>
 <Footer />
 </main>
@@ -55,9 +55,6 @@ computed: {
     },
   },
   methods: {
-    updateUserFile(newPhoto) {
-      this.userFile = newPhoto;
-    },
     async fetchFoto(item){
       const userd = await getUsersById(item);
       this.foto = userd;
@@ -80,18 +77,6 @@ computed: {
       this.isFullContent = !this.isFullContent;
       localStorage.setItem("is_fullContent", this.isFullContent.toString());
     },
-    async fetchDataUser(token) {
-      try {
-        const response = await axios.get('http://localhost:9000/api/v1/user', {
-        headers: {
-          'Authorization' : `Bearer ${token}`
-        }
-      });
-      return response.data
-      } catch (error) {
-        console.log(error)
-      }
-    }
   },
   async mounted() {
     try {

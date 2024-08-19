@@ -340,12 +340,14 @@ computed: {
           this.loading = false;
           return;
         }
-        const user = await getAllUsers();
-        this.items = user;
-        this.userFile = user.map(user => {
+        const response = await getAllUsers();
+        const users = [...response.data.data];
+        const userFormatted = users.sort((b, a) => new Date(b.createdAt) - new Date(a.createdAt));
+        this.items = userFormatted;
+        this.userFile = userFormatted.map(userFormatted => {
         // Ubah BLOB menjadi URL gambar
-        if (user && user.file && user.file.data && user.file.data.length > 0) {
-          const blob = new Blob([new Uint8Array(user.file.data)], { type: user.fileMimeType });
+        if (userFormatted && userFormatted.file && userFormatted.file.data && userFormatted.file.data.length > 0) {
+          const blob = new Blob([new Uint8Array(userFormatted.file.data)], { type: userFormatted.fileMimeType });
           return URL.createObjectURL(blob);
         }else{
           this.userFile = '';

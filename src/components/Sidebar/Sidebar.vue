@@ -5,7 +5,6 @@ import { HomeIcon, UserGroupIcon, ClockIcon, CircleStackIcon, Cog6ToothIcon, Tag
 import { logoutUser } from '@/services/auth/auth.js';
 import { useToast } from "vue-toastification";
 import Cookies from 'js-cookie';
-import mediumZoom from 'medium-zoom'
 
 export default {
   props: {
@@ -142,23 +141,6 @@ export default {
           icon: Cog6ToothIcon
         },
       ],
-    };
-  },
-  setup() {
-    const toast = useToast();
-    const zoomImage = ref(null);
-
-    onMounted(() => {
-      if (zoomImage.value) {
-        mediumZoom(zoomImage.value, {
-          // Optional: Add your desired configuration options here
-        });
-      }
-    });
-
-    return {
-      toast,
-      zoomImage,
     };
   },
   methods: {
