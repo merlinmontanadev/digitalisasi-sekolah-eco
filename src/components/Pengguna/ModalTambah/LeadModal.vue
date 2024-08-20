@@ -3,7 +3,9 @@
         PlusIcon,
         UserCircleIcon,
         PhotoIcon,
-        XMarkIcon
+        XMarkIcon,
+        MagnifyingGlassIcon,
+        ClockIcon
     } from "@heroicons/vue/24/solid";
     import {
         TransitionRoot,
@@ -18,14 +20,16 @@
     } from 'vue';
 
     const checkDigit = (event) => {
-        if (event.key.length === 1 && isNaN(Number(event.key))) {
-            event.preventDefault();
-        }
-    };
+    if (event.key && event.key.length === 1 && isNaN(Number(event.key))) {
+        event.preventDefault();
+    } else {
+        return true;
+    }
+};
 </script>
 <template>
     <TransitionRoot>
-        <Dialog @close="closeModal" class="relative z-10 ">
+        <Dialog @close="closeModal" class="relative z-10">
             <TransitionChild as="template" enter="duration-300 ease-out" enter-from="opacity-0" enter-to="opacity-100"
                 leave="duration-200 ease-in" leave-from="opacity-100" leave-to="opacity-0">
                 <div class="fixed inset-0 bg-black/25" />
@@ -36,7 +40,7 @@
                         enter-to="opacity-100 scale-100" leave="duration-200 ease-in" leave-from="opacity-100 scale-100"
                         leave-to="opacity-0 scale-95">
                         <DialogPanel
-                            class="w-full max-w-3xl transform overflow-hidden rounded-md bg-white text-left items-center justify-center  transition-all overflow-y-auto">
+                            class="w-full max-w-4xl transform overflow-hidden rounded-md bg-white text-left items-center justify-center  transition-all overflow-y-auto">
                             <DialogTitle
                                 class="rounded-t-md px-4 py-2 flex-none gap-2 items-center bg-gradient-to-r from-blue-700 to-blue-500 md:flex ">
                                 <div class="text-lg font-bold text-white leading-7 ">Tambah Pengguna</div>
@@ -49,7 +53,7 @@
                                 </button>
                             </DialogTitle>
                             <div class="px-4">
-                                <Form @submit="nextStep" keep-values>
+                                <Form @submit.prevent="nextStep" keep-values v-slot="{ values }">
                                     <!-- v-slot="{ values }" -->
                                     <template v-if="currentStep == 0">
                                         <div class="flex items-center justify-center bg-white">
@@ -66,15 +70,23 @@
                                                     </v-stepper-header>
                                                 </v-stepper>
                                                 <div class="-mx-3 flex flex-wrap">
-                                                    <div class="w-full px-3 sm:w-1/2">
+                                                    <div class="w-full px-3 sm:w-1/2 ">
                                                         <div class="mb-2">
                                                             <label for="username" class="block font-semibold pb-2">
                                                                 Username<span class="text-red-500">*</span>
                                                             </label>
-                                                            <Field :rules="validateUsername" type="text" name="username"
+                                                            <div class="flex flex-warp gap-2">
+                                                            <Field v-model="username" :rules="validateUsername" type="text" name="username"
                                                                 id="username" placeholder="Masukan Username....."
                                                                 class="w-full rounded-md block border py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" />
-                                                            <ErrorMessage
+                                                                <button
+                                                                    class="hover:shadow-form rounded-full bg-gradient-to-r from-blue-700 to-blue-500 px-3 py-3 text-center font-semibold text-sm text-white outline-none"
+                                                                    type="button" @click="checkUsername" :disabled="loadingUsername">
+                                                                    <ClockIcon v-if="loadingUsername" class="h-4 w-4 text-white font-semibold" />
+                                                                    <MagnifyingGlassIcon v-else class="h-4 w-4 text-white font-semibold" />
+                                                                </button>
+                                                            </div>
+                                                                <ErrorMessage
                                                                 class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
                                                                 name="username" />
                                                         </div>
@@ -229,13 +241,13 @@
                                         </v-btn>
                                         <v-btn
                                             class="hover:shadow-form rounded-full bg-gradient-to-r from-blue-700 to-blue-500 px-4 py-2 text-center font-semibold text-sm text-white outline-none"
-                                            v-if="currentStep !== 1" type="submit">Next</v-btn>
+                                            v-if="currentStep !== 1" type="submit" @click="nextStep">Next</v-btn>
 
                                         <v-btn
                                             class="hover:shadow-form rounded-full bg-gradient-to-r from-blue-700 to-blue-500 px-4 py-2 text-center font-semibold text-sm text-white outline-none"
-                                            v-if="currentStep === 1" type="submit">Submit</v-btn>
+                                            v-if="currentStep === 1" type="submit" @click="nextStep">Submit</v-btn>
                                     </div>
-                                    <!-- <pre>{{ values }}</pre> -->
+                                    <pre>{{ values }}</pre>
                                 </Form>
                             </div>
                         </DialogPanel>
@@ -271,6 +283,7 @@
     } from 'vue-advanced-cropper';
     import 'vue-advanced-cropper/dist/style.css';
     import PersonImage from '@/assets/img/Person.jpg';
+    import { useToast } from "vue-toastification";
 
     export default {
         components: {
@@ -278,6 +291,7 @@
         },
         data() {
             return {
+                toast: useToast(),
                 currentStep: 0,
                 file: null,
                 // Inisialisasi objek formData untuk menyimpan data form
@@ -288,10 +302,46 @@
                 role: '',
                 defaultImage: PersonImage,
                 userFiles: '',
-                userFile64: ''
+                userFile64: '',
+                loadingUsername: false,
+                duplikatUsername: false,
             }
         },
+        setup() {
+        const toast = useToast();
+        return { toast }
+        }, 
         methods: {
+            async checkUsername(){
+                if (!this.username){
+                    this.toast.error("Username Tidak Boleh Kosong");
+                    this.username = ""
+                    this.loadingUsername = false;
+                    this.duplikatUsername = false;
+                    return true
+                }
+                this.loadingUsername = true;
+                this.toast.info("Mohon Tunggu Sebentar...");
+                try {
+                    const users = await getAllUsers();
+                    const allUsers = users.data.data;
+                    const filteredUsers = allUsers.filter(user => user.username === this.username);
+                    if (filteredUsers.length === 1) {
+                        this.toast.error("Username Tidak Dapat Digunakan");
+                        this.username = ""
+                    }else{
+                        this.toast.info("Username Dapat Digunakan");
+                    }
+
+                    this.loadingUsername = false;
+                } catch (error) {
+                    this.toast.error("Error Check Username");
+                    this.username = ""
+                    this.loadingUsername = false;
+                } finally {
+                    this.loadingUsername = false;  // Reset loading state
+                }
+            },
             change({coordinates,canvas}) {
                 const hoi = canvas.toDataURL();
                 this.defaultImage = hoi
@@ -337,35 +387,38 @@
                         return;
                     }
                     const response = await addUser(data)
-                    console.log('Data berhasil diunggah:', data);
                     await Swal.fire({
                         icon: "success",
                         title: "Data berhasil disimpan",
                         showConfirmButton: false,
                         timer: 1500
                     })
-
                     return response.data; // Mengembalikan respons dari server
                 } catch (error) {
                     console.error('Error saat mengunggah data:', error.response.data);
+
+                    let errorMessage = "Data gagal disimpan";
+
+                    if (error.response && error.response.data && error.response.data.message) {
+                        // If the error response from the server has a specific message
+                        errorMessage = error.response.data.message;
+                        console.log(error.response);
+
+                    }
+
                     await Swal.fire({
                         icon: "error",
-                        title: "Data gagal disimpan",
+                        title: errorMessage,  // Display the specific error message from the server
                         showConfirmButton: false,
                         timer: 1500
-                    })
-                    throw error; // Melempar kembali error untuk ditangani di luar fungsi ini jika perlu
+                    });
+
+                    throw error; // Re-throw the error to be handled elsewhere if needed
                 }
             },
             async nextStep(values) {
-                const users = await getAllUsers();
-                    const allUsers = users.data.data;
-                    const filteredUsers = allUsers.filter(user => user.username === values.username);
-                    if (filteredUsers.length === 1){
-                        console.log('Username Sudah ada')
-                        return
-                    }else{
-                        if (this.currentStep === 1) {
+                if (this.currentStep === 1) {
+                    if (this.duplikatUsername === false){
                         const formData = new FormData();
                         formData.append('username', values.username);
                         formData.append('email', values.email);
@@ -379,8 +432,7 @@
                         return;
                         }
                         this.currentStep++;
-                }
-
+                    }
             },
             async fetchUserData() {
              await getAllUsers();
@@ -391,32 +443,20 @@
                 }
                 this.currentStep--;
             },
-            async validateUsername(value) {
+            validateUsername(value) {
                 const schema = Joi.string().pattern(new RegExp('^[a-z0-9]{3,30}$')).required().messages({
                     'string.pattern.base': 'Username harus terdiri dari huruf kecil dan angka, dengan panjang 3-30 karakter',
                     'any.required': 'Username tidak boleh kosong',
                     'string.empty': 'Username tidak boleh kosong'
                 });
 
-                let errorMessage = '';
-
-                const {error} = schema.validate(value);
+                const {
+                    error
+                } = schema.validate(value);
                 if (error) {
-                    errorMessage = error.message;
+                    return error.message;
                 }
-                const users = await getAllUsers(); // Assuming getAllUsers is a method in your component
-                const allUsers = users.data.data;
-                const filteredUsers = allUsers.filter(user => user.username === value);
-
-                if (filteredUsers.length === 1) {
-                    if (errorMessage) {
-                        errorMessage += ' dan '; // Combine messages
-                    }
-                    errorMessage += 'Username sudah ada, silakan pilih username lain';
-                }
-
-                // Return the combined error message or true if valid
-                return errorMessage || true;
+                return true;
             },
             validateEmail(value) {
                 const schema = Joi.string().email({
@@ -435,8 +475,6 @@
                 if (error) {
                     return error.message;
                 }
-
-                // All is good
                 return true;
             },
             validateNoHP(value) {
@@ -488,6 +526,7 @@
                 const {
                     error
                 } = schema.validate(value);
+
                 if (error) {
                     return error.message;
                 }
