@@ -149,9 +149,9 @@ export default {
     },
     async logout() {
       try {
-        await logoutUser();
-        Cookies.remove('auth');
-        this.toast.info("Logout Berhasil");
+        const response = await logoutUser();
+        Cookies.remove('refreshToken');
+        this.toast.info(response.message);
         this.$router.push('/login')  
       } catch (error) {
         if(error.response){

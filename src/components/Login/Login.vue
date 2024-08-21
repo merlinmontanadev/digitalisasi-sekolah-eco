@@ -18,7 +18,7 @@ import { LockClosedIcon,UserIcon, EyeIcon, EyeSlashIcon } from '@heroicons/vue/2
             <label for="username" class="block text-base">Username</label>
               <div class="relative">
                 <input type="text" name="username" v-model="username"
-                class="border border-indigo-500 focus:outline-none py-2 pl-10 pr-2 rounded-md w-full sm:text-sm sm:leading-6">
+                class="border border-blue-500 focus:outline-none py-2 pl-10 pr-2 rounded-md w-full sm:text-sm sm:leading-6">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                   <UserIcon class="h-4 w-4 text-gray-500 text-center justify-center items-center"></UserIcon>
                 </span>
@@ -29,7 +29,7 @@ import { LockClosedIcon,UserIcon, EyeIcon, EyeSlashIcon } from '@heroicons/vue/2
           <div class="flex text-center items-center">
           <div class="relative">
             <input :type="showPassword ? 'text' : 'password'" name="password" v-model="password"
-            class="border border-indigo-500 focus:outline-none py-2 pl-10 pr-2 rounded-md w-80 sm:text-sm sm:leading-6">
+            class="border border-blue-500 focus:outline-none py-2 pl-10 pr-2 rounded-md w-80 sm:text-sm sm:leading-6">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                   <LockClosedIcon class="h-4 w-4 text-gray-500 text-center justify-center items-center"></LockClosedIcon>
             </span>
@@ -44,12 +44,8 @@ import { LockClosedIcon,UserIcon, EyeIcon, EyeSlashIcon } from '@heroicons/vue/2
             </button>
           </div>
           </div>
-        <div class="flex my-4 text-center">
-          <input type="checkbox" id="saveInfo" v-model="saveInfo">
-          <label for="saveInfo" class="text-sm ml-2">Remember Me</label>
-        </div>
         <button type="submit"
-          class=" text-white roundedflex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6  shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Login</button>
+          class=" text-white roundedflex w-full justify-center rounded-md bg-gradient-to-r from-blue-700 to-blue-500 px-3 py-1.5 text-sm font-semibold leading-6  shadow-sm hover:shadow-form focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ">Login</button>
       </form>
     </div>
     <div class="fixed bottom-[-40px] right-[-50px]" style="z-index: -1;">
@@ -75,7 +71,6 @@ export default {
       username: ref(null),
       password: ref(null),
       showPassword: false,
-      saveInfo: false
     };
   },
 setup() {
@@ -93,36 +88,16 @@ setup() {
                     };
       try {
         const response = await loginUser(data);
-        Cookies.set('auth', true, { expires: 1/24}); // 1 hour
-        this.toast.success("Login Berhasil");
-        if (this.saveInfo) {
-        // Logic to save info, e.g., storing in localStorage
-        localStorage.setItem('username', this.username);
-        localStorage.setItem('password', this.password);
-        } else {
-          // Logic to clear saved info if not saving
-          localStorage.removeItem('username');
-          localStorage.removeItem('password');
-        }
+        // Cookies.set('auth', true, { expires: 1/24}); // 1 hour
+        this.toast.success(response.message);
         this.$router.push('/admin/dashboard');  
-        return response.data
       } catch (error) {
-        if (error.response && error.response.data && error.response.data.message) {
-          this.toast.error(error.response.data.message);
-        } else {
-          // Menampilkan pesan error default jika tidak ada pesan spesifik
-          this.toast.error('Terjadi kesalahan saat login. Silakan coba lagi.');
-        }
+        this.toast.error(error.message);
       }
     }
   },
   mounted() {
     // Optionally load saved info when component mounts
-    if (localStorage.getItem('username')) {
-      this.username = localStorage.getItem('username');
-      this.password = localStorage.getItem('password');
-      this.saveInfo = true;
-    }
   }
 }
 </script>

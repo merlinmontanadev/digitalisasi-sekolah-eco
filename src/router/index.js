@@ -173,12 +173,12 @@ router.beforeEach((to, from, next) => {
 })
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = Cookies.get('auth');
+  const refreshToken = Cookies.get('refreshToken');
   // !!localStorage.getItem('auth'); // Atau cara lain untuk mengecek autentikasi
-  if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
+  if (to.matched.some(record => record.meta.requiresAuth) && !refreshToken) {
     // Jika rute memerlukan autentikasi dan user tidak terautentikasi, redirect ke Login
     next({ name: 'Login' });
-  } else if (!to.matched.some(record => record.meta.requiresAuth) && isAuthenticated) {
+  } else if (!to.matched.some(record => record.meta.requiresAuth) && refreshToken) {
     // Jika rute tidak memerlukan autentikasi dan user terautentikasi, redirect ke Dashboard
     next({ name: 'Dashboard' });
   } else {

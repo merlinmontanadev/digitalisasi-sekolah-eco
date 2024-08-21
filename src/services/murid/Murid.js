@@ -12,7 +12,6 @@ async function getAllMurids(){
       });
       const murids = [...response.data.data];
       const muridFormatted = murids.sort((b, a) => new Date(b.createdAt) - new Date(a.createdAt));
-      console.log(response.data.data)
       return muridFormatted;
       } catch (error) {
         console.error('Error fetching murid data:', error);

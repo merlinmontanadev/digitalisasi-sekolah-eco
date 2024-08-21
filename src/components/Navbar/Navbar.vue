@@ -191,6 +191,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
             </MenuItem>
             <MenuItem v-slot="{ active }">
               <button
+              @click="whatsappSupport"
                 :class="[
                   active ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white' : 'text-gray-900',
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
@@ -248,10 +249,13 @@ export default {
   return { toast }
 },
   methods: {
+    whatsappSupport(){
+      window.open('https://wa.me/628113300057', '_blank');
+    },
     async logout() {
       try {
        await logoutUser();
-       Cookies.remove('auth');
+       Cookies.remove('refreshToken');
        this.toast.info("Logout Berhasil");
        this.$router.push('/login')  
       } catch (error) {
