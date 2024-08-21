@@ -81,7 +81,8 @@
                                                                 class="w-full rounded-md block border py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" />
                                                                 <button
                                                                     class="hover:shadow-form rounded-full bg-gradient-to-r from-blue-700 to-blue-500 px-3 py-3 text-center font-semibold text-sm text-white outline-none"
-                                                                    type="button" @click="checkUsername" :disabled="loadingUsername">
+                                                                    type="button"  :disabled="loadingUsername">
+                                                                    <!-- @click="checkUsername" -->
                                                                     <ClockIcon v-if="loadingUsername" class="h-4 w-4 text-white font-semibold" />
                                                                     <MagnifyingGlassIcon v-else class="h-4 w-4 text-white font-semibold" />
                                                                 </button>
@@ -303,8 +304,7 @@
                 defaultImage: PersonImage,
                 userFiles: '',
                 userFile64: '',
-                loadingUsername: false,
-                duplikatUsername: false,
+                // loadingUsername: false,
             }
         },
         setup() {
@@ -312,36 +312,35 @@
         return { toast }
         }, 
         methods: {
-            async checkUsername(){
-                if (!this.username){
-                    this.toast.error("Username Tidak Boleh Kosong");
-                    this.username = ""
-                    this.loadingUsername = false;
-                    this.duplikatUsername = false;
-                    return true
-                }
-                this.loadingUsername = true;
-                this.toast.info("Mohon Tunggu Sebentar...");
-                try {
-                    const users = await getAllUsers();
-                    const allUsers = users.data.data;
-                    const filteredUsers = allUsers.filter(user => user.username === this.username);
-                    if (filteredUsers.length === 1) {
-                        this.toast.error("Username Tidak Dapat Digunakan");
-                        this.username = ""
-                    }else{
-                        this.toast.info("Username Dapat Digunakan");
-                    }
+            // async checkUsername(){
+            //     if (!this.username){
+            //         this.toast.error("Username Tidak Boleh Kosong");
+            //         this.username = ""
+            //         this.loadingUsername = false;
+            //         return true
+            //     }
+            //     this.loadingUsername = true;
+            //     this.toast.info("Mohon Tunggu Sebentar...");
+            //     try {
+            //         const users = await getAllUsers();
+            //         const allUsers = users.data.data;
+            //         const filteredUsers = allUsers.filter(user => user.username === this.username);
+            //         if (filteredUsers.length === 1) {
+            //             this.toast.error("Username Tidak Dapat Digunakan");
+            //             this.username = ""
+            //         }else{
+            //             this.toast.info("Username Dapat Digunakan");
+            //         }
 
-                    this.loadingUsername = false;
-                } catch (error) {
-                    this.toast.error("Error Check Username");
-                    this.username = ""
-                    this.loadingUsername = false;
-                } finally {
-                    this.loadingUsername = false;  // Reset loading state
-                }
-            },
+            //         this.loadingUsername = false;
+            //     } catch (error) {
+            //         this.toast.error("Error Check Username");
+            //         this.username = ""
+            //         this.loadingUsername = false;
+            //     } finally {
+            //         this.loadingUsername = false;  // Reset loading state
+            //     }
+            // },
             change({coordinates,canvas}) {
                 const hoi = canvas.toDataURL();
                 this.defaultImage = hoi
@@ -383,42 +382,30 @@
                             text: "Only admins can add user,",
                             showConfirmButton: false,
                         })
-                        this.fetchUserData();
                         return;
                     }
-                    const response = await addUser(data)
+                    const response = await addUser(data);
+                    console.log('Data berhasil diunggah:', data);
                     await Swal.fire({
-                        icon: "success",
-                        title: "Data berhasil disimpan",
-                        showConfirmButton: false,
-                        timer: 1500
+                    icon: "success",
+                    title: "Data berhasil disimpan",
+                    showConfirmButton: false,
+                    timer: 1500
                     })
                     return response.data; // Mengembalikan respons dari server
                 } catch (error) {
-                    console.error('Error saat mengunggah data:', error.response.data);
-
-                    let errorMessage = "Data gagal disimpan";
-
-                    if (error.response && error.response.data && error.response.data.message) {
-                        // If the error response from the server has a specific message
-                        errorMessage = error.response.data.message;
-                        console.log(error.response);
-
-                    }
-
+                    console.error('Error saat mengunggah data:', error);
                     await Swal.fire({
-                        icon: "error",
-                        title: errorMessage,  // Display the specific error message from the server
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-
-                    throw error; // Re-throw the error to be handled elsewhere if needed
+                    icon: "error",
+                    title: "Data gagal disimpan",
+                    showConfirmButton: false,
+                    timer: 1500
+                    })
+                    throw error; // Melempar kembali error untuk ditangani di luar fungsi ini jika perlu
                 }
             },
-            async nextStep(values) {
+            nextStep(values) {
                 if (this.currentStep === 1) {
-                    if (this.duplikatUsername === false){
                         const formData = new FormData();
                         formData.append('username', values.username);
                         formData.append('email', values.email);
@@ -430,9 +417,8 @@
                         this.handlerSimpan(formData);
                         this.closeModal();
                         return;
-                        }
-                        this.currentStep++;
                     }
+                    this.currentStep++;
             },
             async fetchUserData() {
              await getAllUsers();
