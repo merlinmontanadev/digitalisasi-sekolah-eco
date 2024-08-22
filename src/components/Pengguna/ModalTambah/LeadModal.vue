@@ -53,7 +53,7 @@
                                 </button>
                             </DialogTitle>
                             <div class="px-4">
-                                <Form @submit.prevent="nextStep" keep-values v-slot="{ values }">
+                                <Form @submit="nextStep" keep-values>
                                     <!-- v-slot="{ values }" -->
                                     <template v-if="currentStep == 0">
                                         <div class="flex items-center justify-center bg-white">
@@ -242,13 +242,12 @@
                                         </v-btn>
                                         <v-btn
                                             class="hover:shadow-form rounded-full bg-gradient-to-r from-blue-700 to-blue-500 px-4 py-2 text-center font-semibold text-sm text-white outline-none"
-                                            v-if="currentStep !== 1" type="submit" @click="nextStep">Next</v-btn>
+                                            v-if="currentStep !== 1" type="submit">Next</v-btn>
 
                                         <v-btn
                                             class="hover:shadow-form rounded-full bg-gradient-to-r from-blue-700 to-blue-500 px-4 py-2 text-center font-semibold text-sm text-white outline-none"
-                                            v-if="currentStep === 1" type="submit" @click="nextStep">Submit</v-btn>
+                                            v-if="currentStep === 1" type="submit">Submit</v-btn>
                                     </div>
-                                    <pre>{{ values }}</pre>
                                 </Form>
                             </div>
                         </DialogPanel>
@@ -273,9 +272,6 @@
     import {
         getAllUsers, addUser
     } from '@/services/pengguna/Pengguna.js';
-    import {
-        refreshToken
-    } from '@/services/refreshToken/refreshToken.js';
     import {
         jwtDecode
     } from "jwt-decode";
@@ -372,9 +368,13 @@
             },
             async handlerSimpan(data) {
                 try {
-                    const whoLogged = await refreshToken();
+                    const whoLogged = document.cookie
+                    .split('; ')
+                    .find(row => row.startsWith('refreshToken='))
+                    ?.split('=')[1];
                     const decodedToken = jwtDecode(whoLogged);
                     if (decodedToken.role !== 'Admin') {
+                        this.toast.info("Only admins can add User.");
                         console.log('Only admins can add User.');
                         await Swal.fire({
                             icon: "error",
@@ -385,7 +385,7 @@
                         return;
                     }
                     const response = await addUser(data);
-                    console.log('Data berhasil diunggah:', data);
+                    this.toast.success("Data berhasil disimpan");
                     await Swal.fire({
                     icon: "success",
                     title: "Data berhasil disimpan",
@@ -395,6 +395,7 @@
                     return response.data; // Mengembalikan respons dari server
                 } catch (error) {
                     console.error('Error saat mengunggah data:', error);
+                    this.toast.error("Data gagal disimpan");
                     await Swal.fire({
                     icon: "error",
                     title: "Data gagal disimpan",

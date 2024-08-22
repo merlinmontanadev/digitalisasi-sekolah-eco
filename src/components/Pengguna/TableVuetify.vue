@@ -119,7 +119,6 @@ import Clipboard from 'clipboard';
 import { ref, computed } from 'vue';
 import Swal from 'sweetalert2';
 import { useModalStore } from '@/stores/StoresPengguna.js';
-import { refreshToken } from '@/services/refreshToken/refreshToken.js';
 import { jwtDecode } from "jwt-decode";
 
   export default {
@@ -154,6 +153,7 @@ import { jwtDecode } from "jwt-decode";
     ],
   }
 },
+
 setup() {
   const toast = useToast();
   return { toast }
@@ -285,7 +285,10 @@ computed: {
           return; // Stop execution if user is Super Admin
         }
 
-        const whoLogged = await refreshToken();
+        const whoLogged = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('refreshToken='))
+        ?.split('=')[1];
         const decodedToken = jwtDecode(whoLogged);        
         if(decodedToken.role === "User"){
           Swal.fire({
@@ -331,7 +334,10 @@ computed: {
       async fetchAllUsers() {
       try {
         // Panggil fungsi getAllUsers untuk mendapatkan data semua pengguna
-        const whoLogged = await refreshToken();
+        const whoLogged = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('refreshToken='))
+        ?.split('=')[1];
         const decodedToken = jwtDecode(whoLogged);
         if (decodedToken.role !== 'Admin') {
           console.log('Only admins can fetch all users.');

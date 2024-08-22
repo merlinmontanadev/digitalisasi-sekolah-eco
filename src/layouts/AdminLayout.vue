@@ -19,7 +19,6 @@ import Navbar from "@/components/Navbar/Navbar.vue";
 import Footer from '@/components/Footer/Footer.vue';
 import { useToast } from "vue-toastification";
 import axios from 'axios';
-import { refreshToken } from '@/services/refreshToken/refreshToken.js';
 import { getUsersById  } from '@/services/pengguna/Pengguna.js';
 
 export default {
@@ -80,15 +79,31 @@ computed: {
   },
   async mounted() {
     try {
-      this.token = await refreshToken()
-      this.user = jwtDecode(this.token);
+      this.token = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('refreshToken='))
+      ?.split('=')[1];
+      const decodedToken = jwtDecode(this.token);
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (decodedToken.exp < currentTime){
+        console.log('Token Expired')
+        this.handleTokenExpiration()
+      }else{
+        const exp = decodedToken.exp;
+        const expDate = new Date(exp * 1000);
+        console.log('Token Masih Valid sampai', expDate.toLocaleString())
+        this.user = decodedToken
+        await this.fetchFoto(this.user?.user_id)
+        this.loading = false;
+      }
     } catch (error) {
       console.error('Error refreshing token:', error);
-    }
-    // await this.fetchDataUser(this.token);
-    await this.fetchFoto(this.user?.user_id)
-    this.loading = false;
+    }  
   },
+  handleTokenExpiration() {
+    this.toast.info("Token telah kedaluwarsa, silakan login ulang.");
+    this.$router.push('/');
+  }
 }
 </script>
 
