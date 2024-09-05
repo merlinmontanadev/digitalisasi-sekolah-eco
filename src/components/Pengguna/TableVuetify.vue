@@ -89,14 +89,6 @@ const showToast = () => {
         </MenuButton>
               </Menu>
               <Menu as="div" class="relative flex text-center ">
-        <MenuButton
-          class="inline-flex w-full justify-center items-center text-sm font-semibold text-gray-700 "
-          @click="loadMore(item)"
-        >
-          <EyeIcon
-          class="h-5 w-5 text-gray-700 text-center hover:text-gray-500"
-          />
-        </MenuButton>
               </Menu>
             </div>
   </template>
@@ -113,7 +105,7 @@ import { useToast } from "vue-toastification";
 import LeadModal from "./ModalTambah/LeadModal.vue";
 import FilterRole from "./FilterRole.vue";
 import { getAllUsers, deleteUser } from '@/services/pengguna/Pengguna.js';
-import { ChevronDownIcon, PencilSquareIcon, TrashIcon, EyeIcon, NoSymbolIcon, CalendarDaysIcon, SunIcon, MoonIcon} from '@heroicons/vue/20/solid';
+import { ChevronDownIcon, PencilSquareIcon, TrashIcon, NoSymbolIcon, CalendarDaysIcon, SunIcon, MoonIcon} from '@heroicons/vue/20/solid';
 import { ClipboardDocumentIcon, ClockIcon } from '@heroicons/vue/24/outline';
 import Clipboard from 'clipboard';
 import { ref, computed } from 'vue';
