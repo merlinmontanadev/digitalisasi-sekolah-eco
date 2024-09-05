@@ -135,6 +135,12 @@ const routes = [
         component: ()=> import('@/views/cropper/Cropper.vue'),
         meta: { title: 'Test Cropper', requiresAuth: true }
       },
+      {
+        path: 'select',
+        alias: '/admin/select',
+        component: ()=> import('@/views/select/Select.vue'),
+        meta: { title: 'Test Select', requiresAuth: true }
+      },
       // ...
     ],
   },

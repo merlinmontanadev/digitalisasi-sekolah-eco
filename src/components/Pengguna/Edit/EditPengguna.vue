@@ -303,6 +303,7 @@
             showConfirmButton: false,
             timer: 1500
           });
+          this.confirmFile = false
           this.file = null; // Reset file
           return response;
         } catch (error) {
