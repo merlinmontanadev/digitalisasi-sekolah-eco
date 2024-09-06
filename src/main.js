@@ -2,6 +2,7 @@ import "@mdi/font/css/materialdesignicons.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
+import stores from "./stores";
 import App from "@/App.vue";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
@@ -38,7 +39,7 @@ const vuetify = createVuetify({
 const app = createApp(App)
 
 app.use(VueApexCharts);
-
+app.use(stores)
 app.use(Toast, options);
 app.use(vuetify)
 app.use(createPinia())

@@ -5,6 +5,7 @@ import { HomeIcon, UserGroupIcon, ClockIcon, CircleStackIcon, Cog6ToothIcon, Tag
 import { logoutUser } from '@/services/auth/auth.js';
 import { useToast } from "vue-toastification";
 import Cookies from 'js-cookie';
+import defaultPicture from '@/assets/img/Person.jpg'; // Import the image
 
 export default {
   props: {
@@ -22,8 +23,14 @@ export default {
       required: true
     }
   },
+  computed: {
+    computedUserFile() {
+      return this.userFile ? this.userFile : this.$store.getters.getUserFile; // Use prop or fallback to Vuex
+    }
+  },
   data() {
     return {
+      defaultPicture,
       toast: useToast(),  
       navItems: [
         {
@@ -144,6 +151,9 @@ export default {
     };
   },
   methods: {
+    userFile() {
+      return this.$store.getters.getUserFile;
+    },
     upper(string) {
       return string ? string.charAt(0).toUpperCase() + string.slice(1) : '';
     },
@@ -184,7 +194,7 @@ export default {
         
         <div v-else>
         <div class="h-32 w-32 rounded-full shadow-md">
-          <img ref="zoomImage" :src="userFile" className="w-32 h-32 object-cover rounded-full border border-gray-200 mb-2"/>
+          <img ref="zoomImage" :src="computedUserFile  ? computedUserFile  : defaultPicture" className="w-32 h-32 object-cover rounded-full border border-gray-200 mb-2"/>
         </div>
         </div>
 

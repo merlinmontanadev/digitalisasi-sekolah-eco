@@ -163,7 +163,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
           <MenuButton
           class="inline-flex h-10 w-10 rounded-full justify-center  text-sm font-semibold text-white"
         >
-        <img class="h-10 w-10 rounded-full" :src="userFile">
+        <img class="h-10 w-10 rounded-full" :src="computedUserFile ? computedUserFile : defaultPicture">
         </MenuButton>
           </template> 
       </div>
@@ -225,20 +225,27 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { logoutUser } from '@/services/auth/auth.js';
 import { useToast } from "vue-toastification";
 import Cookies from 'js-cookie';
+import defaultPicture from '@/assets/img/Person.jpg'; // Import the image
 
 export default {
   props: {
+    loading: {
+      type: Boolean,
+      required: true
+    },
     userFile: {
       type: String,
       required: true
     },
-    loading: {
-      type: Boolean,
-      required: true
+  },
+  computed: {
+    computedUserFile() {
+      return this.userFile ? this.userFile : this.$store.getters.getUserFile; // Use prop or fallback to Vuex
     }
   },
   data() {
     return {
+      defaultPicture,
       toast: useToast(),  
       showDropDown: false,
       showDropDownNotif: false,

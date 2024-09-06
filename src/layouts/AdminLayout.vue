@@ -55,18 +55,18 @@ computed: {
   },
   methods: {
     async fetchFoto(item){
-      const userd = await getUsersById(item);
-      this.foto = userd;
+      try {
+        const userd = await getUsersById(item);
         if (userd && userd.file && userd.file.data && userd.file.data.length > 0) {
-          // Convert buffer to blob
           const blob = new Blob([new Uint8Array(userd.file.data)], { type: userd.fileMimeType });
-          // Create URL from blob
           this.userFile = URL.createObjectURL(blob);
-          // console.log('User File:', this.userFile);
         } else {
-          // Handle if there's no image data
-          this.userFile = ''; // Set default image or show placeholder
+          this.userFile = '';
         }
+      } catch (error) {
+        console.error('Error fetching photo:', error);
+        this.userFile = null;
+      }
     },
     toggleSidebar() {
       this.isSidebarVisible = !this.isSidebarVisible;

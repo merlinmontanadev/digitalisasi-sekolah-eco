@@ -2,10 +2,12 @@
   import {
     UserGroupIcon,
     ChevronLeftIcon,
-    Cog6ToothIcon
+    Cog6ToothIcon,
+    ArrowUpTrayIcon,
+    MagnifyingGlassIcon,
   } from "@heroicons/vue/24/outline";
   import {
-    PencilSquareIcon
+    PencilSquareIcon,
   } from '@heroicons/vue/20/solid';
   import {
     Menu,
@@ -39,13 +41,63 @@
               <div class="bg-white overflow-hidden w-full flex">
                 <div class="w-1/4 p-4 flex-nowrap">
                   <div class="text-center h-64 w-64">
-                    <img class="h-64 w-64 mx-auto" :src="userFile" id="uploaded-image" alt="Profile Picture">
+                    <div class="relative group w-64 h-64 mx-auto">
+    <!-- Profile Image -->
+    <img
+      class="h-full w-full object-cover"
+      :src="userFile ? userFile : defaultPicture"
+      id="uploaded-image"
+      alt="Profile Picture"
+    />
+    
+    <!-- Icon to change the image, shown on hover -->
+    <div
+      class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 opacity-0 group-hover:opacity-70 transition-opacity duration-300 cursor-pointer"
+    >
+      <!-- Magnify Icon -->
+      <div
+        class="flex items-center justify-center mx-2"
+        @click="magnifyImage"
+      >
+        <MagnifyingGlassIcon class="h-8 w-8 text-white" />
+      </div>
+      <span class="text-2xl">|</span>
+      <!-- Pencil Icon -->
+      <div
+        class="flex items-center justify-center mx-2"
+        @click="triggerFileInput"
+      >
+        <PencilSquareIcon class="h-8 w-8 text-white" />
+      </div>
+    </div>
+  </div>
+                    <TransitionRoot as="template" :show="isModalOpenPreview">
+                      <Dialog as="div" class="fixed z-50 inset-0 overflow-y-auto" @close="closeModal">
+                        <div
+                          class="flex items-center justify-center h-full pt-4 px-4 text-center sm:block sm:p-0">
+                          <DialogOverlay class="fixed inset-0 bg-black opacity-30" />
+                          <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
+                            aria-hidden="true">&#8203;</span>
+                          <div
+                            class="inline-block align-bottom text-left transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
+                            <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                              <div class="sm:flex sm:items-start justify-center">
+                                <div class="text-center w-full">
+                                  <!-- Cropper here -->
+                                  <img
+                                    class="h-full w-full mx-auto"
+                                    :src="userFile ? userFile : defaultPicture"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Dialog>
+                    </TransitionRoot>
                     <div class="mt-2">
                       <Field ref="fileInput" id="file-upload" type="file" class="hidden" accept="image/*" name="file"
                         @change="handleFileUpload" />
-                      <button
-                        class="w-full bg-gradient-to-r from-blue-700 to-blue-500 font-semibold rounded text-white select-none"
-                        @click="triggerFileInput">Ganti Foto</button>
                       <button
                         class="w-full bg-gradient-to-r from-green-500 to-green-500 font-semibold mt-2 rounded text-white select-none"
                         v-if="confirmFile" :disabled="isUploading" :class="{ 'cursor-not-allowed': isUploading }"
@@ -55,7 +107,7 @@
                       </button>
                     </div>
                     <TransitionRoot as="template" :show="isModalOpen">
-                      <Dialog as="div" class="fixed inset-0 overflow-y-auto" @close="closeModal">
+                      <Dialog as="div" class="fixed z-50 inset-0 overflow-y-auto" @close="closeModal">
                         <div
                           class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                           <DialogOverlay class="fixed inset-0 bg-black opacity-30" />
@@ -261,6 +313,7 @@
   } from '@/services/pengguna/Pengguna.js';
   import NotFound from '../../NotFoundPage/NotFound.vue';
   import Swal from 'sweetalert2';
+  import defaultPicture from '@/assets/img/Person.jpg'; // Import the image
 
   export default {
     components: {
@@ -268,8 +321,10 @@
       Cropper,
     },
 
+
     data() {
       return {
+        defaultPicture,
         userData: null, // Inisialisasi data pengguna
         isLoading: true,
         isNotFound: false,
@@ -277,6 +332,7 @@
         userFile64: '',
         file: null,
         isModalOpen: false,
+        isModalOpenPreview : false,
         confirmFile: false,
         show: false,
         isUploading: false,
@@ -297,6 +353,9 @@
           const formData = new FormData();
           formData.append('file', file); // Tambahkan file ke FormData
           const response = await changeFoto(this.$route.params.user_id, formData);
+          
+          this.$store.dispatch('updateUserFile', this.userFile64);
+
           await Swal.fire({
             icon: "success",
             title: "Foto berhasil diupdate",
@@ -340,6 +399,7 @@
       },
       closeModal() {
         this.isModalOpen = false;
+        this.isModalOpenPreview = false;
         this.file = null;
         document.removeEventListener('keydown', this.handleEsc);
       },
@@ -376,6 +436,9 @@
         return new Blob([ia], {
           type: mimeString
         })
+      },
+      magnifyImage(){
+        this.isModalOpenPreview = true;
       },
       triggerFileInput() {
         // Panggil metode click pada elemen input file

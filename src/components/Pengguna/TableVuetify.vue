@@ -80,11 +80,11 @@ const showToast = () => {
               <Menu as="div" class="relative flex text-center ">
         <MenuButton
         @click="HandlerDeleteUser(item)" class="inline-flex w-full justify-center items-center text-sm font-semibold text-gray-700 "
-        :disabled="isAdmin(item.role)"
-        :style="{ cursor: isAdmin(item.role) ? 'not-allowed' : 'pointer' }">
+        :disabled="isAdmin(item.role, item.username)"
+        :style="{ cursor: isAdmin(item.role, item.username) ? 'not-allowed' : 'pointer' }">
           <TrashIcon
             class="h-5 w-5 text-center"
-            :class="{ 'text-gray-400': isAdmin(item.role), 'hover:text-gray-500': !isAdmin(item.role) }"
+            :class="{ 'text-gray-400': isAdmin(item.role, item.username), 'hover:text-gray-500': !isAdmin(item.role, item.username) }"
           />
         </MenuButton>
               </Menu>
@@ -197,9 +197,14 @@ computed: {
       handleSearch(event) {
       this.searchKeyword = event
     },
-      isAdmin(role) {
+      isAdmin(role, username) {
       // Fungsi untuk memeriksa apakah peran adalah "Admin"
-      return role === 'Admin';
+      const whoLogged = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('refreshToken='))
+        ?.split('=')[1];
+      const decodedToken = jwtDecode(whoLogged);   
+      return role === 'Admin' && decodedToken.username === username;
     },
       toggleBlur(text) {
         this.blurActive = !this.blurActive;
@@ -268,7 +273,13 @@ computed: {
     },
     async HandlerDeleteUser(item) {
       try {
-        if (item.role === 'Admin') {
+        const whoLogged = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('refreshToken='))
+        ?.split('=')[1];
+        const decodedToken = jwtDecode(whoLogged);   
+        
+        if (item.role === 'Admin' && item.username === 'aditya' && decodedToken.username !== 'aditya') {
           Swal.fire({
             title: "Error",
             text: `You are not allowed to delete a Admin.`,
@@ -277,11 +288,6 @@ computed: {
           return; // Stop execution if user is Super Admin
         }
 
-        const whoLogged = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('refreshToken='))
-        ?.split('=')[1];
-        const decodedToken = jwtDecode(whoLogged);        
         if(decodedToken.role === "User"){
           Swal.fire({
             title: "Error",
@@ -290,6 +296,8 @@ computed: {
           });
           return; // Stop execution if user is Super Admin
         }
+
+
         const result = await Swal.fire({
           title: "Anda yakin?",
           text: `Anda tidak akan dapat mengembalikan ini!`,
@@ -299,17 +307,41 @@ computed: {
           cancelButtonColor: "#D1CFCE",
           confirmButtonText: "Ya, hapus!",
           cancelButtonText: "Batal"
-        }).then((result) => {
-          if (result.isConfirmed) {
-          deleteUser(item.user_id, decodedToken.user_id);
-          this.fetchAllUsers();
-          Swal.fire({
-            title: "Deleted!",
-            text: `${item.username} has been deleted.`,
-            icon: "success"
-          });
+        })
+
+        if (result.isConfirmed) {
+          try {
+            Swal.fire({
+              title: 'Menghapus...',
+              text: 'Mohon tunggu sebentar',
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+              }
+            });
+            // Perform the deletion
+            await deleteUser(item.user_id, decodedToken.user_id);
+
+            // Fetch the updated user list after deletion
+            await this.fetchAllUsers(); // Make sure this returns a Promise
+
+            // Close the loading alert and show success
+            Swal.fire({
+              title: "Deleted!",
+              text: `${item.username} has been deleted.`,
+              icon: "success"
+            });
+
+          } catch (error) {
+            console.error(error);
+            // Show error if deletion fails
+            Swal.fire({
+              title: "Error",
+              text: `Gagal menghapus pengguna ${item.username}.`,
+              icon: "error"
+            });
+          }
         }
-        });
       } catch (error) {
         console.error('Failed to delete user:', error);
         Swal.fire({
