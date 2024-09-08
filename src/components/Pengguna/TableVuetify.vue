@@ -88,8 +88,6 @@ const showToast = () => {
           />
         </MenuButton>
               </Menu>
-              <Menu as="div" class="relative flex text-center ">
-              </Menu>
             </div>
   </template>
     </v-data-table>
@@ -299,49 +297,57 @@ computed: {
 
 
         const result = await Swal.fire({
-          title: "Anda yakin?",
-          text: `Anda tidak akan dapat mengembalikan ini!`,
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#AE1A1A",
-          cancelButtonColor: "#D1CFCE",
-          confirmButtonText: "Ya, hapus!",
-          cancelButtonText: "Batal"
-        })
+  title: "Anda yakin?",
+  text: `Anda tidak akan dapat mengembalikan ini!`,
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#AE1A1A",
+  cancelButtonColor: "#D1CFCE",
+  confirmButtonText: "Ya, hapus!",
+  cancelButtonText: "Batal"
+});
 
-        if (result.isConfirmed) {
-          try {
-            Swal.fire({
-              title: 'Menghapus...',
-              text: 'Mohon tunggu sebentar',
-              allowOutsideClick: false,
-              didOpen: () => {
-                Swal.showLoading();
-              }
-            });
-            // Perform the deletion
-            await deleteUser(item.user_id, decodedToken.user_id);
+if (result.isConfirmed) {
+  try {
+    // Show loading alert
+    const loadingAlert = Swal.fire({
+      title: 'Menghapus...',
+      text: 'Mohon tunggu sebentar',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
 
-            // Fetch the updated user list after deletion
-            await this.fetchAllUsers(); // Make sure this returns a Promise
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-            // Close the loading alert and show success
-            Swal.fire({
-              title: "Deleted!",
-              text: `${item.username} has been deleted.`,
-              icon: "success"
-            });
+    // Perform the deletion
+    await deleteUser(item.user_id, decodedToken.user_id);
 
-          } catch (error) {
-            console.error(error);
-            // Show error if deletion fails
-            Swal.fire({
-              title: "Error",
-              text: `Gagal menghapus pengguna ${item.username}.`,
-              icon: "error"
-            });
-          }
-        }
+    // Fetch the updated user list after deletion
+    await this.fetchAllUsers(); // Make sure this returns a Promise
+
+    // Close the loading alert
+    Swal.close();
+
+    // Show success alert
+    await Swal.fire({
+      title: "Deleted!",
+      text: `${item.username} has been deleted.`,
+      icon: "success"
+    });
+
+  } catch (error) {
+    console.error(error);
+    // Show error if deletion fails
+    Swal.close(); // Ensure the loading alert is closed
+    await Swal.fire({
+      title: "Error",
+      text: `Gagal menghapus pengguna ${item.username}.`,
+      icon: "error"
+    });
+  }
+}
       } catch (error) {
         console.error('Failed to delete user:', error);
         Swal.fire({

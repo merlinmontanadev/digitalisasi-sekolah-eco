@@ -76,6 +76,17 @@ async function changeStatus(user_id, status) {
   }
 }
 
+async function changeRole(user_id, role) {
+  try {
+    const response = await axios.patch(`http://localhost:9000/api/v1/edit/user/role/${user_id}`, role);
+    return response.data;
+  } catch (error) {
+    console.log('Role :', role);
+    console.error('Error changing role user:', error);
+    throw error;
+  }
+}
+
 async function changeFoto(user_id, file) {
   try {
     const response = await axios.patch(`http://localhost:9000/api/v1/edit/user/foto/${user_id}`, file);
@@ -101,4 +112,4 @@ async function fetchCountData() {
 }
 }
 
-export { getAllUsers, deleteUser, addUser, getUsersById, resetPaswword, changeStatus, changeFoto, fetchCountData};
+export { getAllUsers, deleteUser, addUser, getUsersById, resetPaswword, changeStatus, changeFoto, fetchCountData, changeRole};

@@ -5,6 +5,7 @@
     Cog6ToothIcon,
     ArrowUpTrayIcon,
     MagnifyingGlassIcon,
+    ChevronDownIcon
   } from "@heroicons/vue/24/outline";
   import {
     PencilSquareIcon,
@@ -163,17 +164,24 @@
                   </div>
                   <div class="flex justify-between items-center py-2">
                     <p class="text-gray-600 font-semibold">Username</p>
-                    <div class="text-right">
                       <h1 class="text-gray-600">{{ userData.username }}</h1>
-                    </div>
                   </div>
                   <div class="flex justify-between items-center py-2">
                     <p class="text-gray-600 font-semibold">Role</p>
-                    <div class="text-right">
-                      <button :class="ButtonClassRole(userData.role)">
-                        {{ userData.role }}
-                      </button>
-                    </div>
+                    <div class="flex ">
+  <div ref="dropdownWrapperRole" @focusout="handleFocusOut" tabindex="0">
+    <button type="button" @click="toggleRole" :class="openrole ? 'ring-blue-600' : ''"
+      class="rounded-md flex w-full items-center justify-between text-center bg-white border py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 w-36"> <!-- Set a fixed width here, e.g. w-40 -->
+      <span class="truncate">{{ role === '' ? userData.role : role }}</span> <!-- Truncate long text -->
+      <ChevronDownIcon class="h-4 w-4 text-gray-600 hover:text-gray-500"></ChevronDownIcon>
+    </button>
+    <ul v-if="openrole" class="z-50 absolute mt-1 w-[6%] rounded bg-white ring-1 ring-gray-300">
+      <li class="sm:text-sm cursor-pointer select-none p-2 hover:bg-blue-200" @click="updateRole('Admin')">Admin</li>
+      <li class="sm:text-sm cursor-pointer select-none p-2 hover:bg-blue-200" @click="updateRole('User')">User</li>
+      
+    </ul>
+  </div>
+</div>
                   </div>
                   <v-divider class="my-4" />
                   <div class="flex justify-between items-center py-2">
@@ -188,8 +196,7 @@
                     <p class="text-gray-600 font-semibold">Jenis Kelamin</p>
                     <div class="text-right">
                       <p class="text-gray-600 font-medium flex gap-2 items-center justify-end" v-if="userData.jk">
-                        <span
-                          :class="userData.jk === 'Pria' ? 'mdi-gender-male text-blue-500' : 'mdi-gender-female text-pink-500'"
+                        <span :class="userData.jk === 'Pria' ? 'mdi-gender-male text-blue-500' : 'mdi-gender-female text-pink-500'"
                           class="mdi text-xl"></span>
                         {{ userData.jk }}
                       </p>
@@ -281,7 +288,8 @@
 <style src="@assets/css/loading.css"></style>
 <script>
   import {
-    defineComponent
+    defineComponent,
+    ref
   } from 'vue';
   import {
     Cropper
@@ -309,7 +317,8 @@
     getUsersById,
     resetPaswword,
     changeStatus,
-    changeFoto
+    changeFoto,
+    changeRole
   } from '@/services/pengguna/Pengguna.js';
   import NotFound from '../../NotFoundPage/NotFound.vue';
   import Swal from 'sweetalert2';
@@ -336,6 +345,8 @@
         confirmFile: false,
         show: false,
         isUploading: false,
+        openrole: false,
+        role: '',
       };
     },
     created() {
@@ -343,6 +354,14 @@
       this.fetchUserData(this.$route.params.user_id);
     },
     methods: {
+      handleFocusOut(event) {
+      if (!this.$refs.dropdownWrapperRole.contains(event.relatedTarget)) {
+        this.openrole = false;  // Close dropdown if focus leaves the dropdown
+      }
+    },
+      toggleRole() {
+      this.openrole = !this.openrole;
+      },
       async uploadFile() {
         this.isUploading = true;
         try {
@@ -353,7 +372,6 @@
           const formData = new FormData();
           formData.append('file', file); // Tambahkan file ke FormData
           const response = await changeFoto(this.$route.params.user_id, formData);
-          
           this.$store.dispatch('updateUserFile', this.userFile64);
 
           await Swal.fire({
@@ -452,16 +470,6 @@
           return 'bg-gradient-to-r from-green-500 to-green-400 font-semibold px-2 py-1 rounded text-white select-none cursor-default text-sm';
         }
       },
-      ButtonClassRole(role) {
-        // Tentukan kelas CSS berdasarkan nilai peran
-        if (role === 'Admin') {
-          return 'bg-gradient-to-r from-green-500 to-green-400 px-2 py-1 rounded text-white select-none cursor-default text-sm font-semibold';
-        } else if (role === 'Super Admin') {
-          return 'bg-gradient-to-r from-yellow-500 to-yellow-400 px-2 py-1 rounded text-white select-none cursor-default text-sm font-semibold';
-        } else if (role === 'User') {
-          return 'bg-gradient-to-r from-blue-500 to-blue-400 px-2 py-1 rounded text-white select-none text-sm font-semibold';
-        }
-      },
       formatDate(dateString) {
         // Konversi string tanggal ke objek Date
         const date = new Date(dateString);
@@ -495,6 +503,33 @@
         };
         // Format jam
         return date.toLocaleTimeString('en-US', options);
+      },
+      async updateRole(item) {
+        const response = await changeRole(item);
+
+          Swal.fire({
+            icon: "info",
+            title: `Info  ${item} & ${this.userData.user_id}`,
+            showConfirmButton: false,
+            timer: 1500
+          })
+        // const response = await changeRole(item);
+        // if (!response) {
+        //   Swal.fire({
+        //     icon: "error",
+        //     title: "Gagal merubah role",
+        //     showConfirmButton: false,
+        //     timer: 1500
+        //   })
+        //   return;
+        // } else {
+        //   Swal.fire({
+        //     title: 'Success',
+        //     text: `Role pengguna ${this.userData.username} berhasil diubah`,
+        //     icon: 'success',
+        //     timer: 1500
+        //   });
+        // }
       },
       async ResetPasswordPengguna(item) {
         Swal.fire({
