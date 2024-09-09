@@ -40,7 +40,7 @@
           <div class="container mx-auto">
             <div class="flex justify-center">
               <div class="bg-white overflow-hidden w-full flex">
-                <div class="w-1/4 p-4 flex-nowrap">
+                <div class="w-1/4 p-4 flex-nowrap"> <!-- here -->
                   <div class="text-center h-64 w-64">
                     <div class="relative group w-64 h-64 mx-auto">
     <!-- Profile Image -->
@@ -50,7 +50,6 @@
       id="uploaded-image"
       alt="Profile Picture"
     />
-    
     <!-- Icon to change the image, shown on hover -->
     <div
       class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 opacity-0 group-hover:opacity-70 transition-opacity duration-300 cursor-pointer"
@@ -167,25 +166,17 @@
                       <h1 class="text-gray-600">{{ userData.username }}</h1>
                   </div>
                   <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">Role</p>
-                    <div class="flex ">
-  <div ref="dropdownWrapperRole" @focusout="handleFocusOut" tabindex="0">
-    <button type="button" @click="toggleRole" :class="openrole ? 'ring-blue-600' : ''"
-      class="rounded-md flex w-full items-center justify-between text-center bg-white border py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 w-36"> <!-- Set a fixed width here, e.g. w-40 -->
-      <span class="truncate">{{ role === '' ? userData.role : role }}</span> <!-- Truncate long text -->
-      <ChevronDownIcon class="h-4 w-4 text-gray-600 hover:text-gray-500"></ChevronDownIcon>
-    </button>
-    <ul v-if="openrole" class="z-50 absolute mt-1 w-[6%] rounded bg-white ring-1 ring-gray-300">
-      <li class="sm:text-sm cursor-pointer select-none p-2 hover:bg-blue-200" @click="updateRole('Admin')">Admin</li>
-      <li class="sm:text-sm cursor-pointer select-none p-2 hover:bg-blue-200" @click="updateRole('User')">User</li>
-      
-    </ul>
-  </div>
-</div>
+                    <p class="text-gray-600 font-semibold">Role<span class="ml-3 text-blue-400 text-sm"><a href="#">Edit</a></span></p>
+
+<div class="text-right">
+                                <button :class="ButtonClassRole(userData.role)">
+                                {{ userData.role }}
+                                </button>
+                            </div>
                   </div>
                   <v-divider class="my-4" />
                   <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">Informasi Kontak</p>
+                    <p class="text-gray-600 font-semibold">Informasi Kontak<span class="ml-3 text-blue-400 text-sm"><a href="#">Edit</a></span></p>
                     <div class="text-right">
                       <p class="text-gray-600 font-medium">{{ userData.email }}</p>
                       <p class="text-gray-600 font-medium">{{ userData.nohp }}</p>
@@ -193,7 +184,7 @@
                   </div>
                   <v-divider class="my-4" />
                   <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">Jenis Kelamin</p>
+                    <p class="text-gray-600 font-semibold">Jenis Kelamin<span class="ml-3 text-blue-400 text-sm"><a href="#">Edit</a></span></p>
                     <div class="text-right">
                       <p class="text-gray-600 font-medium flex gap-2 items-center justify-end" v-if="userData.jk">
                         <span :class="userData.jk === 'Pria' ? 'mdi-gender-male text-blue-500' : 'mdi-gender-female text-pink-500'"
@@ -270,8 +261,49 @@
                     <button :class="ButtonClassStatus(userData.status)">
                       {{ userData.status }}
                     </button>
-                    <button class="text-gray-600">
-                      <Cog6ToothIcon class="h-6 w-6 text-gray-600 mr-1" /></button>
+                    <Menu as="div" class="relative inline-block text-left">
+  <MenuButton
+    class="flex h-8 w-8 rounded-full justify-center items-center text-sm font-semibold text-gray-600 "
+  >
+    <Cog6ToothIcon class="h-6 w-6 text-gray-600" />
+  </MenuButton>
+  <transition
+        enter-active-class="transition duration-100 ease-out"
+        enter-from-class="transform scale-95 opacity-0"
+        enter-to-class="transform scale-100 opacity-100"
+        leave-active-class="transition duration-75 ease-in"
+        leave-from-class="transform scale-100 opacity-100"
+        leave-to-class="transform scale-95 opacity-0"
+      >
+      <MenuItems
+          class="absolute right-0 w-56 z-50 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
+        >
+        <div class="px-1 py-1">
+            <MenuItem v-slot="{ active }">
+              <button
+                :class="[
+                  active ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white' : 'text-gray-600',
+                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                ]"
+              >
+                <PencilSquareIcon class="w-5 h-5 mr-2" />Ubah Status
+              </button>
+            </MenuItem>
+            <div class="border-b border-gray-200"></div>
+            <MenuItem v-slot="{ active }">
+              <button @click="logout"
+                :class="[
+                  active ? 'bg-gradient-to-r from-red-700 to-red-500 text-white' : 'text-gray-600',
+                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                ]"
+              >
+                <TrashIcon class="w-5 h-5 mr-2" />Hapus User
+              </button>
+            </MenuItem>
+          </div>
+        </MenuItems>
+      </transition>
+</Menu>
                   </div>
                 </div>
               </div>
@@ -354,6 +386,7 @@
       this.fetchUserData(this.$route.params.user_id);
     },
     methods: {
+
       handleFocusOut(event) {
       if (!this.$refs.dropdownWrapperRole.contains(event.relatedTarget)) {
         this.openrole = false;  // Close dropdown if focus leaves the dropdown
@@ -465,11 +498,19 @@
       ButtonClassStatus(status) {
         // Tentukan kelas CSS berdasarkan nilai peran
         if (status === 'Inactive') {
-          return 'bg-gradient-to-r from-red-500 to-red-400 font-semibold px-2 py-1 rounded text-white select-none cursor-default text-sm';
+          return 'bg-gradient-to-r from-red-700 to-red-500 font-semibold px-2 py-1 rounded text-white select-none cursor-default text-sm';
         } else if (status === 'Active') {
-          return 'bg-gradient-to-r from-green-500 to-green-400 font-semibold px-2 py-1 rounded text-white select-none cursor-default text-sm';
+          return 'bg-gradient-to-r from-green-700 to-green-500 font-semibold px-2 py-1 rounded text-white select-none cursor-default text-sm';
         }
       },
+      ButtonClassRole(role) {
+      // Tentukan kelas CSS berdasarkan nilai peran
+      if (role === 'Admin') {
+        return 'bg-gradient-to-r from-green-700 to-green-500 px-2 py-1 rounded text-white select-none cursor-default text-sm font-semibold';
+      } else {
+        return 'bg-gradient-to-r from-blue-700 to-blue-500 px-2 py-1 rounded text-white select-none text-sm font-semibold';
+      }
+    },
       formatDate(dateString) {
         // Konversi string tanggal ke objek Date
         const date = new Date(dateString);

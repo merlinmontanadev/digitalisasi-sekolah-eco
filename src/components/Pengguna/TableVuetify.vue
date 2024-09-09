@@ -322,7 +322,7 @@ if (result.isConfirmed) {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Perform the deletion
-    await deleteUser(item.user_id, decodedToken.user_id);
+    const response = await deleteUser(item.user_id, decodedToken.user_id);
 
     // Fetch the updated user list after deletion
     await this.fetchAllUsers(); // Make sure this returns a Promise
@@ -338,12 +338,12 @@ if (result.isConfirmed) {
     });
 
   } catch (error) {
-    console.error(error);
+    const errorMessage = error.response?.data?.message
     // Show error if deletion fails
     Swal.close(); // Ensure the loading alert is closed
     await Swal.fire({
       title: "Error",
-      text: `Gagal menghapus pengguna ${item.username}.`,
+      text: errorMessage,
       icon: "error"
     });
   }

@@ -91,7 +91,7 @@ computed: {
       }else{
         const exp = decodedToken.exp;
         const expDate = new Date(exp * 1000);
-        console.log('Token Masih Valid sampai', expDate.toLocaleString())
+        console.log('Token valid sampai dengan', expDate.toLocaleString())
         this.user = decodedToken
         await this.fetchFoto(this.user?.user_id)
         this.loading = false;

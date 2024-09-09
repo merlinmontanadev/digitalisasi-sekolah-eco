@@ -38,9 +38,8 @@ async function deleteUser(user_id, user_logged_id) {
         user_logged_id: user_logged_id
       }
     });
-    return response.data;
+    return response;
   } catch (error) {
-    console.error('Error deleting user:', error);
     throw error;
   }
 }
@@ -50,7 +49,7 @@ async function addUser(data) {
     const response = await axios.post('http://localhost:9000/api/v1/simpan/user', data);
     return response.data;
   } catch (error) {
-    console.error('Error adding user:', error);
+    console.error('Error adding user:');
     throw error;
   }
 }

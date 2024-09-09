@@ -16,7 +16,7 @@ export default {
     },
     userFile: {
       type: String,
-      required: true
+      default: ''
     },
     loading: {
       type: Boolean,
@@ -25,11 +25,12 @@ export default {
   },
   computed: {
     computedUserFile() {
-      return this.userFile ? this.userFile : this.$store.getters.getUserFile; // Use prop or fallback to Vuex
+      return this.$store.getters.getUserFile || this.userFile || defaultPicture; // Use prop or fallback to Vuex
     }
   },
   data() {
     return {
+      isModalOpenPreview : false,
       defaultPicture,
       toast: useToast(),  
       navItems: [
@@ -151,8 +152,20 @@ export default {
     };
   },
   methods: {
+    closeModal() {
+        this.isModalOpenPreview = false;
+        document.removeEventListener('keydown', this.handleEsc);
+      },
+      handleEsc(event) {
+        if (event.key === 'Escape') {
+          this.closeModal();
+        }
+      },
+    magnifyImage(){
+        this.isModalOpenPreview = true;
+      },
     userFile() {
-      return this.$store.getters.getUserFile;
+      return this.userFile ? this.userFile : this.$store.getters.getUserFile;
     },
     upper(string) {
       return string ? string.charAt(0).toUpperCase() + string.slice(1) : '';
@@ -179,49 +192,83 @@ export default {
 <!-- start: Sidebar -->
 <div  :class="`${isSidebarVisible ? '-translate-x-full' : 'translate-x-0'}`" class="fixed mt-16 sidebardw top-0 left-0 bg-white w-64 h-full shadow-xl transition-transform ">
   <!-- Side item section with scrollbar -->
-  <!--Start: Proffil-->
-  <div class="border-b py-4 px-4 border-gray-200">
+  <!--Start: Profil-->
+  <div class="flex border-b py-4 px-4">
     <div class="container mx-auto">
-      <div class="flex flex-col justify-center items-center">
+      <div class="flex flex-col">
     <Suspense>
     <template #default>
-      <div class="flex flex-col justify-center items-center">
-        <div v-if="loading" class="h-32 w-32 rounded-full shadow-md bg-gray-200">
+      <div class="flex gap-3 text-warp items-center">
+        <div v-if="loading" class="h-20 w-20 rounded-full shadow-md bg-gray-200">
         <div class="animate-pulse">
-          <div className="w-32 h-32 object-cover rounded-full border border-gray-300 bg-gray-300 mb-2">&nbsp;</div>
+          <div className="w-20 h-20 object-cover rounded-full bg-gray-300 mb-2">&nbsp;</div>
         </div>
         </div>
-        
-        <div v-else>
-        <div class="h-32 w-32 rounded-full shadow-md">
-          <img ref="zoomImage" :src="computedUserFile  ? computedUserFile  : defaultPicture" className="w-32 h-32 object-cover rounded-full border border-gray-200 mb-2"/>
+        <div clas="flex" v-else>
+        <div class="relative group h-20 w-20 rounded-full shadow-md mx-auto">
+          <img ref="zoomImage" :src="computedUserFile" className="w-20 h-20 object-cover rounded-full shadow-sm"/>
+          <div
+      class="absolute object-cover rounded-full shadow-sm inset-0 flex items-center justify-center bg-black bg-opacity-60 opacity-0 group-hover:opacity-70 transition-opacity duration-300 cursor-pointer"
+    >
+      <!-- Magnify Icon -->
+      <div
+        class="flex items-center justify-center mx-2"
+        @click="magnifyImage"
+      >
+        <MagnifyingGlassIcon class="h-6 w-6 text-white" />
+      </div>
+    </div>
         </div>
+        <TransitionRoot as="template" :show="isModalOpenPreview">
+                      <Dialog as="div" class="fixed z-50 inset-0 overflow-y-auto" @close="closeModal">
+                        <div
+                          class="flex items-center justify-center h-full pt-4 px-4 text-center sm:block sm:p-0">
+                          <DialogOverlay class="fixed inset-0 bg-black opacity-30" />
+                          <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
+                            aria-hidden="true">&#8203;</span>
+                          <div
+                            class="inline-block align-bottom text-left transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
+                            <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                              <div class="sm:flex sm:items-start justify-center">
+                                <div class="text-center w-full">
+                                  <!-- Cropper here -->
+                                  <img
+                                    class="h-full w-full mx-auto"
+                                    :src="this.userFile ? this.userFile : defaultPicture"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Dialog>
+                    </TransitionRoot>
         </div>
-
-        <div class="py-1 flex flex-col justify-center items-center">
-          <div class="text-lg font-bold bg-gradient-to-r from-blue-700 via-green-500 to-blue-500 inline-block text-transparent bg-clip-text">SMK Dharma Wirawan</div>
-          <!-- <div class="flex items-center text-center justify-center"> -->
-          
-            <div v-if="loading" class="w-full rounded-md bg-gray-200 h-[20px]">
-            <div class="animate-pulse">
-              <div class="bg-gray-300 rounded w-full text-lg h-[20px]">&nbsp;</div>
-            </div>
-          </div>
-          <div v-else>
-            <div class="text-lg font-semibold h-[20px]">
-            {{ upper(user?.username) }} 
-          </div>
-        </div>
-          <!-- </div> -->
-          <div class="flex ">
-          <router-link :to="`/admin/manajemen-pengguna/edit/user/${user?.user_id}`" >
-            <button class="font-semibold text-sm mt-2 flex bg-blue-700 text-white px-4 py-2 rounded-l-md">
-            <UserIcon class="mr-2 h-5 w-5 text-white"></UserIcon> Profile
-          </button>
-          </router-link>
-          <button @click="logout" class="font-semibold text-sm mt-2 flex bg-red-500 text-white px-4 py-2 rounded-r-md"><ArrowLeftStartOnRectangleIcon class="mr-2 h-5 w-5 text-white"></ArrowLeftStartOnRectangleIcon> Logout</button>
-        </div>
-        </div>
+        <div class="justify-center text-left items-center w-full">
+  <div v-if="loading" class="font-bold h-[20px] w-full rounded-md bg-gray-200 mb-1.5">
+    <div class="animate-pulse">
+      <div class="bg-gray-300 rounded w-full h-[20px]">&nbsp;</div>
+    </div>
+  </div>
+  <div v-else>
+    <div class="font-bold text-gray-500">
+      {{ upper(user?.username) }}
+    </div>
+  </div>
+  
+  <div class="items-center text-left justify-center">
+    <div v-if="loading" class="w-full rounded-md bg-gray-200 h-[20px]">
+      <div class="animate-pulse">
+        <div class="bg-gray-300 rounded w-full h-[20px]">&nbsp;</div>
+      </div>
+    </div>
+    <div v-else>
+      <div class="font-bold  text-gray-500">
+        {{ upper(user?.role) }}
+      </div>
+    </div>
+  </div>
+</div>
       </div>
     </template>
     <template #fallback>
@@ -229,6 +276,14 @@ export default {
     </template>
   </Suspense>
   </div>
+  <div class="flex mt-3">
+          <router-link :to="`/admin/manajemen-pengguna/edit/user/${user?.user_id}`" >
+            <button class="font-semibold text-sm mt-2 flex bg-blue-700 text-white px-4 py-2 rounded-l-md">
+            <UserIcon class="mr-2 h-5 w-5 text-white"></UserIcon> Profile
+          </button>
+          </router-link>
+          <button @click="logout" class="font-semibold text-sm mt-2 flex bg-red-500 text-white px-4 py-2 rounded-r-md"><ArrowLeftStartOnRectangleIcon class="mr-2 h-5 w-5 text-white"></ArrowLeftStartOnRectangleIcon> Logout</button>
+        </div>
     </div>
 </div>
 <div style="overflow: auto;">
@@ -253,6 +308,16 @@ export default {
 </style>
 
 <script setup>
-import { Bars3Icon } from "@heroicons/vue/24/outline";
+  import {
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuItems,
+    Dialog,
+    DialogOverlay,
+    DialogTitle,
+    TransitionRoot
+  } from '@headlessui/vue'
+import { Bars3Icon, MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
 import { UserIcon } from "@heroicons/vue/24/solid";
 </script>

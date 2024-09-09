@@ -9,7 +9,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                 <div class="flex">
                 <router-link to="/admin/dashboard" class="flex items-center py-4" style="position: sticky; top: 0;">
                   <img src="@/assets/img/Logo Login.png" alt="" class="w-8 h-8 rounded">
-                    <span class="md:text-lg text-xs font-bold text-white ml-3">Digitalisasi Sekolah</span>
+                    <span class="md:text-lg text-xs font-bold text-white ml-3">SMK Dharma Wirawan Bojonegoro</span>
                 </router-link>
                 </div>
                 <button type="button" class="ml-4 text-lg text-white sidebar-toggle" @click="toggleSidebar">
@@ -163,7 +163,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
           <MenuButton
           class="inline-flex h-10 w-10 rounded-full justify-center  text-sm font-semibold text-white"
         >
-        <img class="h-10 w-10 rounded-full" :src="computedUserFile ? computedUserFile : defaultPicture">
+        <img class="h-10 w-10 rounded-full" :src="computedUserFile">
         </MenuButton>
           </template> 
       </div>
@@ -240,7 +240,7 @@ export default {
   },
   computed: {
     computedUserFile() {
-      return this.userFile ? this.userFile : this.$store.getters.getUserFile; // Use prop or fallback to Vuex
+      return this.$store.getters.getUserFile || this.userFile || defaultPicture; // Use prop or fallback to Vuex
     }
   },
   data() {
