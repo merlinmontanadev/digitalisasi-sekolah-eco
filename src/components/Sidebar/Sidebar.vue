@@ -152,6 +152,14 @@ export default {
     };
   },
   methods: {
+    getButtonClassRole(role) {
+      // Tentukan kelas CSS berdasarkan nilai peran
+      if (role === 'Admin') {
+        return 'bg-gradient-to-r from-green-500 to-green-400 px-2 py-1 rounded text-white select-none text-sm font-semibold cursor-default text-sm';
+      } else if (role === 'User') {
+        return 'bg-gradient-to-r from-blue-500 to-blue-400 px-2 py-1 rounded text-white select-none text-sm font-semibold cursor-default text-sm';
+      }
+    },
     closeModal() {
         this.isModalOpenPreview = false;
         document.removeEventListener('keydown', this.handleEsc);
@@ -263,9 +271,9 @@ export default {
       </div>
     </div>
     <div v-else>
-      <div class="font-bold  text-gray-500">
+      <button :class="getButtonClassRole(upper(user?.role))" class="font-bold text-gray-500">
         {{ upper(user?.role) }}
-      </div>
+        </button>
     </div>
   </div>
 </div>
