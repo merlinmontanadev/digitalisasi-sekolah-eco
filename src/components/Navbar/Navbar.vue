@@ -57,7 +57,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                             <ul class="max-h-64 overflow-y-auto" data-tab-for="notification" data-page="notifications">
                                 <li>
                                     <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
+                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                         <div class="ml-2">
                                             <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">New order</div>
                                             <div class="text-[11px] text-gray-400">from a user</div>
@@ -66,7 +66,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                                 </li>
                                 <li>
                                     <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
+                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                         <div class="ml-2">
                                             <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">New order</div>
                                             <div class="text-[11px] text-gray-400">from a user</div>
@@ -75,7 +75,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                                 </li>
                                 <li>
                                     <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
+                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                         <div class="ml-2">
                                             <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">New order</div>
                                             <div class="text-[11px] text-gray-400">from a user</div>
@@ -84,7 +84,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                                 </li>
                                 <li>
                                     <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
+                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                         <div class="ml-2">
                                             <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">New order</div>
                                             <div class="text-[11px] text-gray-400">from a user</div>
@@ -93,7 +93,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                                 </li>
                                 <li>
                                     <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
+                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                         <div class="ml-2">
                                             <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">New order</div>
                                             <div class="text-[11px] text-gray-400">from a user</div>
@@ -104,7 +104,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                             <ul class="max-h-64 overflow-y-auto hidden" data-tab-for="notification" data-page="messages">
                                 <li>
                                     <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
+                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                         <div class="ml-2">
                                             <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
                                             <div class="text-[11px] text-gray-400">Hello there!</div>
@@ -113,7 +113,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                                 </li>
                                 <li>
                                     <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
+                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                         <div class="ml-2">
                                             <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
                                             <div class="text-[11px] text-gray-400">Hello there!</div>
@@ -122,7 +122,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                                 </li>
                                 <li>
                                     <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
+                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                         <div class="ml-2">
                                             <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
                                             <div class="text-[11px] text-gray-400">Hello there!</div>
@@ -131,7 +131,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                                 </li>
                                 <li>
                                     <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
+                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                         <div class="ml-2">
                                             <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
                                             <div class="text-[11px] text-gray-400">Hello there!</div>
@@ -140,7 +140,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                                 </li>
                                 <li>
                                     <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
+                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                         <div class="ml-2">
                                             <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
                                             <div class="text-[11px] text-gray-400">Hello there!</div>

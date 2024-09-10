@@ -88,7 +88,6 @@ setup() {
                     };
       try {
         const response = await loginUser(data);
-        // Cookies.set('auth', true, { expires: 1/24}); // 1 hour
         this.toast.success(response.message);
         this.$router.push('/admin/dashboard');  
       } catch (error) {

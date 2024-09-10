@@ -53,6 +53,32 @@ computed: {
       };
     },
   },
+  async mounted() {
+    try {
+      this.token = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('refreshToken='))
+      ?.split('=')[1];
+      const decodedToken = jwtDecode(this.token);
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (decodedToken.exp < currentTime){
+        document.cookie = "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        this.token = null;
+        this.$router.push('/'); 
+        console.log('Token Expired')
+        this.toast.info("Token telah kedaluwarsa, silakan login ulang.");
+      }else{
+        const exp = decodedToken.exp;
+        const expDate = new Date(exp * 1000);
+        console.log('Token valid sampai dengan', expDate.toLocaleString())
+        this.user = decodedToken
+        await this.fetchFoto(this.user?.user_id)
+        this.loading = false;
+      }
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+    }  
+  },
   methods: {
     async fetchFoto(item){
       try {
@@ -77,33 +103,6 @@ computed: {
       localStorage.setItem("is_fullContent", this.isFullContent.toString());
     },
   },
-  async mounted() {
-    try {
-      this.token = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('refreshToken='))
-      ?.split('=')[1];
-      const decodedToken = jwtDecode(this.token);
-      const currentTime = Math.floor(Date.now() / 1000);
-      if (decodedToken.exp < currentTime){
-        console.log('Token Expired')
-        this.handleTokenExpiration()
-      }else{
-        const exp = decodedToken.exp;
-        const expDate = new Date(exp * 1000);
-        console.log('Token valid sampai dengan', expDate.toLocaleString())
-        this.user = decodedToken
-        await this.fetchFoto(this.user?.user_id)
-        this.loading = false;
-      }
-    } catch (error) {
-      console.error('Error refreshing token:', error);
-    }  
-  },
-  handleTokenExpiration() {
-    this.toast.info("Token telah kedaluwarsa, silakan login ulang.");
-    this.$router.push('/');
-  }
 }
 </script>
 
