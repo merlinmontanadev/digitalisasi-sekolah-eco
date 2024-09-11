@@ -40,21 +40,21 @@ export default {
           children: [],
           icon: HomeIcon
         }, {
-          href: "/admin/manajemen-pengguna",
+          href: "/admin/user-management",
           single: true,
-          label: "Pengguna",
+          label: "User",
           group: "Master Data",
           children: [],
           icon: UserGroupIcon,
         }, {
           href: "#",
-          label: "Peserta Didik",
+          label: "Student",
           single: false,
           group: "",
           icon: CircleStackIcon,
           children: [{
               href: "/admin/manajemen-murid",
-              label: "Semua Data Murid",
+              label: "All Student",
               single: false,
               group: "",
               children: [],
@@ -63,10 +63,10 @@ export default {
           ],
         }, {
           href: "#",
-          label: "Guru & Tendik",
+          label: "Teacher & Educator",
           children: [{
               href: "/admin/manajemen-gtk",
-              label: "Semua Data Guru & Tendik",
+              label: "All Teacher & Educator",
               children: [],
               icon: null
             },
@@ -77,7 +77,7 @@ export default {
           label: "Alumni",
           children: [{
               href: "/admin/manajemen-alumni",
-              label: "Semua Data Alumni",
+              label: "All Data Alumni",
               children: [],
               icon: null
             },
@@ -87,17 +87,17 @@ export default {
         {
           href: "#",
           single: true,
-          label: "Absensi",
-          group: "Absensi",
+          label: "Absence",
+          group: "Absence",
           children: [{
               href: "/admin/absensi/gtk",
-              label: "Absensi GTK",
+              label: "Absence Teacher & Educator",
               children: [],
               icon: null
             },
             {
               href: "/admin/absensi/murid",
-              label: "Absensi Murid",
+              label: "Absence Student",
               children: [],
               icon: null
             },
@@ -106,18 +106,18 @@ export default {
         }, {
           href: "/admin/pelanggaran",
           single: true,
-          label: "Pelanggaran",
-          group: "Pelanggaran",
+          label: "Violation",
+          group: "Violation",
           children: [],
           icon: TagIcon
         }, {
           href: "/admin/poin/pelanggaran",
-          label: "Poin Pelanggaran",
+          label: "Point Violation",
           children: [],
           icon: TagIcon
         }, {
           href: "/admin/kategori-pelanggaran",
-          label: "Kategori Pelanggaran",
+          label: "Category Violation",
           children: [],
           icon: TagIcon
         }, 
@@ -134,7 +134,7 @@ export default {
             },
             {
               href: "/admin/bkk/perusahaan",
-              label: "Data Perusahaan",
+              label: "Data Company",
               children: [],
               icon: null
             },
@@ -143,7 +143,7 @@ export default {
         },{
           href: "/admin/setting/sekolah",
           single: true,
-          label: "Kelola Sekolah",
+          label: "Settings School",
           group: "Settings",
           children: [],
           icon: Cog6ToothIcon
@@ -207,25 +207,30 @@ export default {
     <Suspense>
     <template #default>
       <div class="flex gap-3 text-warp items-center">
-        <div v-if="loading" class="h-20 w-20 rounded-full shadow-md bg-gray-200">
+        <div v-if="loading" class="h-20 w-20 shadow bg-gray-200">
         <div class="animate-pulse">
-          <div className="w-20 h-20 object-cover rounded-full bg-gray-300 mb-2">&nbsp;</div>
+          <div className="w-20 h-20  bg-gray-300 mb-2">&nbsp;</div>
         </div>
         </div>
         <div clas="flex" v-else>
-        <div class="relative group h-20 w-20 rounded-full shadow-md mx-auto">
-          <img ref="zoomImage" :src="computedUserFile" className="w-20 h-20 object-cover rounded-full shadow-sm"/>
+        <div class="relative group h-20 w-20 rounded-full shadow ">
+          <img ref="zoomImage" :src="computedUserFile" className="w-20 h-20  border-dashed border border-gray-700 shadow"/>
+          <tippy
+                      content="Preview Image"
+                      placement="bottom"
+                      arrow
+                    >
           <div
-      class="absolute object-cover rounded-full shadow-sm inset-0 flex items-center justify-center bg-black bg-opacity-60 opacity-0 group-hover:opacity-70 transition-opacity duration-300 cursor-pointer"
-    >
+      class="absolute shadow inset-0 flex items-center justify-center bg-black bg-opacity-60 opacity-0 group-hover:opacity-70 transition-opacity duration-300 cursor-pointer"
+      @click="magnifyImage">
       <!-- Magnify Icon -->
       <div
         class="flex items-center justify-center mx-2"
-        @click="magnifyImage"
       >
         <MagnifyingGlassIcon class="h-6 w-6 text-white" />
       </div>
     </div>
+  </tippy>
         </div>
         <TransitionRoot as="template" :show="isModalOpenPreview">
                       <Dialog as="div" class="fixed z-50 inset-0 overflow-y-auto" @close="closeModal">
@@ -271,9 +276,15 @@ export default {
       </div>
     </div>
     <div v-else>
+      <tippy
+                      content="Current Role"
+                      placement="bottom"
+                      arrow
+                    >
       <button :class="getButtonClassRole(upper(user?.role))" class="font-bold text-gray-500">
         {{ upper(user?.role) }}
         </button>
+      </tippy>
     </div>
   </div>
 </div>

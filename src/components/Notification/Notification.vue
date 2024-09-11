@@ -9,7 +9,7 @@
   <div class="h-8 w-8 flex items-center justify-center rounded-full bg-white">
     <MegaphoneIcon class="h-5 w-5 text-blue-700"></MegaphoneIcon> 
   </div>
-  <h3 class="ml-2 text-white text-sm md:text-normal">Selamat Datang di Sistem Informasi Digitalisasi Sekolah.</h3>
+  <h3 class="ml-2 text-white text-sm md:text-normal">Welcome to Sistem Informasi Digitalisasi Sekolah.</h3>
   <button @click="closeItem(1)" class="ml-auto">
     <div class="h-6 w-6 flex items-center justify-center rounded-full bg-white">
       <XMarkIcon class="h-4 w-4 text-blue-600 hover:text-blue-500"></XMarkIcon> 

@@ -7,6 +7,8 @@ import App from "@/App.vue";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import axios from 'axios';
+import VueTippy from 'vue-tippy';
+import "tippy.js/dist/tippy.css";
 
 axios.defaults.withCredentials = true;
 
@@ -37,7 +39,7 @@ const vuetify = createVuetify({
   
 
 const app = createApp(App)
-
+app.use(VueTippy);
 app.use(VueApexCharts);
 app.use(stores)
 app.use(Toast, options);

@@ -556,7 +556,7 @@
                 const schema = Joi.string().valid('Pria', 'Wanita').required().messages({
                     'any.required': 'Jenis Kelamin tidak boleh kosong',
                     'string.empty': 'Jenis Kelamin tidak boleh kosong',
-                    'any.only': 'Jenis Kelamin harus di antara "Pria" atau "Wanita"'
+                    'any.only': 'Pilih salah satu "Pria" atau "Wanita"'
                 });
                 const {
                     error

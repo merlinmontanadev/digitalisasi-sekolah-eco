@@ -17,7 +17,7 @@ const showToast = () => {
 
   <div class="flex lg:flex items-center justify-center mt-2 "> <!-- Container untuk elemen-elemen di sebelah kanan -->
     <!-- Tambah Pengguna-->
-    <TambahPengguna @open-modal="toogleModal"/>
+    <AddUser @open-modal="toogleModal"/>
     <!-- Tambah Lead-->
     <LeadModal :show="isOpen" @close-modal="toogleModal"/>
     <!-- Filter-->
@@ -69,7 +69,7 @@ const showToast = () => {
         <div class="flex relative gap-2 text-center items-center">
               <Menu as="div" class="relative flex text-center ">
                 <router-link
-                :to="{ path: `/admin/manajemen-pengguna/edit/user/${item.user_id}`, params: { user_id: item.user_id  } }"
+                :to="{ path: `${this.$route.meta.to}${item.user_id}`, params: { user_id: item.user_id  } }"
                   class="inline-flex w-full justify-center items-center text-sm font-semibold text-gray-700 "
                   >
                   <PencilSquareIcon
@@ -98,7 +98,7 @@ const showToast = () => {
 
 import SearchPengguna from "./SearchPengguna.vue";
 import FilterStatus from "./FilterStatus.vue";
-import TambahPengguna from "./TambahPengguna.vue";
+import AddUser from "./AddUser.vue";
 import { useToast } from "vue-toastification";
 import LeadModal from "./ModalTambah/LeadModal.vue";
 import FilterRole from "./FilterRole.vue";
@@ -114,7 +114,7 @@ import { jwtDecode } from "jwt-decode";
   export default {
 
     components: {
-      TambahPengguna,
+      AddUser,
       FilterRole,
       FilterStatus,
       SearchPengguna,

@@ -37,10 +37,10 @@ const routes = [
         meta: { title: 'Dashboard', requiresAuth: true }
       },    
       {
-        path: 'pengguna',
-        alias: '/admin/manajemen-pengguna',
+        path: 'users',
+        alias: '/admin/user-management',
         component: ()=> import('@/views/pengguna/Pengguna.vue'),
-        meta: { title: 'Manajemen Pengguna', requiresAuth: true },
+        meta: { title: 'User Management', requiresAuth: true , to: '/admin/user-management/edit/user/'},
         props: true
       },
       {
@@ -50,11 +50,11 @@ const routes = [
         meta: { title: 'Test' }
       },
       {
-        path: 'edit-pengguna',
-        alias: '/admin/manajemen-pengguna/edit/user/:user_id',
+        path: 'edit-user',
+        alias: '/admin/user-management/edit/user/:user_id',
         component: ()=> import('@/views/pengguna/EditPengguna.vue'),
         props: true,
-        meta: { title: 'Manajemen Pengguna', requiresAuth: true }
+        meta: { title: 'Edit User', requiresAuth: true, to: '/admin/user-management/'}
       },  
       {
         path: 'murid',

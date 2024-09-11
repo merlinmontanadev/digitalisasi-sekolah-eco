@@ -18,7 +18,7 @@ const filter = (value) => {
         <MenuButton
           class="inline-flex w-full justify-center rounded-full bg-gradient-to-r from-blue-700 to-blue-500 px-4 py-2 text-sm font-semibold text-white hover:bg-green-500"
         >
-          Pilih Status
+          Status
           <ChevronDownIcon
             class="-mr-1 ml-2 h-5 w-5 text-white"
             aria-hidden="true"
@@ -40,32 +40,37 @@ const filter = (value) => {
             <MenuItem v-slot="{ All }">
               <button
                 :class="[
-                  All ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white' : 'text-gray-900',
-                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                ]" @click="filter()"
+                  All       ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white'
+      : 'text-gray-900 hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:text-white',
+    'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+  ]" @click="filter()"
               >
-                Semua status
+                All Status
               </button>
             </MenuItem>
             <MenuItem v-slot="{ Active }">
               <button
                 :class="[
-                  Active ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white' : 'text-gray-900',
-                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                ]" @click="filter('Active')"
+                  Active       ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white'
+      : 'text-gray-900 hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:text-white',
+    'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+  ]" @click="filter('Active')"
               >
                 Active
               </button>
             </MenuItem>
             <MenuItem v-slot="{ Inactive }">
               <button
-                :class="[
-                  Inactive ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white' : 'text-gray-900',
-                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                ]" @click="filter('Inactive')"
-              >
-                Inactive
-              </button>
+  :class="[
+    Inactive
+      ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white'
+      : 'text-gray-900 hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:text-white',
+    'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+  ]"
+  @click="filter('Inactive')"
+>
+  Inactive
+</button>
             </MenuItem>
           </div>
         </MenuItems>

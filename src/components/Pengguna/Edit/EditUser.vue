@@ -22,9 +22,9 @@
   } from '@headlessui/vue'
 </script>
 <template>
-  <router-link to="/admin/manajemen-pengguna">
+  <router-link :to="{ path: `${this.$route.meta.to}`}">
     <v-btn variant="outlined" color="primary" v-if="userData">
-      <ChevronLeftIcon class="h-6 w-6 text-blue-600 mr-1" /> Kembali
+      <ChevronLeftIcon class="h-6 w-6 text-blue-600 mr-1" />Back
     </v-btn>
   </router-link>
   <div v-if="isLoading" class="loader mx-[50%] my-40"></div>
@@ -32,7 +32,7 @@
     <div class="mt-4 bg-white h-full w-full rounded-lg shadow" v-if="userData">
       <div class="flex bg-slate-100 gap-2 text-center items-center py-4 px-4">
         <PencilSquareIcon class="h-6 w-6 text-blue-700" />
-        <h1 class="font-bold text-xl text-blue-700">Edit Manajemen Pengguna</h1>
+        <h1 class="font-bold text-xl text-blue-700">Edit User Management</h1>
       </div>
       <hr class="w-full">
       <div class="flex center ">
@@ -45,7 +45,7 @@
                     <div class="relative group w-64 h-64 mx-auto">
     <!-- Profile Image -->
     <img
-      class="h-full w-full object-cover"
+      class="h-full w-full  border border-dashed border-gray-700 shadow"
       :src="userFile ? userFile : defaultPicture"
       id="uploaded-image"
       alt="Profile Picture"
@@ -103,7 +103,7 @@
                         v-if="confirmFile" :disabled="isUploading" :class="{ 'cursor-not-allowed': isUploading }"
                         @click="uploadFile">
                         <span v-if="isUploading">Loading...</span>
-                        <span v-else>Simpan</span>
+                        <span v-else>Save</span>
                       </button>
                     </div>
                     <TransitionRoot as="template" :show="isModalOpen">
@@ -176,7 +176,7 @@
                   </div>
                   <v-divider class="my-4" />
                   <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">Informasi Kontak<span class="ml-3 text-blue-400 text-sm"><a href="#">Edit</a></span></p>
+                    <p class="text-gray-600 font-semibold">Contact Information<span class="ml-3 text-blue-400 text-sm"><a href="#">Edit</a></span></p>
                     <div class="text-right">
                       <p class="text-gray-600 font-medium">{{ userData.email }}</p>
                       <p class="text-gray-600 font-medium">{{ userData.nohp }}</p>
@@ -184,12 +184,12 @@
                   </div>
                   <v-divider class="my-4" />
                   <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">Jenis Kelamin<span class="ml-3 text-blue-400 text-sm"><a href="#">Edit</a></span></p>
+                    <p class="text-gray-600 font-semibold">Gender<span class="ml-3 text-blue-400 text-sm"><a href="#">Edit</a></span></p>
                     <div class="text-right">
                       <p class="text-gray-600 font-medium flex gap-2 items-center justify-end" v-if="userData.jk">
                         <span :class="userData.jk === 'Pria' ? 'mdi-gender-male text-blue-500' : 'mdi-gender-female text-pink-500'"
                           class="mdi text-xl"></span>
-                        {{ userData.jk }}
+                          {{ jk(userData.jk) }}
                       </p>
                     </div>
                   </div>
@@ -199,7 +199,7 @@
                     <div class="text-right" v-if="userData.createdAt">
                       <p class="text-gray-600  flex items-center justify-end gap-2">
                         <CalendarDaysIcon class="h-4 w-4 text-gray-700 text-center justify-center items-center">
-                        </CalendarDaysIcon>{{ formatDate(userData.createdAt) }}
+                        </CalendarDaysIcon><span class="font-bold">{{ formatDate(userData.createdAt) }}</span>
                       </p>
                       <p class="text-gray-600  flex items-center justify-end gap-2">
                         <ClockIcon class="h-4 w-4 text-gray-700 text-center justify-center items-center"></ClockIcon>
@@ -212,7 +212,7 @@
                     <div class="text-right" v-if="userData.updatedAt">
                       <p class="text-gray-600  flex items-center justify-end gap-2">
                         <CalendarDaysIcon class="h-4 w-4 text-gray-700 text-center justify-center items-center">
-                        </CalendarDaysIcon>{{ formatDate(userData.updatedAt) }}
+                        </CalendarDaysIcon><span class="font-bold">{{ formatDate(userData.updatedAt) }}</span>
                       </p>
                       <p class="text-gray-600  flex items-center justify-end gap-2">
                         <ClockIcon class="h-4 w-4 text-gray-700 text-center justify-center items-center"></ClockIcon>
@@ -222,45 +222,44 @@
                   </div>
                   <v-divider class="my-4" />
                   <div class="py-2">
-                    <p class="text-gray-600 font-semibold">Kata Sandi</p>
+                    <p class="text-gray-600 font-semibold">Password</p>
                     <div class="mt-4">
                       <button
                         class="w-full bg-gradient-to-r from-blue-700 to-blue-500 font-semibold px-2 py-1 rounded text-white select-none flex items-center text-center justify-center gap-2"
                         @click="ResetPasswordPengguna(userData.user_id)">
-                        <KeyIcon class="h-4 w-4 text-white"></KeyIcon>Reset Kata Sandi
+                        <KeyIcon class="h-4 w-4 text-white"></KeyIcon>Reset Password
                       </button>
                     </div>
                   </div>
-                  <div class="py-2">
-                    <p class="text-gray-600 font-semibold">Device</p>
-                    <div class="mt-4"><button
-                        class="w-full bg-gradient-to-r from-red-700 to-red-500 font-semibold px-2 py-1 rounded text-white select-none flex items-center text-center justify-center gap-2">
-                        <TrashIcon class="h-4 w-4 text-white"></TrashIcon>Hapus Device
-                      </button></div>
-                  </div>
-                  <div class="py-2">
-                    <p class="text-gray-600 font-semibold">Status Akun</p>
+        <div class="py-2">
+                    <p class="text-gray-600 font-semibold">Status</p>
                     <div class="mt-4">
-                      <button v-if="userData.status === 'Active'"
-                        class="w-full bg-gradient-to-r from-red-700 to-red-500 font-semibold px-2 py-1 rounded text-white select-none flex items-center text-center justify-center gap-2"
-                        @click="rubahStatus(userData.user_id, 'Inactive')">
-                        <NoSymbolIcon class="h-4 w-4 text-white"></NoSymbolIcon>
-                        Non Aktifkan
-                      </button>
-                      <button v-else
-                        class="w-full bg-gradient-to-r from-green-700 to-green-500 font-semibold px-2 py-1 rounded text-white select-none flex items-center text-center justify-center gap-2"
-                        @click="rubahStatus(userData.user_id, 'Active')">
-                        <ShieldCheckIcon class="h-4 w-4 text-white"></ShieldCheckIcon>
-                        Aktifkan
-                      </button>
+                      <button
+                      :class="[
+                        userData.status === 'Active'
+                          ? 'bg-gradient-to-r from-red-700 to-red-500'
+                          : 'bg-gradient-to-r from-green-700 to-green-500',
+                        'w-full font-semibold px-2 py-1 rounded text-white select-none flex items-center text-center justify-center gap-2'
+                      ]"
+                      @click="toggleStatus"
+                    >
+                      <component :is="iconComponent" class="h-4 w-4 text-white" />
+                      {{ buttonText }}
+                    </button>
                     </div>
                   </div>
                 </div>
                 <div class="w-1/4 p-4">
                   <div class="flex justify-end py-2 gap-2">
+                    <tippy
+                      content="Current Status"
+                      placement="bottom"
+                      arrow
+                    >
                     <button :class="ButtonClassStatus(userData.status)">
                       {{ userData.status }}
                     </button>
+                  </tippy>
                     <Menu as="div" class="relative inline-block text-left">
   <MenuButton
     class="flex h-8 w-8 rounded-full justify-center items-center text-sm font-semibold text-gray-600 "
@@ -279,15 +278,17 @@
           class="absolute right-0 w-56 z-50 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
         >
         <div class="px-1 py-1">
-            <MenuItem v-slot="{ active }">
-              <button
-                :class="[
-                  active ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white' : 'text-gray-600',
-                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                ]"
-              >
-                <PencilSquareIcon class="w-5 h-5 mr-2" />Ubah Status
-              </button>
+            <MenuItem v-slot="{ active }">  
+      <button
+        :class="[
+          active ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white' : 'text-gray-600',
+          'group flex w-full items-center rounded-md px-2 py-2 text-sm'
+        ]"
+        @click="toggleStatus"
+      >
+        <PencilSquareIcon class="w-5 h-5 mr-2" />
+        Change Status
+      </button>
             </MenuItem>
             <div class="border-b border-gray-200"></div>
             <MenuItem v-slot="{ active }">
@@ -297,7 +298,7 @@
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                 ]"
               >
-                <TrashIcon class="w-5 h-5 mr-2" />Hapus User
+                <TrashIcon class="w-5 h-5 mr-2" />Delete User
               </button>
             </MenuItem>
           </div>
@@ -385,8 +386,19 @@
       // Ketika komponen dibuat, panggil metode untuk mengambil data pengguna
       this.fetchUserData(this.$route.params.user_id);
     },
+    computed: {
+    buttonText() {
+      return this.userData.status === 'Active' ? 'Non Active' : 'Active';
+    },
+    iconComponent() {
+      return this.userData.status === 'Active' ? NoSymbolIcon : ShieldCheckIcon;
+    }
+  },
     methods: {
-
+    toggleStatus() {
+      const newStatus = this.userData.status === 'Active' ? 'Inactive' : 'Active';
+      this.rubahStatus(this.userData.user_id, newStatus);
+    },
       handleFocusOut(event) {
       if (!this.$refs.dropdownWrapperRole.contains(event.relatedTarget)) {
         this.openrole = false;  // Close dropdown if focus leaves the dropdown
@@ -494,6 +506,13 @@
       triggerFileInput() {
         // Panggil metode click pada elemen input file
         this.$refs.fileInput.$el.click();
+      },
+      jk(item){
+        if(item === 'Pria'){
+          return 'Male'
+        }else{
+          return 'Female'
+        }
       },
       ButtonClassStatus(status) {
         // Tentukan kelas CSS berdasarkan nilai peran

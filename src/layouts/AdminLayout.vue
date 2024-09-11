@@ -38,6 +38,7 @@ export default {
       userFile: ref(null),
       foto: ref(null),
       loading: true,
+      tokenCheckInterval: null,
       isFullContent: localStorage.getItem("is_fullContent") === "true",
     };
   },
@@ -54,32 +55,36 @@ computed: {
     },
   },
   async mounted() {
+    this.tokenCheckInterval = setInterval(() => {
+      this.checkTokenExpiry(); // Memanggil metode checkTokenExpiry secara berkala
+    }, 1000); // Sesuaikan interval waktu sesuai kebutuhan Anda
+  },
+  methods: {
+    async checkTokenExpiry(){
     try {
-      this.token = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('refreshToken='))
-      ?.split('=')[1];
-      const decodedToken = jwtDecode(this.token);
-      const currentTime = Math.floor(Date.now() / 1000);
-      if (decodedToken.exp < currentTime){
-        document.cookie = "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        this.token = null;
-        this.$router.push('/'); 
-        console.log('Token Expired')
-        this.toast.info("Token telah kedaluwarsa, silakan login ulang.");
+      this.token = Cookies.get('refreshToken');
+      if (this.token){
+        const decodedToken = jwtDecode(this.token);
+        const currentTime = Date.now() / 1000;
+        if (decodedToken.exp < currentTime){
+          Cookies.remove('refreshToken');
+          this.toast.info("Token telah kedaluwarsa, silakan login ulang.");
+          this.$router.push('/');
+        }else{
+          const exp = decodedToken.exp;
+          const expDate = new Date(exp * 1000);
+          this.user = decodedToken
+          await this.fetchFoto(this.user?.user_id)
+          this.loading = false;
+        }
       }else{
-        const exp = decodedToken.exp;
-        const expDate = new Date(exp * 1000);
-        console.log('Token valid sampai dengan', expDate.toLocaleString())
-        this.user = decodedToken
-        await this.fetchFoto(this.user?.user_id)
-        this.loading = false;
+        this.$router.push('/');
+        return;
       }
     } catch (error) {
       console.error('Error refreshing token:', error);
     }  
-  },
-  methods: {
+    },
     async fetchFoto(item){
       try {
         const userd = await getUsersById(item);
