@@ -55,9 +55,15 @@ computed: {
     },
   },
   async mounted() {
+    window.addEventListener("keydown", this.handleKeyboardShortcut);
+    window.addEventListener("keydown", this.handleFullShortcut);
     this.tokenCheckInterval = setInterval(() => {
-      this.checkTokenExpiry(); // Memanggil metode checkTokenExpiry secara berkala
-    }, 1000); // Sesuaikan interval waktu sesuai kebutuhan Anda
+      this.checkTokenExpiry();
+    }, 1000);
+  },
+  beforeUnmount() {
+    window.removeEventListener("keydown", this.handleKeyboardShortcut);
+    window.removeEventListener("keydown", this.handleFullShortcut);
   },
   methods: {
     async checkTokenExpiry(){
@@ -102,6 +108,18 @@ computed: {
     toggleSidebar() {
       this.isSidebarVisible = !this.isSidebarVisible;
       localStorage.setItem("is_expanded", this.isSidebarVisible.toString());
+    },
+    handleFullShortcut(event) {
+      if (event.ctrlKey && event.key === "F11") {
+        event.preventDefault();
+        this.toggleFullContent();
+      }
+    },
+    handleKeyboardShortcut(event) {
+      if (event.ctrlKey && event.key.toLowerCase() === "b") {
+        event.preventDefault();
+        this.toggleSidebar();
+      }
     },
     toggleFullContent() {
       this.isFullContent = !this.isFullContent;

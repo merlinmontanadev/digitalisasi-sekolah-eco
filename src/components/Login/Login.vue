@@ -91,7 +91,12 @@ setup() {
         this.toast.success(response.message);
         this.$router.push('/admin/dashboard');  
       } catch (error) {
-        this.toast.error(error.message);
+        const errorMessage = error.message
+        if(errorMessage === "An internal server error occurred"){
+          this.toast.error("Error Anjing");
+        }else{
+          this.toast.error(error.message);
+        }
       }
     }
   },

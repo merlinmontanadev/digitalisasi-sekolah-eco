@@ -16,7 +16,7 @@ const props = defineProps({
     v-if="!item.children.length"
     :to="item.href"
     :class="[
-      'group flex w-full items-center rounded-md py-3 px-3 text-sm hover:bg-gradient-to-r from-blue-700 to-blue-500 hover:text-white text-gray-500',
+      'group flex w-full items-center rounded-md py-3 px-3 text-sm hover:bg-gradient-to-r from-blue-500 to-blue-400 hover:text-white text-gray-500',
     ]"
   >
     <component
@@ -35,7 +35,7 @@ const props = defineProps({
     v-slot="{open}">
     <DisclosureButton
       :class="[
-        'group flex w-full items-center rounded-md py-3 px-3 text-left text-sm my-1 hover:text-white hover:bg-gradient-to-r from-blue-700 to-blue-500 text-gray-500'
+        'group flex w-full items-center rounded-md py-3 px-3 text-left text-sm my-1 hover:text-white hover:bg-gradient-to-r from-blue-500 to-blue-400 text-gray-500'
       ]">
       <component
         :class="[

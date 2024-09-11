@@ -5,7 +5,8 @@
     Cog6ToothIcon,
     ArrowUpTrayIcon,
     MagnifyingGlassIcon,
-    ChevronDownIcon
+    ChevronDownIcon,
+    ArrowLeftIcon
   } from "@heroicons/vue/24/outline";
   import {
     PencilSquareIcon,
@@ -31,8 +32,8 @@
   <div v-else>
     <div class="mt-4 bg-white h-full w-full rounded-lg shadow" v-if="userData">
       <div class="flex bg-slate-100 gap-2 text-center items-center py-4 px-4">
-        <PencilSquareIcon class="h-6 w-6 text-blue-700" />
-        <h1 class="font-bold text-xl text-blue-700">Edit User Management</h1>
+        <PencilSquareIcon class="h-6 w-6 text-blue-500" />
+        <h1 class="font-bold text-xl text-blue-500">Edit User Management</h1>
       </div>
       <hr class="w-full">
       <div class="flex center ">
@@ -78,8 +79,7 @@
                           <DialogOverlay class="fixed inset-0 bg-black opacity-30" />
                           <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
                             aria-hidden="true">&#8203;</span>
-                          <div
-                            class="inline-block align-bottom text-left transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
+                          <div class="inline-block align-bottom text-left transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
                             <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                               <div class="sm:flex sm:items-start justify-center">
                                 <div class="text-center w-full">
@@ -97,7 +97,7 @@
                     </TransitionRoot>
                     <div class="mt-2">
                       <Field ref="fileInput" id="file-upload" type="file" class="hidden" accept="image/*" name="file"
-                        @change="handleFileUpload" />
+                        @change="handleFileUpload"/>
                       <button
                         class="w-full bg-gradient-to-r from-green-500 to-green-500 font-semibold mt-2 rounded text-white select-none"
                         v-if="confirmFile" :disabled="isUploading" :class="{ 'cursor-not-allowed': isUploading }"
@@ -121,8 +121,8 @@
                                   <DialogTitle class="flex items-center justify-between mb-4">
                                     <div class="text-lg font-bold leading-7">Crop Image</div>
                                   </DialogTitle>
-                                  <!-- Cropper here -->
-                                  <cropper ref="cropper" id="cropper" class="h-64 w-64 mx-auto" 
+                                  <!-- Dinamic Dialog -->
+                                    <cropper ref="cropper" id="cropper" class="h-64 w-64 mx-auto" 
                                     :src="userFiles"
                                     @change="change" 
                                     :aspectRatio="aspectRatio" 
@@ -166,17 +166,21 @@
                       <h1 class="text-gray-600">{{ userData.username }}</h1>
                   </div>
                   <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">Role<span class="ml-3 text-blue-400 text-sm"><a href="#">Edit</a></span></p>
-
-<div class="text-right">
+                    <p class="text-gray-600 font-semibold flex items-center text-center">Role<a class="ml-3 text-blue-500 text-sm cursor-pointer" @click="editRole">Edit</a></p>
+                              <div class="text-right">
+                                  <tippy
+                                  content="Current Status"
+                                  placement="bottom"
+                                  arrow>
                                 <button :class="ButtonClassRole(userData.role)">
                                 {{ userData.role }}
                                 </button>
+                                </tippy>
                             </div>
                   </div>
                   <v-divider class="my-4" />
                   <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">Contact Information<span class="ml-3 text-blue-400 text-sm"><a href="#">Edit</a></span></p>
+                    <p class="text-gray-600 font-semibold">Contact Information<span class="ml-3 text-blue-500 text-sm"><a href="#">Edit</a></span></p>
                     <div class="text-right">
                       <p class="text-gray-600 font-medium">{{ userData.email }}</p>
                       <p class="text-gray-600 font-medium">{{ userData.nohp }}</p>
@@ -184,7 +188,7 @@
                   </div>
                   <v-divider class="my-4" />
                   <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">Gender<span class="ml-3 text-blue-400 text-sm"><a href="#">Edit</a></span></p>
+                    <p class="text-gray-600 font-semibold">Gender<span class="ml-3 text-blue-500 text-sm"><a href="#">Edit</a></span></p>
                     <div class="text-right">
                       <p class="text-gray-600 font-medium flex gap-2 items-center justify-end" v-if="userData.jk">
                         <span :class="userData.jk === 'Pria' ? 'mdi-gender-male text-blue-500' : 'mdi-gender-female text-pink-500'"
@@ -225,7 +229,7 @@
                     <p class="text-gray-600 font-semibold">Password</p>
                     <div class="mt-4">
                       <button
-                        class="w-full bg-gradient-to-r from-blue-700 to-blue-500 font-semibold px-2 py-1 rounded text-white select-none flex items-center text-center justify-center gap-2"
+                        class="w-full bg-gradient-to-r from-blue-500 to-blue-400 font-semibold px-2 py-1 rounded text-white select-none flex items-center text-center justify-center gap-2"
                         @click="ResetPasswordPengguna(userData.user_id)">
                         <KeyIcon class="h-4 w-4 text-white"></KeyIcon>Reset Password
                       </button>
@@ -237,8 +241,8 @@
                       <button
                       :class="[
                         userData.status === 'Active'
-                          ? 'bg-gradient-to-r from-red-700 to-red-500'
-                          : 'bg-gradient-to-r from-green-700 to-green-500',
+                          ? 'bg-gradient-to-r from-red-500 to-red-400'
+                          : 'bg-gradient-to-r from-green-500 to-green-400',
                         'w-full font-semibold px-2 py-1 rounded text-white select-none flex items-center text-center justify-center gap-2'
                       ]"
                       @click="toggleStatus"
@@ -281,7 +285,7 @@
             <MenuItem v-slot="{ active }">  
       <button
         :class="[
-          active ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white' : 'text-gray-600',
+          active ? 'bg-gradient-to-r from-blue-500 to-blue-400 text-white' : 'text-gray-600',
           'group flex w-full items-center rounded-md px-2 py-2 text-sm'
         ]"
         @click="toggleStatus"
@@ -294,7 +298,7 @@
             <MenuItem v-slot="{ active }">
               <button @click="logout"
                 :class="[
-                  active ? 'bg-gradient-to-r from-red-700 to-red-500 text-white' : 'text-gray-600',
+                  active ? 'bg-gradient-to-r from-red-500 to-red-400 text-white' : 'text-gray-600',
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                 ]"
               >
@@ -311,6 +315,18 @@
             </div>
           </div>
         </div>
+      </div>
+      <div v-if=editConfirm class="pb-5 px-5 w-full h-full flex items-right justify-end gap-2">
+        <button
+          class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-400 font-semibold rounded text-white select-none flex items-center text-center justify-center"
+          @click="goBack">
+          Save
+        </button>
+        <button
+          class="border-dashed border boder-blue-300 px-4 py-2 rounded text-gray-500 select-none flex items-center text-center justify-center"
+          @click="goBack">
+          Cancel
+        </button>
       </div>
     </div>
     <!-- Tampilkan pesan jika userData belum ada -->
@@ -366,6 +382,7 @@
 
     data() {
       return {
+        editConfirm: false,
         defaultPicture,
         userData: null, // Inisialisasi data pengguna
         isLoading: true,
@@ -395,6 +412,9 @@
     }
   },
     methods: {
+      editRole() {
+        this.isModalOpen = true;
+      },
     toggleStatus() {
       const newStatus = this.userData.status === 'Active' ? 'Inactive' : 'Active';
       this.rubahStatus(this.userData.user_id, newStatus);
@@ -517,17 +537,17 @@
       ButtonClassStatus(status) {
         // Tentukan kelas CSS berdasarkan nilai peran
         if (status === 'Inactive') {
-          return 'bg-gradient-to-r from-red-700 to-red-500 font-semibold px-2 py-1 rounded text-white select-none cursor-default text-sm';
+          return 'bg-gradient-to-r from-red-500 to-red-400 font-semibold px-2 py-1 rounded text-white select-none cursor-default text-sm';
         } else if (status === 'Active') {
-          return 'bg-gradient-to-r from-green-700 to-green-500 font-semibold px-2 py-1 rounded text-white select-none cursor-default text-sm';
+          return 'bg-gradient-to-r from-green-500 to-green-400 font-semibold px-2 py-1 rounded text-white select-none cursor-default text-sm';
         }
       },
       ButtonClassRole(role) {
       // Tentukan kelas CSS berdasarkan nilai peran
       if (role === 'Admin') {
-        return 'bg-gradient-to-r from-green-700 to-green-500 px-2 py-1 rounded text-white select-none cursor-default text-sm font-semibold';
+        return 'bg-gradient-to-r from-green-500 to-green-400 px-2 py-1 rounded text-white select-none cursor-default text-sm font-semibold';
       } else {
-        return 'bg-gradient-to-r from-blue-700 to-blue-500 px-2 py-1 rounded text-white select-none text-sm font-semibold';
+        return 'bg-gradient-to-r from-blue-500 to-blue-400 px-2 py-1 rounded text-white select-none text-sm font-semibold';
       }
     },
       formatDate(dateString) {

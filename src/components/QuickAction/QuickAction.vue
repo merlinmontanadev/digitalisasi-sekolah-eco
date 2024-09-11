@@ -37,7 +37,7 @@ const data =
 <div class="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-4 mt-4">
   <div v-for="(item, index) in data" :key="index">
     <router-link :to="item.link">
-      <div class="rounded shadow-md md:col-span-1 flex justify-center items-center bg-gradient-to-r from-blue-700 to-blue-500">
+      <div class="rounded shadow-md md:col-span-1 flex justify-center items-center bg-gradient-to-r from-blue-500 to-blue-400">
         <div class="px-6 py-6">
           <div class="flex font-bold text-lg text-white text-center">
             <component 

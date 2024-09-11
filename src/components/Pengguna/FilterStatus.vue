@@ -16,7 +16,7 @@ const filter = (value) => {
             <Menu as="div" class="relative inline-block text-left">
       <div>
         <MenuButton
-          class="inline-flex w-full justify-center rounded-full bg-gradient-to-r from-blue-700 to-blue-500 px-4 py-2 text-sm font-semibold text-white hover:bg-green-500"
+          class="inline-flex w-full justify-center rounded-full bg-gradient-to-r from-blue-500 to-blue-400 px-4 py-2 text-sm font-semibold text-white hover:bg-green-500"
         >
           Status
           <ChevronDownIcon
@@ -40,8 +40,8 @@ const filter = (value) => {
             <MenuItem v-slot="{ All }">
               <button
                 :class="[
-                  All       ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white'
-      : 'text-gray-900 hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:text-white',
+                  All       ? 'bg-gradient-to-r from-blue-500 to-blue-400 text-white'
+      : 'text-gray-900 hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 hover:text-white',
     'group flex w-full items-center rounded-md px-2 py-2 text-sm',
   ]" @click="filter()"
               >
@@ -51,8 +51,8 @@ const filter = (value) => {
             <MenuItem v-slot="{ Active }">
               <button
                 :class="[
-                  Active       ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white'
-      : 'text-gray-900 hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:text-white',
+                  Active       ? 'bg-gradient-to-r from-blue-500 to-blue-400 text-white'
+      : 'text-gray-900 hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 hover:text-white',
     'group flex w-full items-center rounded-md px-2 py-2 text-sm',
   ]" @click="filter('Active')"
               >
@@ -63,8 +63,8 @@ const filter = (value) => {
               <button
   :class="[
     Inactive
-      ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white'
-      : 'text-gray-900 hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:text-white',
+      ? 'bg-gradient-to-r from-blue-500 to-blue-400 text-white'
+      : 'text-gray-900 hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 hover:text-white',
     'group flex w-full items-center rounded-md px-2 py-2 text-sm',
   ]"
   @click="filter('Inactive')"

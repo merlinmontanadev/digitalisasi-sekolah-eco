@@ -14,7 +14,7 @@ async function loginUser(data) {
         throw new Error(error.response.data.message || 'Failed to login');
       } else {
         // Jika tidak ada respons dari server, lemparkan pesan kesalahan jaringan
-        throw new Error('Terjadi kesalahan saat login. Silakan coba lagi.');
+        throw new Error('An error occurred while logging in. Please try again.');
       }
     }
   }

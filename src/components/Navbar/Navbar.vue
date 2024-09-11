@@ -4,22 +4,34 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 </script>
 <template>
             <!-- start: Navbar -->
-            <div class="w-full h-16 sm:h-16 py-2 px-4 bg-gradient-to-r from-blue-700 to-blue-500 flex items-center shadow-md shadow-black/10 fixed top-0 z-10 ">
+            <div class="w-full h-16 gap-4 sm:h-16 py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-400 flex items-center text-center justify-center shadow-md shadow-black/10 fixed top-0 z-10 ">
                   <!-- Logo section -->
-                <div class="flex">
+                  <ul class="flex items-center text-center text-sm">
+                    <li>
                 <router-link to="/admin/dashboard" class="flex items-center py-4" style="position: sticky; top: 0;">
                   <img src="@/assets/img/Logo Login.png" alt="" class="w-8 h-8 rounded">
                     <span class="md:text-lg text-xs font-bold text-white ml-3">SMK Dharma Wirawan Bojonegoro</span>
                 </router-link>
-                </div>
-                <button type="button" class="ml-4 text-lg text-white sidebar-toggle" @click="toggleSidebar">
+              </li>
+               </ul>
+                <ul class="flex items-center text-center text-sm">
+                  <li>
+                <tippy
+                      content="Hide Sidebar"
+                      placement="bottom"
+                      arrow
+                    >
+                <button type="button" class="items-center text-lg text-white sidebar-toggle" @click="toggleSidebar">
                 <Bars3Icon
                     :class="[
                     'h-6 w-6 shrink-0',
                     ]"
                 />
             </button>
-            <ul class="flex items-center text-sm ml-4">
+            </tippy>
+          </li>
+          </ul>
+            <ul class="flex items-center text-center text-sm">
                 <li>
                     <span href="#" class="text-white font-medium">Beta Ver 0.0.1</span>
                 </li>
@@ -32,15 +44,26 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                     </div>
                 </li> -->
                 <li class="ml-3">
-                  <button type="button" data-tooltip="Perbesar Konten" class="dropdown-toggle text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-whi" @click="toggleFullContent">
+                  <tippy
+                      content="Full Content"
+                      placement="bottom"
+                      arrow
+                    >
+                  <button type="button" class="dropdown-toggle text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-whi" @click="toggleFullContent">
                         <ArrowsPointingOutIcon
                             :class="[
                             'h-6 w-6 shrink-0 text-white'
                             ]"
                         />
                     </button>
+                  </tippy>
                 </li>
                 <li class="ml-3">
+                  <tippy
+                      content="Notiffication"
+                      placement="bottom"
+                      arrow
+                    >
                     <button type="button" class="dropdown-toggle text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-whi" @click="toggleDropNotif">
                         <BellIcon
                             :class="[
@@ -48,6 +71,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                             ]"
                         />
                     </button>
+                  </tippy>
                     <div class="absolute right-[27px] md:right-[60px] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10 max-w-xs md:max-w-lg w-full bg-white rounded-md border border-gray-100" v-show="showDropDownNotif">
                         <div class="flex items-center px-4 pt-4 border-b border-b-gray-100 notification-tab">
                             <button type="button" data-tab="notification" data-tab-page="notifications" class="text-gray-400 font-medium text-[13px] hover:text-gray-600 border-b-2 border-b-transparent mr-4 pb-1 active">Notifications</button>
@@ -55,42 +79,6 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                         </div>
                         <div class="my-2">
                             <ul class="max-h-64 overflow-y-auto" data-tab-for="notification" data-page="notifications">
-                                <li>
-                                    <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
-                                        <div class="ml-2">
-                                            <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">New order</div>
-                                            <div class="text-[11px] text-gray-400">from a user</div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
-                                        <div class="ml-2">
-                                            <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">New order</div>
-                                            <div class="text-[11px] text-gray-400">from a user</div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
-                                        <div class="ml-2">
-                                            <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">New order</div>
-                                            <div class="text-[11px] text-gray-400">from a user</div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
-                                        <div class="ml-2">
-                                            <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">New order</div>
-                                            <div class="text-[11px] text-gray-400">from a user</div>
-                                        </div>
-                                    </a>
-                                </li>
                                 <li>
                                     <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                         <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
@@ -160,11 +148,18 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
         </div>
         </template>
         <template v-else>
+          <tippy
+                      content="Profile"
+                      placement="bottom"
+                      arrow
+                    >
+
           <MenuButton
           class="inline-flex h-10 w-10 rounded-full justify-center  text-sm font-semibold text-white"
         >
         <img class="h-10 w-10 rounded-full" :src="computedUserFile">
         </MenuButton>
+        </tippy>
           </template> 
       </div>
       <transition
@@ -182,7 +177,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
             <MenuItem v-slot="{ active }">
               <button
                 :class="[
-                  active ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white' : 'text-gray-900',
+                  active ? 'bg-gradient-to-r from-blue-500 to-blue-400 text-white' : 'text-gray-900',
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                 ]"
               >
@@ -193,7 +188,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
               <button
               @click="whatsappSupport"
                 :class="[
-                  active ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white' : 'text-gray-900',
+                  active ? 'bg-gradient-to-r from-blue-500 to-blue-400 text-white' : 'text-gray-900',
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                 ]"
               >
@@ -204,7 +199,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
             <MenuItem v-slot="{ active }">
               <button @click="logout"
                 :class="[
-                  active ? 'bg-gradient-to-r from-blue-700 to-blue-500 text-white' : 'text-gray-900',
+                  active ? 'bg-gradient-to-r from-blue-500 to-blue-400 text-white' : 'text-gray-900',
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                 ]"
               >

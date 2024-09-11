@@ -155,9 +155,9 @@ export default {
     getButtonClassRole(role) {
       // Tentukan kelas CSS berdasarkan nilai peran
       if (role === 'Admin') {
-        return 'bg-gradient-to-r from-green-700 to-green-500 px-2 py-1 rounded text-white select-none text-sm font-semibold cursor-default text-sm';
+        return 'bg-gradient-to-r from-green-500 to-green-400 px-2 py-1 rounded text-white select-none text-sm font-semibold cursor-default text-sm';
       } else if (role === 'User') {
-        return 'bg-gradient-to-r from-blue-700 to-blue-500 px-2 py-1 rounded text-white select-none text-sm font-semibold cursor-default text-sm';
+        return 'bg-gradient-to-r from-blue-500 to-blue-400 px-2 py-1 rounded text-white select-none text-sm font-semibold cursor-default text-sm';
       }
     },
     closeModal() {
@@ -268,7 +268,6 @@ export default {
       {{ upper(user?.username) }}
     </div>
   </div>
-  
   <div class="items-center text-left justify-center">
     <div v-if="loading" class="w-full rounded-md bg-gray-200 h-[20px]">
       <div class="animate-pulse">
@@ -296,12 +295,12 @@ export default {
   </Suspense>
   </div>
   <div class="flex mt-3">
-          <router-link :to="`/admin/manajemen-pengguna/edit/user/${user?.user_id}`" >
-            <button class="font-semibold text-sm mt-2 flex bg-gradient-to-r from-blue-700 to-blue-500 text-white px-4 py-2 rounded-l-md">
+          <router-link :to="`/admin/user-management/edit/user/${user?.user_id}`" >
+            <button class="w-full font-semibold text-sm mt-2 flex bg-gradient-to-r from-blue-500 to-blue-400 text-white px-4 py-2 rounded-l-md">
             <UserIcon class="mr-2 h-5 w-5 text-white"></UserIcon> Profile
           </button>
           </router-link>
-          <button @click="logout" class="font-semibold text-sm mt-2 flex bg-gradient-to-r from-red-700 to-red-500 text-white px-4 py-2 rounded-r-md"><ArrowLeftStartOnRectangleIcon class="mr-2 h-5 w-5 text-white"></ArrowLeftStartOnRectangleIcon> Logout</button>
+          <button @click="logout" class="w-full font-semibold text-sm mt-2 flex bg-gradient-to-r from-red-500 to-red-400 text-white px-4 py-2 rounded-r-md"><ArrowLeftStartOnRectangleIcon class="mr-2 h-5 w-5 text-white"></ArrowLeftStartOnRectangleIcon> Logout</button>
         </div>
     </div>
 </div>
