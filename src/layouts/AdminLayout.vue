@@ -57,9 +57,9 @@ computed: {
   async mounted() {
     window.addEventListener("keydown", this.handleKeyboardShortcut);
     window.addEventListener("keydown", this.handleFullShortcut);
-    this.tokenCheckInterval = setInterval(() => {
-      this.checkTokenExpiry();
-    }, 1000);
+    // this.tokenCheckInterval = setInterval(() => {
+    //   this.checkTokenExpiry();
+    // }, 1000);
   },
   beforeUnmount() {
     window.removeEventListener("keydown", this.handleKeyboardShortcut);

@@ -26,23 +26,23 @@ import { LockClosedIcon,UserIcon, EyeIcon, EyeSlashIcon } from '@heroicons/vue/2
           </div>
         <div class="my-6 relative">
           <label for="password" class="block text-base">Password</label>
-          <div class="flex text-center items-center">
-          <div class="relative">
-            <input :type="showPassword ? 'text' : 'password'" name="password" v-model="password"
-            class="border border-blue-500 focus:outline-none py-2 pl-10 pr-2 rounded-md w-80 sm:text-sm sm:leading-6">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                  <LockClosedIcon class="h-4 w-4 text-gray-500 text-center justify-center items-center"></LockClosedIcon>
-            </span>
-          </div>
-            <button @click="toggleShowPassword" type="button" id="showPassword" class="ml-2 bg-slate-100 rounded-full p-2 w-8 h-8">
-              <template v-if="showPassword">
-                <EyeSlashIcon class="h-4 w-4 text-black text-center justify-center items-center"></EyeSlashIcon>
-              </template>
-              <template v-else>
-                <EyeIcon class="h-4 w-4 text-black text-center justify-center items-center"></EyeIcon>
-              </template>
-            </button>
-          </div>
+          <div class="relative flex text-center items-center">
+  <div class="relative">
+    <input :type="showPassword ? 'text' : 'password'" name="password" v-model="password"
+      class="border border-blue-500 focus:outline-none py-2 pl-10 pr-12 rounded-md w-80 sm:text-sm sm:leading-6">
+    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+      <LockClosedIcon class="h-4 w-4 text-gray-500 text-center justify-center items-center"></LockClosedIcon>
+    </span>
+  </div>
+  <button @click="toggleShowPassword" type="button" id="showPassword" class="absolute right-2 text-gray-500 p-2 w-8 h-8 flex items-center justify-center">
+    <template v-if="showPassword">
+      <EyeSlashIcon class="h-4 w-4 text-gray-500"></EyeSlashIcon>
+    </template>
+    <template v-else>
+      <EyeIcon class="h-4 w-4 text-gray-500"></EyeIcon>
+    </template>
+  </button>
+</div>
           </div>
         <button type="submit"
           class=" text-white roundedflex w-full justify-center rounded-md bg-gradient-to-r from-blue-700 to-blue-500 px-3 py-1.5 text-sm font-semibold leading-6  shadow-sm hover:shadow-form focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ">Login</button>
