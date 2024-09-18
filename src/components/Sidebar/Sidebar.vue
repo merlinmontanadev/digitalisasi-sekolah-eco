@@ -25,7 +25,13 @@ export default {
   },
   computed: {
     computedUserFile() {
-      return this.$store.getters.getUserFile || this.userFile || defaultPicture; // Use prop or fallback to Vuex
+      if (this.$store.getters.getUserFile) {
+      return this.$store.getters.getUserFile;
+    }
+    if (this.userFile) {
+      return this.userFile;
+    }
+    return defaultPicture;
     }
   },
   data() {
@@ -247,7 +253,7 @@ export default {
                                   <!-- Cropper here -->
                                   <img
                                     class="h-full w-full mx-auto"
-                                    :src="this.userFile ? this.userFile : defaultPicture"
+                                    :src="computedUserFile"
                                   />
                                 </div>
                               </div>

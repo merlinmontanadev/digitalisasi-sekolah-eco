@@ -20,7 +20,6 @@ import Footer from '@/components/Footer/Footer.vue';
 import { useToast } from "vue-toastification";
 import axios from 'axios';
 import { getUsersById  } from '@/services/pengguna/Pengguna.js';
-
 export default {
   name: "admin-layout",
   components: {
@@ -57,18 +56,25 @@ computed: {
   async mounted() {
     window.addEventListener("keydown", this.handleKeyboardShortcut);
     window.addEventListener("keydown", this.handleFullShortcut);
-    // this.tokenCheckInterval = setInterval(() => {
-    //   this.checkTokenExpiry();
-    // }, 1000);
+    this.store();
   },
   beforeUnmount() {
     window.removeEventListener("keydown", this.handleKeyboardShortcut);
     window.removeEventListener("keydown", this.handleFullShortcut);
   },
   methods: {
+    async store(){
+        this.token = Cookies.get('refreshToken');
+        const decodedToken = jwtDecode(this.token);
+        this.user = decodedToken
+        await this.fetchFoto(this.user?.user_id)
+        this.loading = false;
+        this.tokenCheckInterval = setInterval(() => {
+        this.checkTokenExpiry();
+        }, 5000);
+    },
     async checkTokenExpiry(){
     try {
-      this.token = Cookies.get('refreshToken');
       if (this.token){
         const decodedToken = jwtDecode(this.token);
         const currentTime = Date.now() / 1000;
@@ -77,11 +83,7 @@ computed: {
           this.toast.info("Token telah kedaluwarsa, silakan login ulang.");
           this.$router.push('/');
         }else{
-          const exp = decodedToken.exp;
-          const expDate = new Date(exp * 1000);
-          this.user = decodedToken
-          await this.fetchFoto(this.user?.user_id)
-          this.loading = false;
+          return;
         }
       }else{
         this.$router.push('/');
@@ -110,15 +112,17 @@ computed: {
       localStorage.setItem("is_expanded", this.isSidebarVisible.toString());
     },
     handleFullShortcut(event) {
-      if (event.ctrlKey && event.key === "F11") {
+      if (event.key === "F11") {
         event.preventDefault();
         this.toggleFullContent();
+        this.toggleSidebar();
       }
     },
     handleKeyboardShortcut(event) {
       if (event.ctrlKey && event.key.toLowerCase() === "b") {
         event.preventDefault();
         this.toggleSidebar();
+        this.toggleFullContent();
       }
     },
     toggleFullContent() {

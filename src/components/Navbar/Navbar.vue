@@ -17,7 +17,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                 <ul class="flex items-center text-center text-sm">
                   <li>
                 <tippy
-                      content="Hide Sidebar"
+                      content="Hide Sidebar (Ctrl + B)"
                       placement="bottom"
                       arrow
                     >
@@ -45,7 +45,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                 </li> -->
                 <li class="ml-3">
                   <tippy
-                      content="Full Content"
+                      content="Full Content (F11)"
                       placement="bottom"
                       arrow
                     >

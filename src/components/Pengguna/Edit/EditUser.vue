@@ -119,7 +119,7 @@
                               <div class="sm:flex sm:items-start justify-center">
                                 <div class="text-center w-full">
                                   <DialogTitle class="flex items-center justify-between mb-4">
-                                    <div class="text-lg font-bold leading-7">Crop Image</div>
+                                    <div class="text-lg font-bold leading-7">{{ tittle }}</div>
                                   </DialogTitle>
                                   <!-- Dinamic Dialog -->
                                     <cropper ref="cropper" id="cropper" class="h-64 w-64 mx-auto" 
@@ -389,6 +389,7 @@
         isNotFound: false,
         userFiles: '',
         userFile64: '',
+        tittle: '',
         file: null,
         isModalOpen: false,
         isModalOpenPreview : false,
@@ -413,6 +414,7 @@
   },
     methods: {
       editRole() {
+        this.tittle = "Edit Role";
         this.isModalOpen = true;
       },
     toggleStatus() {
@@ -438,7 +440,6 @@
           formData.append('file', file); // Tambahkan file ke FormData
           const response = await changeFoto(this.$route.params.user_id, formData);
           this.$store.dispatch('updateUserFile', this.userFile64);
-
           await Swal.fire({
             icon: "success",
             title: "Foto berhasil diupdate",
@@ -476,6 +477,8 @@
           this.isModalOpen = true;
           document.addEventListener('keydown', this.handleEsc);
         } else {
+          this.file = null;
+          this.isModalOpen = false;
           // Handle case where no file is selected
           alert("Please select a file first");
         }
@@ -526,6 +529,7 @@
       triggerFileInput() {
         // Panggil metode click pada elemen input file
         this.$refs.fileInput.$el.click();
+        this.tittle = "Crop Image";
       },
       jk(item){
         if(item === 'Pria'){
@@ -586,7 +590,6 @@
       },
       async updateRole(item) {
         const response = await changeRole(item);
-
           Swal.fire({
             icon: "info",
             title: `Info  ${item} & ${this.userData.user_id}`,
