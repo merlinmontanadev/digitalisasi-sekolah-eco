@@ -119,10 +119,10 @@
                               <div class="sm:flex sm:items-start justify-center">
                                 <div class="text-center w-full">
                                   <DialogTitle class="flex items-center justify-between mb-4">
-                                    <div class="text-lg font-bold leading-7">{{ tittle }}</div>
+                                    <div class="text-lg font-bold leading-7">{{ title }}</div>
                                   </DialogTitle>
                                   <!-- Dinamic Dialog -->
-                                    <cropper ref="cropper" id="cropper" class="h-64 w-64 mx-auto" 
+                                    <cropper ref="cropper" id="cropper" class="h-64 w-64 mx-auto" v-if="editFoto"
                                     :src="userFiles"
                                     @change="change" 
                                     :aspectRatio="aspectRatio" 
@@ -142,9 +142,14 @@
                                 @click="closeModal">
                                 Cancel
                               </button>
-                              <button type="button"
+                              <button type="button" v-if="editFoto"
                                 class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gradient-to-r from-green-500 to-green-500 text-base font-medium text-white hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                                 @click="confirmUpload">
+                                Confirm
+                              </button>
+                              <button type="button" v-if="editRole"
+                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-500 text-base font-medium text-white hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                                >
                                 Confirm
                               </button>
                             </div>
@@ -166,7 +171,7 @@
                       <h1 class="text-gray-600">{{ userData.username }}</h1>
                   </div>
                   <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold flex items-center text-center">Role<a class="ml-3 text-blue-500 text-sm cursor-pointer" @click="editRole">Edit</a></p>
+                    <p class="text-gray-600 font-semibold flex items-center text-center">Role<a class="ml-3 text-blue-500 text-sm cursor-pointer" @click="editRoleForm">Edit</a></p>
                               <div class="text-right">
                                   <tippy
                                   content="Current Status"
@@ -316,7 +321,7 @@
           </div>
         </div>
       </div>
-      <div v-if=editConfirm class="pb-5 px-5 w-full h-full flex items-right justify-end gap-2">
+      <div class="pb-5 px-5 w-full h-full flex items-right justify-end gap-2">
         <button
           class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-400 font-semibold rounded text-white select-none flex items-center text-center justify-center"
           @click="goBack">
@@ -382,14 +387,15 @@
 
     data() {
       return {
-        editConfirm: false,
+        ediRoleForm: false,
+        editFoto: false,
         defaultPicture,
         userData: null, // Inisialisasi data pengguna
         isLoading: true,
         isNotFound: false,
         userFiles: '',
         userFile64: '',
-        tittle: '',
+        title: '',
         file: null,
         isModalOpen: false,
         isModalOpenPreview : false,
@@ -413,8 +419,11 @@
     }
   },
     methods: {
-      editRole() {
-        this.tittle = "Edit Role";
+      editRoleForm() {
+        this.editFoto = false
+        this.editRole = true
+        this.title = "Edit Role";
+        this.ediRoleForm = true;
         this.isModalOpen = true;
       },
     toggleStatus() {
@@ -487,6 +496,8 @@
         this.isModalOpen = false;
         this.isModalOpenPreview = false;
         this.file = null;
+        this.userFiles = '';
+        console.log('Ini dari Close Modal',this.file)
         document.removeEventListener('keydown', this.handleEsc);
       },
       handleEsc(event) {
@@ -527,9 +538,11 @@
         this.isModalOpenPreview = true;
       },
       triggerFileInput() {
+        this.editFoto = true
+        this.editRole = false
         // Panggil metode click pada elemen input file
         this.$refs.fileInput.$el.click();
-        this.tittle = "Crop Image";
+        this.title = "Crop Image";
       },
       jk(item){
         if(item === 'Pria'){
@@ -682,7 +695,6 @@
           const user = await getUsersById(item);
           this.userData = user;
           this.isLoading = false;
-          console.log('User Detail:', user.file);
           if (user && user.file && user.file.data && user.file.data.length > 0) {
             // Convert buffer to blob
             const blob = new Blob([new Uint8Array(user.file.data)], {
@@ -690,7 +702,6 @@
             });
             // Create URL from blob
             this.userFile = URL.createObjectURL(blob);
-            console.log('User File:', this.userFile);
           } else {
             // Handle if there's no image data
             this.userFile = ''; // Set default image or show placeholder

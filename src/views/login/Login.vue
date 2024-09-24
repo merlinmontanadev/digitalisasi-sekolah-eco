@@ -4,6 +4,7 @@ import Login from '@/components/Login/Login.vue';
 <template>
 <Login/>
 </template>
+
 <style>
 @import '@/assets/styles/index.css';
 @import url('https://fonts.googleapis.com/css2?family=Public+Sans&display=swap');
