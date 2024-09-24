@@ -23,6 +23,7 @@
   } from '@headlessui/vue'
 </script>
 <template>
+  
   <router-link :to="{ path: `${this.$route.meta.to}`}">
     <v-btn variant="outlined" color="primary" v-if="userData">
       <ChevronLeftIcon class="h-6 w-6 text-blue-600 mr-1" />Back
@@ -30,18 +31,14 @@
   </router-link>
   <div v-if="isLoading" class="loader mx-[50%] my-40"></div>
   <div v-else>
-    <div class="mt-4 bg-white h-full w-full rounded-lg shadow" v-if="userData">
+    <div class="mx-auto mt-4 bg-white h-full w-full rounded-lg shadow" v-if="userData">
       <div class="flex bg-slate-100 gap-2 text-center items-center py-4 px-4">
         <PencilSquareIcon class="h-6 w-6 text-blue-500" />
         <h1 class="font-bold text-xl text-blue-500">Edit User Management</h1>
       </div>
       <hr class="w-full">
-      <div class="flex center ">
-        <div class="flex w-full my-4">
-          <div class="container mx-auto">
-            <div class="flex justify-center">
-              <div class="bg-white overflow-hidden w-full flex">
-                <div class="w-1/4 p-4 flex-nowrap"> <!-- here -->
+        <div class="flex w-full">          
+              <div class="w-1/4 p-4 flex-nowrap "> <!-- here -->
                   <div class="text-center h-64 w-64">
                     <div class="relative group w-64 h-64 mx-auto">
     <!-- Profile Image -->
@@ -115,7 +112,7 @@
                             aria-hidden="true">&#8203;</span>
                           <div
                             class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
-                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <div class=" px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                               <div class="sm:flex sm:items-start justify-center">
                                 <div class="text-center w-full">
                                   <DialogTitle class="flex items-center justify-between mb-4">
@@ -133,33 +130,112 @@
                                       movable: true,
                                       resizable: false  
                                     }" />
+                                    <div class="px-4 py-3 sm:px-6 sm:flex float-right gap-3" v-if="editFoto">
+                                        <v-btn
+                                            class="hover:shadow-form rounded-full bg-gradient-to-r from-blue-700 to-blue-500 px-4 py-2 text-center font-semibold text-sm text-white outline-none"
+                                             type="button" @click="confirmUpload">Submit</v-btn>
+                                             <v-btn
+                                            class="hover:shadow-form rounded-full border border-gray-300 px-4 py-2 text-center font-semibold text-sm text-gray-500 outline-none"
+                                             type="button" @click="closeModal">Cancel</v-btn>
+                                    </div>
+                                    <Form @submit="submitForm" keep-values v-if="editRole || editJK || editContact">
+                                      <div class="-mx-3 flex flex-wrap">
+                                        <div class="w-full px-3">
+
+                                          <div class="mb-2" v-if="editRole">
+                                                            <div ref="dropdownWrapper"  
+                                                                @focusout="handleFocusOut"
+                                                                tabindex="0">
+                                                                <button 
+                                                                type="button"
+                                                                @click="toggleRole" 
+                                                                :class="openrole ? 'ring-blue-600' : ''" 
+                                                                class="rounded-md flex w-full items-center justify-between bg-white p-2 border py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                                                                >
+                                                                <span>{{ role === '' ?  userData.role : role }}</span>
+                                                                <ChevronDownIcon class="h-4 w-4 text-gray-600 hover:text-gray-500"></ChevronDownIcon>
+                                                                </button>
+                                                                <ul v-if="openrole" class="z-50 absolute mt-1 w-[94%] rounded bg-white ring-1 ring-gray-300 text-left">
+                                                                <li 
+                                                                    class="sm:text-sm cursor-pointer select-none p-2 hover:bg-blue-200" 
+                                                                    @click="setRole('Admin')"
+                                                                >
+                                                                    Admin
+                                                                </li>
+                                                                <li 
+                                                                    class="sm:text-sm cursor-pointer select-none p-2 hover:bg-blue-200" 
+                                                                    @click="setRole('User')"
+                                                                >
+                                                                    User
+                                                                </li>
+                                                                </ul>
+                                                                </div>
+                                                            <Field v-model="role" :rules="validateRole" type="hidden" name="role" id="role" />
+                                                            <ErrorMessage
+                                                                class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
+                                                                name="role" />
+                                          </div>
+                                          
+                                          <div class="mb-2" v-if="editJK">
+                                                            <div ref="dropdownWrapper"  
+                                                                @focusout="handleFocusOut"
+                                                                tabindex="0">
+                                                                <button 
+                                                                type="button"
+                                                                @click="toggleJk" 
+                                                                :class="openJK ? 'ring-blue-600' : ''" 
+                                                                class="rounded-md flex w-full items-center justify-between bg-white p-2 border py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                                                                >
+                                                                <span>{{ jkel === '' ?  userData.jk : jkel }}</span>
+                                                                <ChevronDownIcon class="h-4 w-4 text-gray-600 hover:text-gray-500"></ChevronDownIcon>
+                                                                </button>
+                                                                <ul v-if="openJK" class="z-50 absolute mt-1 w-[94%] rounded bg-white ring-1 ring-gray-300 text-left">
+                                                                <li 
+                                                                    class="sm:text-sm cursor-pointer select-none p-2 hover:bg-blue-200" 
+                                                                    @click="setJk('Pria')"
+                                                                >
+                                                                    Pria
+                                                                </li>
+                                                                <li 
+                                                                    class="sm:text-sm cursor-pointer select-none p-2 hover:bg-blue-200" 
+                                                                    @click="setJk('Wanita')"
+                                                                >
+                                                                    Wanita
+                                                                </li>
+                                                                </ul>
+                                                                </div>
+                                                            <Field v-model="jk" :rules="validateRole" type="hidden" name="jk" id="jk" />
+                                                            <ErrorMessage
+                                                                class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
+                                                                name="jk" />
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <div class="flex float-right gap-2 mt-5 mb-5">
+                                        <v-btn
+                                            class="hover:shadow-form rounded-full bg-gradient-to-r from-blue-700 to-blue-500 px-4 py-2 text-center font-semibold text-sm text-white outline-none"
+                                            type="button" @click="submitForm">Submit
+                                        </v-btn>
+                                        <v-btn
+                                            class="hover:shadow-form rounded-full border border-gray-300 px-4 py-2 text-center font-semibold text-sm text-gray-500 outline-none"
+                                             type="button" @click="closeModal">Cancel
+                                        </v-btn>
+                                    </div>
+                                    </Form>
                                 </div>
                               </div>
+                              
                             </div>
-                            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                              <button type="button"
-                                class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                                @click="closeModal">
-                                Cancel
-                              </button>
-                              <button type="button" v-if="editFoto"
-                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gradient-to-r from-green-500 to-green-500 text-base font-medium text-white hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                                @click="confirmUpload">
-                                Confirm
-                              </button>
-                              <button type="button" v-if="editRole"
-                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-500 text-base font-medium text-white hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                                >
-                                Confirm
-                              </button>
-                            </div>
+                            
+                                    
                           </div>
                         </div>
                       </Dialog>
                     </TransitionRoot>
                   </div>
                 </div>
-                <div class="w-3/6 p-4">
+                <div class="w-3/6 p-4 ">
                   <div class="flex justify-between items-center py-2">
                     <p class="text-gray-600 font-semibold">UserID</p>
                     <div class="text-right">
@@ -185,7 +261,7 @@
                   </div>
                   <v-divider class="my-4" />
                   <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">Contact Information<span class="ml-3 text-blue-500 text-sm"><a href="#">Edit</a></span></p>
+                    <p class="text-gray-600 font-semibold">Contact Information<a class="ml-3 text-blue-500 text-sm cursor-pointer" @click="editContactForm">Edit</a></p>
                     <div class="text-right">
                       <p class="text-gray-600 font-medium">{{ userData.email }}</p>
                       <p class="text-gray-600 font-medium">{{ userData.nohp }}</p>
@@ -193,7 +269,7 @@
                   </div>
                   <v-divider class="my-4" />
                   <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">Gender<span class="ml-3 text-blue-500 text-sm"><a href="#">Edit</a></span></p>
+                    <p class="text-gray-600 font-semibold">Gender<a class="ml-3 text-blue-500 text-sm cursor-pointer" @click="editJkForm">Edit</a></p>
                     <div class="text-right">
                       <p class="text-gray-600 font-medium flex gap-2 items-center justify-end" v-if="userData.jk">
                         <span :class="userData.jk === 'Pria' ? 'mdi-gender-male text-blue-500' : 'mdi-gender-female text-pink-500'"
@@ -258,7 +334,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="w-1/4 p-4">
+                <div class="w-1/4 p-4 ">
                   <div class="flex justify-end py-2 gap-2">
                     <tippy
                       content="Current Status"
@@ -316,23 +392,7 @@
 </Menu>
                   </div>
                 </div>
-              </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="pb-5 px-5 w-full h-full flex items-right justify-end gap-2">
-        <button
-          class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-400 font-semibold rounded text-white select-none flex items-center text-center justify-center"
-          @click="goBack">
-          Save
-        </button>
-        <button
-          class="border-dashed border boder-blue-300 px-4 py-2 rounded text-gray-500 select-none flex items-center text-center justify-center"
-          @click="goBack">
-          Cancel
-        </button>
-      </div>
     </div>
     <!-- Tampilkan pesan jika userData belum ada -->
     <NotFound v-else />
@@ -341,6 +401,7 @@
 <style src="@assets/css/css_404.css"></style>
 <style src="@assets/css/loading.css"></style>
 <script>
+  import { useToast } from "vue-toastification";
   import {
     defineComponent,
     ref
@@ -387,8 +448,11 @@
 
     data() {
       return {
-        ediRoleForm: false,
+        toast: useToast(), 
         editFoto: false,
+        editRole: false,
+        editContact: false,
+        editJK: false,
         defaultPicture,
         userData: null, // Inisialisasi data pengguna
         isLoading: true,
@@ -403,8 +467,16 @@
         show: false,
         isUploading: false,
         openrole: false,
+        openJK: false,
+        opencontact: false,
+        contact: '',
         role: '',
+        jkel: ''
       };
+    },
+    setup() {
+      const toast = useToast();
+      return { toast }
     },
     created() {
       // Ketika komponen dibuat, panggil metode untuk mengambil data pengguna
@@ -419,11 +491,27 @@
     }
   },
     methods: {
+      setRole(role){
+        this.role = role
+        this.openrole = false
+    },
+    setJk(item){
+        this.jkel = item
+        this.openJK = false
+    },
       editRoleForm() {
-        this.editFoto = false
         this.editRole = true
         this.title = "Edit Role";
-        this.ediRoleForm = true;
+        this.isModalOpen = true;
+      },
+      editContactForm() {
+        this.editContact = true
+        this.title = "Edit Contact Information";
+        this.isModalOpen = true;
+      },
+      editJkForm() {
+        this.editJK = true
+        this.title = "Edit Gender";
         this.isModalOpen = true;
       },
     toggleStatus() {
@@ -431,12 +519,17 @@
       this.rubahStatus(this.userData.user_id, newStatus);
     },
       handleFocusOut(event) {
-      if (!this.$refs.dropdownWrapperRole.contains(event.relatedTarget)) {
+      if (!this.$refs.dropdownWrapper.contains(event.relatedTarget)) {
         this.openrole = false;  // Close dropdown if focus leaves the dropdown
+        this.openJK = false;
+        this.opencontact = false;
       }
     },
       toggleRole() {
       this.openrole = !this.openrole;
+      },
+      toggleJk() {
+      this.openJK = !this.openJK;
       },
       async uploadFile() {
         this.isUploading = true;
@@ -489,15 +582,18 @@
           this.file = null;
           this.isModalOpen = false;
           // Handle case where no file is selected
-          alert("Please select a file first");
+          this.toast.info("Please select a file first");
         }
       },
       closeModal() {
+        this.editFoto = false
+        this.editContact = false
+        this.editJK = false
+        this.editRole = false
         this.isModalOpen = false;
         this.isModalOpenPreview = false;
         this.file = null;
         this.userFiles = '';
-        console.log('Ini dari Close Modal',this.file)
         document.removeEventListener('keydown', this.handleEsc);
       },
       handleEsc(event) {

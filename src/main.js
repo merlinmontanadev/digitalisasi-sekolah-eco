@@ -9,6 +9,7 @@ import "vue-toastification/dist/index.css";
 import axios from 'axios';
 import VueTippy from 'vue-tippy';
 import "tippy.js/dist/tippy.css";
+import "@assets/styles/index.css"
 
 axios.defaults.withCredentials = true;
 

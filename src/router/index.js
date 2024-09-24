@@ -57,6 +57,13 @@ const routes = [
         meta: { title: 'Edit User', requiresAuth: true, to: '/admin/user-management/'}
       },  
       {
+        path: 'edit-new',
+        alias: '/admin/user-management/edit-new',
+        component: ()=> import('@/views/pengguna/EditPenggunaNew.vue'),
+        props: true,
+        meta: { title: 'Edit New User', requiresAuth: true, to: '/admin/user-management/'}
+      },  
+      {
         path: 'murid',
         alias: '/admin/manajemen-murid',
         component: ()=> import('@/views/murid/Murid.vue'),
