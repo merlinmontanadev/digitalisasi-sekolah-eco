@@ -10,7 +10,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                     <li>
                 <router-link to="/admin/dashboard" class="flex items-center py-4" style="position: sticky; top: 0;">
                   <img src="@/assets/img/Logo Login.png" alt="" class="w-8 h-8 rounded">
-                    <span class="md:text-lg text-xs font-bold text-white ml-3">SMK Dharma Wirawan Bojonegoro</span>
+                    <span class="md:text-lg text-xs font-bold text-white ml-3">Digitalisasi Sekolah</span>
                 </router-link>
               </li>
                </ul>
@@ -33,7 +33,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
           </ul>
             <ul class="flex items-center text-center text-sm">
                 <li>
-                    <span href="#" class="text-white font-medium">Beta Ver 0.0.1</span>
+                    <span href="#" class="md:block hidden text-white font-medium">Beta Ver 0.0.1</span>
                 </li>
             </ul>
             <ul class="ml-auto flex items-center">
@@ -49,7 +49,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                       placement="bottom"
                       arrow
                     >
-                  <button type="button" class="dropdown-toggle text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-whi" @click="toggleFullContent">
+                  <button type="button" class="md:block hidden dropdown-toggle text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-whi" @click="toggleFullContent">
                         <ArrowsPointingOutIcon
                             :class="[
                             'h-6 w-6 shrink-0 text-white'

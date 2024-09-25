@@ -93,9 +93,13 @@ setup() {
       } catch (error) {
         const errorMessage = error.message
         if(errorMessage === "An internal server error occurred"){
-          this.toast.error("Error Anjing");
+          this.toast.error("Error Connection");
+        }
+        
+        if(errorMessage === "Cannot read properties of undefined (reading 'data')"){
+            this.toast.error("Error Connection");
         }else{
-          this.toast.error(error.message);
+            this.toast.error(errorMessage);
         }
       }
     }
