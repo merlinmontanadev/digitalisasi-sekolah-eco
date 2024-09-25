@@ -21,6 +21,15 @@
     DialogTitle,
     TransitionRoot
   } from '@headlessui/vue'
+
+  
+  const checkDigit = (event) => {
+    if (event.key && event.key.length === 1 && isNaN(Number(event.key))) {
+        event.preventDefault();
+    } else {
+        return true;
+    }
+  }
 </script>
 <template>
   
@@ -70,7 +79,7 @@
     </div>
   </div>
                     <TransitionRoot as="template" :show="isModalOpenPreview">
-                      <Dialog as="div" class="fixed z-50 inset-0 overflow-y-auto" @close="closeModal">
+                      <Dialog as="div" class="fixed z-50 inset-0 overflow-y-hidden" @close="closeModal">
                         <div
                           class="flex items-center justify-center h-full pt-4 px-4 text-center sm:block sm:p-0">
                           <DialogOverlay class="fixed inset-0 bg-black opacity-30" />
@@ -104,7 +113,7 @@
                       </button>
                     </div>
                     <TransitionRoot as="template" :show="isModalOpen">
-                      <Dialog as="div" class="fixed z-50 inset-0 overflow-y-auto" @close="closeModal">
+                      <Dialog as="div" class="fixed z-50 inset-0 overflow-y-hidden" @close="closeModal">
                         <div
                           class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                           <DialogOverlay class="fixed inset-0 bg-black opacity-30" />
@@ -170,7 +179,7 @@
                                                                 </li>
                                                                 </ul>
                                                                 </div>
-                                                            <Field v-model="role" :rules="validateRole" type="hidden" name="role" id="role" />
+                                                            <Field v-model="role" type="text" name="role" id="role" />
                                                             <ErrorMessage
                                                                 class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
                                                                 name="role" />
@@ -204,10 +213,27 @@
                                                                 </li>
                                                                 </ul>
                                                                 </div>
-                                                            <Field v-model="jk" :rules="validateRole" type="hidden" name="jk" id="jk" />
+                                                            <Field v-model="jk" type="text" name="jk" id="jk" />
                                                             <ErrorMessage
                                                                 class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
                                                                 name="jk" />
+                                          </div>
+
+                                          <div class="mb-2" v-if="editContact">
+                          
+                                                            <Field :rules="validateEmail" type="text" name="email"
+                                                                id="email" placeholder="Masukan Email....." v-model="computedEmail"
+                                                                class="w-full rounded-md block border mb-3 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" />
+                                                            <ErrorMessage
+                                                                class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
+                                                                name="email" />
+                                                            <Field type="text" name="nohp" id="nohp"
+                                                                :rules="validateNoHP" placeholder="62xxxx....." v-model="computedNoHP"
+                                                                @keydown="checkDigit"
+                                                                class="w-full rounded-md block border py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" />
+                                                            <ErrorMessage
+                                                                class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
+                                                                name="nohp" />
                                           </div>
                                         </div>
                                       </div>
@@ -215,7 +241,7 @@
                                       <div class="flex float-right gap-2 mt-5 mb-5">
                                         <v-btn
                                             class="hover:shadow-form rounded-full bg-gradient-to-r from-blue-700 to-blue-500 px-4 py-2 text-center font-semibold text-sm text-white outline-none"
-                                            type="button" @click="submitForm">Submit
+                                            type="submit">Submit
                                         </v-btn>
                                         <v-btn
                                             class="hover:shadow-form rounded-full border border-gray-300 px-4 py-2 text-center font-semibold text-sm text-gray-500 outline-none"
@@ -469,7 +495,8 @@
         openrole: false,
         openJK: false,
         opencontact: false,
-        contact: '',
+        email: '',
+        nohp: '',
         role: '',
         jkel: ''
       };
@@ -483,6 +510,26 @@
       this.fetchUserData(this.$route.params.user_id);
     },
     computed: {
+      computedEmail: {
+      get() {
+        // Mengembalikan email berdasarkan kondisi
+        return this.email === '' ? this.userData.email : this.email;
+      },
+      set(value) {
+        // Mengubah nilai input ke email
+        this.email = value;
+      },
+    },
+    computedNoHP: {
+      get() {
+        // Mengembalikan email berdasarkan kondisi
+        return this.nohp === '' ? this.userData.nohp : this.nohp;
+      },
+      set(value) {
+        // Mengubah nilai input ke email
+        this.nohp = value;
+      },
+    },
     buttonText() {
       return this.userData.status === 'Active' ? 'Non Active' : 'Active';
     },
@@ -491,6 +538,24 @@
     }
   },
     methods: {
+      submitForm(){
+        if(editRole){
+
+        }else{
+          return
+        }
+        if(editJK){
+
+        }else{
+          return
+        }
+        if(editContact){
+
+        }else{
+          return
+        }
+        
+      },
       setRole(role){
         this.role = role
         this.openrole = false
@@ -530,6 +595,9 @@
       },
       toggleJk() {
       this.openJK = !this.openJK;
+      },
+      toggleContact() {
+      this.opencontact = !this.opencontact;
       },
       async uploadFile() {
         this.isUploading = true;
