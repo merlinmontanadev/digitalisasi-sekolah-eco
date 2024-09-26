@@ -179,7 +179,7 @@
                                                                 </li>
                                                                 </ul>
                                                                 </div>
-                                                            <Field v-model="role" type="text" name="role" id="role" />
+                                                            <Field v-model="computedRole" type="text" name="role" id="role" />
                                                             <ErrorMessage
                                                                 class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
                                                                 name="role" />
@@ -213,7 +213,7 @@
                                                                 </li>
                                                                 </ul>
                                                                 </div>
-                                                            <Field v-model="jk" type="text" name="jk" id="jk" />
+                                                            <Field v-model="computedJk" type="text" name="jk" id="jk" />
                                                             <ErrorMessage
                                                                 class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
                                                                 name="jk" />
@@ -530,6 +530,26 @@
         this.nohp = value;
       },
     },
+    computedRole: {
+      get() {
+        // Mengembalikan email berdasarkan kondisi
+        return this.role === '' ? this.userData.role : this.role;
+      },
+      set(value) {
+        // Mengubah nilai input ke email
+        this.role = value;
+      },
+    },
+    computedJk: {
+      get() {
+        // Mengembalikan email berdasarkan kondisi
+        return this.jkel === '' ? this.userData.jk : this.jkel;
+      },
+      set(value) {
+        // Mengubah nilai input ke email
+        this.jkel = value;
+      },
+    },
     buttonText() {
       return this.userData.status === 'Active' ? 'Non Active' : 'Active';
     },
@@ -539,8 +559,8 @@
   },
     methods: {
       submitForm(){
-        if(editRole){
-
+        if(editRole == true){
+          console.log("edit role", editRole)
         }else{
           return
         }
