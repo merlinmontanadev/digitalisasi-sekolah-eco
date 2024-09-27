@@ -220,13 +220,13 @@
 
                                           <div class="mb-2" v-if="editContact">
                                                             <Field :rules="validateEmail" type="text" name="email"
-                                                                id="email" placeholder="Masukan Email....." v-model="computedEmail"
+                                                                id="email" placeholder="Masukan Email....." v-model="email"
                                                                 class="w-full rounded-md block border mb-3 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" />
                                                             <ErrorMessage
                                                                 class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
                                                                 name="email" />
                                                             <Field type="text" name="nohp" id="nohp"
-                                                                :rules="validateNoHP" placeholder="62xxxx....." v-model="computedNoHP"
+                                                                :rules="validateNoHP" placeholder="62xxxx....." v-model="nohp"
                                                                 @keydown="checkDigit"
                                                                 class="w-full rounded-md block border py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" />
                                                             <ErrorMessage
@@ -271,7 +271,7 @@
                     <p class="text-gray-600 font-semibold flex items-center text-center">Role<a class="ml-3 text-blue-500 text-sm cursor-pointer" @click="editRoleForm">Edit</a></p>
                               <div class="text-right">
                                   <tippy
-                                  content="Current Status"
+                                  content="Current Role"
                                   placement="bottom"
                                   arrow>
                                 <button :class="ButtonClassRole(userData.role)">
@@ -454,7 +454,8 @@
     resetPaswword,
     changeStatus,
     changeFoto,
-    changeRole
+    changeRole,
+    changeContact
   } from '@/services/pengguna/Pengguna.js';
   import NotFound from '../../NotFoundPage/NotFound.vue';
   import Swal from 'sweetalert2';
@@ -507,6 +508,8 @@
     computed: {
       computedEmail: {
       get() {
+        console.log("Current this.email:", this.email);
+        console.log("Current this.userData.email:", this.userData.email);
         // Mengembalikan email berdasarkan kondisi
         return this.email === '' ? this.userData.email : this.email;
       },
@@ -553,11 +556,38 @@
     }
   },
     methods: {
-      submitForm(){
-          console.log("Edit Role", role)
-          console.log("Edit JK", jkel)
-          console.log("Edit Emial", email)  
-          console.log("Edit No HP", nohp)     
+      async submitForm(){
+        if (this.editRole) {
+          try {
+            const response = await changeRole(this.userData.user_id, { role: this.role });
+            console.log('Role updated:', response);
+            this.toast.success(response.message);
+            this.userData.role = this.role;
+            this.$store.dispatch('updateUserRole', this.userData.role);
+            this.closeModal();
+        } catch (error) {
+            console.error("Error updating role:", error);
+            this.toast.error("Failed to update role. Please try again."); // Tampilkan pesan kesalahan
+            this.closeModal();
+        }
+        } else if (this.editJK) {
+            console.log("Updating JK:", this.jkel);
+        } else if (this.editContact) {
+          this.computedEmail = this.email
+          this.computedNoHP = this.nohp
+          console.log("Updating Contact:", this.email);
+          console.log("Updating Contact:", this.nohp);
+          try{
+            const response = await changeContact(this.userData.user_id, {email: this.computedEmail, nohp: this.computedNoHP});
+            console.log('Contact updated:', response);
+            this.toast.success(response.message);
+            this.closeModal();
+          }catch(error){
+            console.error("Error updating contact:", error);
+            this.toast.error("Failed to update contact. Please try again."); // Tampilkan pesan kesalahan
+            this.closeModal();
+          }
+        }   
       },
       setRole(role){
         this.role = role

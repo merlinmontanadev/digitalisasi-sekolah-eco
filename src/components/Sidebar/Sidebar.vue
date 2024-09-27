@@ -32,6 +32,16 @@ export default {
       return this.userFile;
     }
     return defaultPicture;
+    },
+
+    computedUserRole(){
+      if (this.$store.getters.getUserRole) {
+      return this.$store.getters.getUserRole;
+    }
+    if (this.user.role) {
+      return this.user.role;
+    }
+    return;
     }
   },
   data() {
@@ -181,6 +191,9 @@ export default {
     userFile() {
       return this.userFile ? this.userFile : this.$store.getters.getUserFile;
     },
+    userRole(){
+      return this.user.role ? this.user.role : this.$store.getters.getUserRole;
+    },
     upper(string) {
       return string ? string.charAt(0).toUpperCase() + string.slice(1) : '';
     },
@@ -286,8 +299,8 @@ export default {
                       placement="bottom"
                       arrow
                     >
-      <button :class="getButtonClassRole(upper(user?.role))" class="font-bold text-gray-500">
-        {{ upper(user?.role) }}
+      <button :class="getButtonClassRole(upper(computedUserRole))" class="font-bold text-gray-500">
+        {{ upper(computedUserRole) }}
         </button>
       </tippy>
     </div>

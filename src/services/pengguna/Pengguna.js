@@ -64,6 +64,20 @@ async function resetPaswword(user_id) {
   }
 }
 
+async function changeContact(user_id, email, nohp){
+  try {
+    const data = {
+      email: email,
+      nohp: nohp
+    };
+    const response = await axios.patch(`http://localhost:9000/api/v1/edit/user/contact/${user_id}`, data);
+    return response.data; 
+  } catch (error) {
+    console.error('Error updating contact:', error);
+    throw error;
+  }
+}
+
 async function changeStatus(user_id, status) {
   try {
     const response = await axios.patch(`http://localhost:9000/api/v1/edit/user/status/${user_id}`, status);
@@ -111,4 +125,4 @@ async function fetchCountData() {
 }
 }
 
-export { getAllUsers, deleteUser, addUser, getUsersById, resetPaswword, changeStatus, changeFoto, fetchCountData, changeRole};
+export { getAllUsers, deleteUser, addUser, getUsersById, changeContact, resetPaswword, changeStatus, changeFoto, fetchCountData, changeRole};
