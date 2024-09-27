@@ -68,8 +68,8 @@ export default {
   data() {
   return {
       toast: useToast(),  
-      username: ref(null),
-      password: ref(null),
+      username: '',
+      password: '',
       showPassword: false,
     };
   },
@@ -87,11 +87,12 @@ setup() {
                         password: this.password
                     };
       try {
-        const response = await loginUser(data);
+        const response = await loginUser(data); 
         this.toast.success(response.message);
         this.$router.push('/admin/dashboard');  
       } catch (error) {
         const errorMessage = error.message
+
         if(errorMessage === "An internal server error occurred"){
           this.toast.error("Error Connection");
         }
@@ -104,8 +105,5 @@ setup() {
       }
     }
   },
-  mounted() {
-    // Optionally load saved info when component mounts
-  }
 }
 </script>

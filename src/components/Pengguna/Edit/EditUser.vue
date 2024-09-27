@@ -21,7 +21,6 @@
     DialogTitle,
     TransitionRoot
   } from '@headlessui/vue'
-
   
   const checkDigit = (event) => {
     if (event.key && event.key.length === 1 && isNaN(Number(event.key))) {
@@ -179,7 +178,7 @@
                                                                 </li>
                                                                 </ul>
                                                                 </div>
-                                                            <Field v-model="computedRole" type="text" name="role" id="role" />
+                                                            <Field v-model="computedRole" type="hidden" name="role" id="role" />
                                                             <ErrorMessage
                                                                 class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
                                                                 name="role" />
@@ -213,14 +212,13 @@
                                                                 </li>
                                                                 </ul>
                                                                 </div>
-                                                            <Field v-model="computedJk" type="text" name="jk" id="jk" />
+                                                            <Field v-model="computedJk" type="hidden" name="jk" id="jk" />
                                                             <ErrorMessage
                                                                 class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
                                                                 name="jk" />
                                           </div>
 
                                           <div class="mb-2" v-if="editContact">
-                          
                                                             <Field :rules="validateEmail" type="text" name="email"
                                                                 id="email" placeholder="Masukan Email....." v-model="computedEmail"
                                                                 class="w-full rounded-md block border mb-3 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" />
@@ -251,10 +249,7 @@
                                     </Form>
                                 </div>
                               </div>
-                              
                             </div>
-                            
-                                    
                           </div>
                         </div>
                       </Dialog>
@@ -559,22 +554,10 @@
   },
     methods: {
       submitForm(){
-        if(editRole == true){
-          console.log("edit role", editRole)
-        }else{
-          return
-        }
-        if(editJK){
-
-        }else{
-          return
-        }
-        if(editContact){
-
-        }else{
-          return
-        }
-        
+          console.log("Edit Role", role)
+          console.log("Edit JK", jkel)
+          console.log("Edit Emial", email)  
+          console.log("Edit No HP", nohp)     
       },
       setRole(role){
         this.role = role

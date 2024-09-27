@@ -13,16 +13,14 @@ import "@assets/styles/index.css"
 
 axios.defaults.withCredentials = true;
 
-
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+
 //ApexCharts
 import VueApexCharts from "vue3-apexcharts";
-//VBlur
-
 
 import router from "./router";
 
@@ -36,8 +34,6 @@ const vuetify = createVuetify({
     maxToasts: 20,
     newestOnTop: true
   }
-
-  
 
 const app = createApp(App)
 app.use(VueTippy);
