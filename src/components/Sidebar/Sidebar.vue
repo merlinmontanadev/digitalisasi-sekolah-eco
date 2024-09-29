@@ -69,7 +69,7 @@ export default {
           group: "",
           icon: CircleStackIcon,
           children: [{
-              href: "/admin/manajemen-murid",
+              href: "/admin/student-management",
               label: "All Student",
               single: false,
               group: "",

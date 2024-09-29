@@ -8,7 +8,8 @@ const showToast = () => {
   toast.error('Gagal memuat data pengguna.');
 };
 </script>
-<template>
+<template >
+  <div v-if="!notfound">
   <div class="flex-none lg:flex  lg:justify-between">
   <!-- Search Field -->
   <div class="flex-none mt-2 lg:flex"> <!-- Container untuk pencarian -->
@@ -93,16 +94,20 @@ const showToast = () => {
     </v-data-table>
   </v-card>
 </div>
+</div>
+<div v-else>
+  <NotFound :notfoundData="notfoundData" />
+</div>
 </template>
 <script>
-
+import NotFound from '../NotFoundPage/NotFound.vue';
 import SearchPengguna from "./SearchPengguna.vue";
 import FilterStatus from "./FilterStatus.vue";
 import AddUser from "./AddUser.vue";
 import { useToast } from "vue-toastification";
 import LeadModal from "./ModalTambah/LeadModal.vue";
 import FilterRole from "./FilterRole.vue";
-import { getAllUsers, deleteUser } from '@/services/pengguna/Pengguna.js';
+import { getAllUsers, deleteUser, getUsersById } from '@/services/pengguna/Pengguna.js';
 import { ChevronDownIcon, PencilSquareIcon, TrashIcon, NoSymbolIcon, CalendarDaysIcon, SunIcon, MoonIcon} from '@heroicons/vue/20/solid';
 import { ClipboardDocumentIcon, ClockIcon } from '@heroicons/vue/24/outline';
 import Clipboard from 'clipboard';
@@ -114,6 +119,7 @@ import { jwtDecode } from "jwt-decode";
   export default {
 
     components: {
+      NotFound,
       AddUser,
       FilterRole,
       FilterStatus,
@@ -122,6 +128,8 @@ import { jwtDecode } from "jwt-decode";
     },
     data() {
   return {
+    notfoundData: [],
+    notfound: false,
     toast: useToast(),
     loading: true,
     filterStatus: '',
@@ -369,8 +377,12 @@ if (result.isConfirmed) {
         .find(row => row.startsWith('refreshToken='))
         ?.split('=')[1];
         const decodedToken = jwtDecode(whoLogged);
-        if (decodedToken.role !== 'Admin') {
+        const whois = await getUsersById(decodedToken.user_id);
+        if (whois.role !== 'Admin') {
           console.log('Only admins can fetch all users.');
+          this.toast.warning("Only admins can fetch all users.");
+          this.notfound = true;
+          this.notfoundData = ["Oops! Forbidden Access.", "Sorry, the page you requested cannot be accessed", "403"];
           this.items = [];
           this.userFile = [];
           this.loading = false;

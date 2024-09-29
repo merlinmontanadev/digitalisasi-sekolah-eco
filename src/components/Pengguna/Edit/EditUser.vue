@@ -31,7 +31,6 @@
   }
 </script>
 <template>
-  
   <router-link :to="{ path: `${this.$route.meta.to}`}">
     <v-btn variant="outlined" color="primary" v-if="userData">
       <ChevronLeftIcon class="h-6 w-6 text-blue-600 mr-1" />Back
@@ -46,7 +45,7 @@
       </div>
       <hr class="w-full">
         <div class="flex w-full">          
-              <div class="w-1/4 p-4 flex-nowrap "> <!-- here -->
+              <div class="w-1/4 p-4 flex-nowrap ">
                   <div class="text-center h-64 w-64">
                     <div class="relative group w-64 h-64 mx-auto">
     <!-- Profile Image -->
@@ -220,13 +219,13 @@
 
                                           <div class="mb-2" v-if="editContact">
                                                             <Field :rules="validateEmail" type="text" name="email"
-                                                                id="email" placeholder="Masukan Email....." v-model="email"
+                                                                id="email" placeholder="Masukan Email....." v-model="computedEmail"
                                                                 class="w-full rounded-md block border mb-3 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" />
                                                             <ErrorMessage
                                                                 class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
                                                                 name="email" />
                                                             <Field type="text" name="nohp" id="nohp"
-                                                                :rules="validateNoHP" placeholder="62xxxx....." v-model="nohp"
+                                                                :rules="validateNoHP" placeholder="62xxxx....." v-model="computedNoHP"
                                                                 @keydown="checkDigit"
                                                                 class="w-full rounded-md block border py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" />
                                                             <ErrorMessage
@@ -437,6 +436,7 @@
     Field,
     ErrorMessage
   } from 'vee-validate';
+  
   import {
     CalendarDaysIcon,
     EyeIcon,
@@ -455,6 +455,7 @@
     changeStatus,
     changeFoto,
     changeRole,
+    changeJK,
     changeContact
   } from '@/services/pengguna/Pengguna.js';
   import NotFound from '../../NotFoundPage/NotFound.vue';
@@ -466,7 +467,6 @@
       NotFound,
       Cropper,
     },
-
 
     data() {
       return {
@@ -502,49 +502,38 @@
       return { toast }
     },
     created() {
-      // Ketika komponen dibuat, panggil metode untuk mengambil data pengguna
       this.fetchUserData(this.$route.params.user_id);
     },
     computed: {
       computedEmail: {
       get() {
-        console.log("Current this.email:", this.email);
-        console.log("Current this.userData.email:", this.userData.email);
-        // Mengembalikan email berdasarkan kondisi
         return this.email === '' ? this.userData.email : this.email;
       },
       set(value) {
-        // Mengubah nilai input ke email
         this.email = value;
       },
     },
     computedNoHP: {
       get() {
-        // Mengembalikan email berdasarkan kondisi
         return this.nohp === '' ? this.userData.nohp : this.nohp;
       },
       set(value) {
-        // Mengubah nilai input ke email
         this.nohp = value;
       },
     },
     computedRole: {
       get() {
-        // Mengembalikan email berdasarkan kondisi
         return this.role === '' ? this.userData.role : this.role;
       },
       set(value) {
-        // Mengubah nilai input ke email
         this.role = value;
       },
     },
     computedJk: {
       get() {
-        // Mengembalikan email berdasarkan kondisi
         return this.jkel === '' ? this.userData.jk : this.jkel;
       },
       set(value) {
-        // Mengubah nilai input ke email
         this.jkel = value;
       },
     },
@@ -559,29 +548,103 @@
       async submitForm(){
         if (this.editRole) {
           try {
+          Swal.fire({
+          title: "Are you sure?",
+          text: `You will change this user gender!`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#1A55AE",
+          cancelButtonColor: "#D1CFCE",
+          confirmButtonText: "Yes, Change!",
+          cancelButtonText: "Cancel"
+        }).then(async (result) => {
+          if (result.isConfirmed) {
             const response = await changeRole(this.userData.user_id, { role: this.role });
             console.log('Role updated:', response);
             this.toast.success(response.message);
             this.userData.role = this.role;
             this.$store.dispatch('updateUserRole', this.userData.role);
             this.closeModal();
+            if (!response) {
+              Swal.fire({
+                icon: "error",
+                title: "Gender failed to change",
+                showConfirmButton: false,
+                timer: 1500
+              })
+              return;
+            }
+          }
+        });
         } catch (error) {
             console.error("Error updating role:", error);
             this.toast.error("Failed to update role. Please try again."); // Tampilkan pesan kesalahan
             this.closeModal();
         }
         } else if (this.editJK) {
-            console.log("Updating JK:", this.jkel);
+          try {
+          Swal.fire({
+          title: "Are you sure?",
+          text: `You will change this user gender!`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#1A55AE",
+          cancelButtonColor: "#D1CFCE",
+          confirmButtonText: "Yes, Change!",
+          cancelButtonText: "Cancel"
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            const response = await changeJK(this.userData.user_id, { jk: this.jkel });
+            console.log('Gender updated:', response);
+            this.toast.success(response.message);
+            this.userData.jk = this.jkel;
+            this.closeModal();
+            if (!response) {
+              Swal.fire({
+                icon: "error",
+                title: "Gender failed to change",
+                showConfirmButton: false,
+                timer: 1500
+              })
+              return;
+            }
+          }
+        });
+        } catch (error) {
+            console.error("Error updating gender:", error);
+            this.toast.error("Failed to update gender. Please try again."); // Tampilkan pesan kesalahan
+            this.closeModal();
+        }
         } else if (this.editContact) {
-          this.computedEmail = this.email
-          this.computedNoHP = this.nohp
-          console.log("Updating Contact:", this.email);
-          console.log("Updating Contact:", this.nohp);
           try{
-            const response = await changeContact(this.userData.user_id, {email: this.computedEmail, nohp: this.computedNoHP});
+          Swal.fire({
+          title: "Are you sure?",
+          text: `You will change this user Contact information!`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#1A55AE",
+          cancelButtonColor: "#D1CFCE",
+          confirmButtonText: "Yes, Change!",
+          cancelButtonText: "Cancel"
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            const response = await changeContact(this.userData.user_id, this.computedEmail, this.computedNoHP);
             console.log('Contact updated:', response);
             this.toast.success(response.message);
+            this.userData.email = this.computedEmail;
+            this.userData.nohp = this.computedNoHP;
             this.closeModal();
+            if (!response) {
+              Swal.fire({
+                icon: "error",
+                title: "Contact Information failed to change",
+                showConfirmButton: false,
+                timer: 1500
+              })
+              return;
+            }
+          }
+        });
           }catch(error){
             console.error("Error updating contact:", error);
             this.toast.error("Failed to update contact. Please try again."); // Tampilkan pesan kesalahan
@@ -674,6 +737,7 @@
         this.userFile64 = hoi
         console.log(this.userFile64)
       },
+
       openModalFoto() {
         if (this.file) {
           this.userFiles = URL.createObjectURL(this.file); // Menampilkan gambar yang dipilih saat modal dibuka
@@ -736,7 +800,6 @@
       },
       triggerFileInput() {
         this.editFoto = true
-        this.editRole = false
         // Panggil metode click pada elemen input file
         this.$refs.fileInput.$el.click();
         this.title = "Crop Image";
@@ -798,49 +861,23 @@
         // Format jam
         return date.toLocaleTimeString('en-US', options);
       },
-      async updateRole(item) {
-        const response = await changeRole(item);
-          Swal.fire({
-            icon: "info",
-            title: `Info  ${item} & ${this.userData.user_id}`,
-            showConfirmButton: false,
-            timer: 1500
-          })
-        // const response = await changeRole(item);
-        // if (!response) {
-        //   Swal.fire({
-        //     icon: "error",
-        //     title: "Gagal merubah role",
-        //     showConfirmButton: false,
-        //     timer: 1500
-        //   })
-        //   return;
-        // } else {
-        //   Swal.fire({
-        //     title: 'Success',
-        //     text: `Role pengguna ${this.userData.username} berhasil diubah`,
-        //     icon: 'success',
-        //     timer: 1500
-        //   });
-        // }
-      },
       async ResetPasswordPengguna(item) {
         Swal.fire({
-          title: "Anda yakin?",
-          text: `Anda akan mereset password pengguna ini!`,
+          title: "Are you sure?",
+          text: `You will reset the user's password!`,
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#1A55AE",
           cancelButtonColor: "#D1CFCE",
-          confirmButtonText: "Ya, Reset Password!",
-          cancelButtonText: "Batal"
+          confirmButtonText: "Yes, Reset Password!",
+          cancelButtonText: "Cancel"
         }).then(async (result) => {
           if (result.isConfirmed) {
             const response = await resetPaswword(item);
             if (!response) {
               Swal.fire({
                 icon: "error",
-                title: "Password gagal direset",
+                title: "Password failed to reset",
                 showConfirmButton: false,
                 timer: 1500
               })
@@ -848,7 +885,7 @@
             } else {
               Swal.fire({
                 title: 'Success',
-                text: `Password berhasil direset, silahkan login kembali dengan password (12345678)`,
+                text: `Password has been successfully reset, please log in again with password (12345678)`,
                 icon: 'success'
               });
             }
@@ -857,21 +894,21 @@
       },
       async rubahStatus(item) {
         Swal.fire({
-          title: "Anda yakin?",
-          text: `Anda akan mengubah status pengguna ini!`,
+          title: "Are you sure?",
+          text: `You will change the status of this user!`,
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#1A55AE",
           cancelButtonColor: "#D1CFCE",
-          confirmButtonText: "Ya, Ubah Status!",
-          cancelButtonText: "Batal"
+          confirmButtonText: "Yes, Change Status!",
+          cancelButtonText: "Cancel"
         }).then(async (result) => {
           if (result.isConfirmed) {
             const response = await changeStatus(item);
             if (!response) {
               Swal.fire({
                 icon: "error",
-                title: "Status gagal diubah",
+                title: "Status changed failed",
                 showConfirmButton: false,
                 timer: 1500
               })
@@ -879,7 +916,7 @@
             } else {
               Swal.fire({
                 title: 'Success',
-                text: 'Status pengguna berhasil diubah',
+                text: 'User status changed successfully',
                 icon: 'success'
               });
               this.fetchUserData(this.$route.params.user_id);

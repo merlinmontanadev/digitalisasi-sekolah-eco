@@ -66,4 +66,15 @@ async function deleteMurid(id_murid) {
   }
   }
 
-export { getAllMurids, deleteMurid, getMuridsById, simpanMurid, fetchCountDataMurid};
+  async function changeFoto(id_murid, file) {
+    try {
+      const response = await axios.patch(`http://localhost:9000/api/v1/edit/murid/foto/${id_murid}`, file);
+      return response;
+    } catch (error) {
+      console.log('Dari Service :', id_murid);
+      console.error('Error updating photo user:', error);
+      throw error;
+    }
+  }
+
+export { getAllMurids, deleteMurid, changeFoto, getMuridsById, simpanMurid, fetchCountDataMurid};

@@ -65,16 +65,16 @@ const routes = [
       },  
       {
         path: 'murid',
-        alias: '/admin/manajemen-murid',
+        alias: '/admin/student-management',
         component: ()=> import('@/views/murid/Murid.vue'),
-        meta: { title: 'Manajemen Murid', requiresAuth: true }
+        meta: { title: 'Student Management', requiresAuth: true }
       },
       {
         path: 'edit-murid',
-        alias: '/admin/manajemen-murid/edit/murid/:id_murid',
+        alias: '/admin/student-management/edit/murid/:id_murid',
         component: ()=> import('@/views/murid/EditMurid.vue'),
         props: true,
-        meta: { title: 'Manajemen Pengguna', requiresAuth: true }
+        meta: { title: 'Student Management', requiresAuth: true }
       }, 
       {
         path: 'gtk',

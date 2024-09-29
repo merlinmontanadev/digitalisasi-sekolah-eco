@@ -66,11 +66,10 @@ async function resetPaswword(user_id) {
 
 async function changeContact(user_id, email, nohp){
   try {
-    const data = {
-      email: email,
-      nohp: nohp
-    };
-    const response = await axios.patch(`http://localhost:9000/api/v1/edit/user/contact/${user_id}`, data);
+    const response = await axios.patch(`http://localhost:9000/api/v1/edit/user/contact/${user_id}`, {
+      email, nohp
+    });
+    ;
     return response.data; 
   } catch (error) {
     console.error('Error updating contact:', error);
@@ -85,6 +84,17 @@ async function changeStatus(user_id, status) {
   } catch (error) {
     console.log('Status :', user_id);
     console.error('Error changing status user:', error);
+    throw error;
+  }
+}
+
+async function changeJK(user_id, gender) {
+  try {
+    const response = await axios.patch(`http://localhost:9000/api/v1/edit/user/gender/${user_id}`, gender);
+    return response.data;
+  } catch (error) {
+    console.log('Gender :', gender);
+    console.error('Error changing gender user:', error);
     throw error;
   }
 }
@@ -125,4 +135,4 @@ async function fetchCountData() {
 }
 }
 
-export { getAllUsers, deleteUser, addUser, getUsersById, changeContact, resetPaswword, changeStatus, changeFoto, fetchCountData, changeRole};
+export { getAllUsers, deleteUser, addUser, getUsersById, changeContact, changeJK, resetPaswword, changeStatus, changeFoto, fetchCountData, changeRole};

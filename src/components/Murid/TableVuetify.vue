@@ -75,7 +75,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
         <div class="flex relative gap-2 text-center items-center">
               <Menu as="div" class="relative flex text-center ">
                 <router-link
-                :to="{ path: `/admin/manajemen-murid/edit/murid/${item.id_murid}`, params: { id_murid: item.id_murid  } }"
+                :to="{ path: `/admin/student-management/edit/murid/${item.id_murid}`, params: { id_murid: item.id_murid  } }"
                   class="inline-flex w-full justify-center items-center text-sm font-semibold text-gray-700 "
                   >
                   <PencilSquareIcon

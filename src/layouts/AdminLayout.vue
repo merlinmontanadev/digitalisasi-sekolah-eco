@@ -34,6 +34,7 @@ export default {
       capital: "",
       toast: useToast(),
       isSidebarVisible: localStorage.getItem("is_expanded") === "true",
+      username: ref(null),
       user: ref(null),
       token: ref(null),
       userFile: ref(null),
@@ -68,8 +69,8 @@ computed: {
     async store(){
         this.token = Cookies.get('refreshToken');
         const decodedToken = jwtDecode(this.token);
-        this.user = decodedToken
-        await this.fetchFoto(this.user?.user_id)
+        await this.fetchUser(decodedToken?.user_id) 
+        await this.fetchFoto(decodedToken?.user_id)
         this.loading = false;
         this.tokenCheckInterval = setInterval(() => {
         this.checkTokenExpiry();
@@ -95,9 +96,18 @@ computed: {
       console.error('Error refreshing token:', error);
     }  
     },
+    async fetchUser(item) {
+      try {
+        const userd = await getUsersById(item);
+        this.user = userd;
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    },
     async fetchFoto(item){
       try {
         const userd = await getUsersById(item);
+        this.user = userd;
         if (userd && userd.file && userd.file.data && userd.file.data.length > 0) {
           const blob = new Blob([new Uint8Array(userd.file.data)], { type: userd.fileMimeType });
           this.userFile = URL.createObjectURL(blob);
@@ -107,6 +117,7 @@ computed: {
       } catch (error) {
         console.error('Error fetching photo:', error);
         this.userFile = null;
+        this.user = null;
       }
     },
     toggleSidebar() {
