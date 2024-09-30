@@ -256,25 +256,45 @@
                     </div>
                   </div>
                   <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">NIPD</p>
+                    <p class="text-gray-600 font-semibold flex items-center text-center">
+                      NIPD
+                      <a class="ml-3 text-blue-500 text-sm cursor-pointer" @click="editNipdForm">
+                        Edit
+                      </a>
+                    </p>
                     <div class="text-right">
                       <h1 class="text-gray-600">{{ muridData.nipd }}</h1>
                     </div>
                   </div>
                   <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">NIS</p>
+                    <p class="text-gray-600 font-semibold flex items-center text-center">
+                      NIS
+                      <a class="ml-3 text-blue-500 text-sm cursor-pointer" @click="editNisForm">
+                        Edit
+                      </a>
+                    </p>
                     <div class="text-right">
                       <h1 class="text-gray-600">{{ muridData.nis }}</h1>
                     </div>
                   </div>
                   <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">NISN</p>
+                    <p class="text-gray-600 font-semibold flex items-center text-center">
+                      NISN
+                      <a class="ml-3 text-blue-500 text-sm cursor-pointer" @click="editNisForm">
+                        Edit
+                      </a>
+                    </p>
                     <div class="text-right">
                       <h1 class="text-gray-600">{{ muridData.nisn }}</h1>
                     </div>
                   </div>
                   <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">Nama Murid</p>
+                    <p class="text-gray-600 font-semibold flex items-center text-center">
+                      Nama Murid
+                      <a class="ml-3 text-blue-500 text-sm cursor-pointer" @click="editNisForm">
+                        Edit
+                      </a>
+                    </p>
                     <div class="text-right">
                       <h1 class="text-gray-600">{{ muridData.nama_lengkap }}</h1>
                     </div>
@@ -453,7 +473,7 @@
         this.isUploading = true;
         try {
           if (!this.file) {
-            throw new Error('Tidak ada file untuk diupload');
+            throw new Error('Not a file to upload');
           }
           const file = this.DataURIToBlob(this.muridFile64);
           const formData = new FormData();
@@ -461,7 +481,7 @@
           const response = await changeFoto(this.$route.params.id_murid, formData);
           await Swal.fire({
             icon: "success",
-            title: "Foto berhasil diupdate",
+            title: "Successfully updated photo",
             showConfirmButton: false,
             timer: 1500
           });
@@ -513,11 +533,11 @@
       },
     handleFileUpload(event) {
         const file = event.target.files[0];
-
         this.file = file; // Simpan file untuk digunakan saat upload
         this.confirmFile = false; // Reset konfirmasi
         this.openModalFoto(); // Tampilkan modal untuk crop gambar
         console.log(this.file);
+        event.target.value = null
       },
     handleEsc(event) {
         if (event.key === 'Escape') {

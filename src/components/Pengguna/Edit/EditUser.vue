@@ -148,7 +148,6 @@
                                     <Form @submit="submitForm" keep-values v-if="editRole || editJK || editContact">
                                       <div class="-mx-3 flex flex-wrap">
                                         <div class="w-full px-3">
-
                                           <div class="mb-2" v-if="editRole">
                                                             <div ref="dropdownWrapper"  
                                                                 @focusout="handleFocusOut"
@@ -267,7 +266,12 @@
                       <h1 class="text-gray-600">{{ userData.username }}</h1>
                   </div>
                   <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold flex items-center text-center">Role<a class="ml-3 text-blue-500 text-sm cursor-pointer" @click="editRoleForm">Edit</a></p>
+                    <p class="text-gray-600 font-semibold flex items-center text-center">
+                      Role
+                      <a class="ml-3 text-blue-500 text-sm cursor-pointer" @click="editRoleForm">
+                        Edit
+                      </a>
+                    </p>
                               <div class="text-right">
                                   <tippy
                                   content="Current Role"
@@ -699,7 +703,7 @@
         this.isUploading = true;
         try {
           if (!this.file) {
-            throw new Error('Tidak ada file untuk diupload');
+            throw new Error('Not a file to upload');
           }
           const file = this.DataURIToBlob(this.userFile64);
           const formData = new FormData();
@@ -708,7 +712,7 @@
           this.$store.dispatch('updateUserFile', this.userFile64);
           await Swal.fire({
             icon: "success",
-            title: "Foto berhasil diupdate",
+            title: "Successfully updated photo",
             showConfirmButton: false,
             timer: 1500
           });
@@ -781,6 +785,7 @@
         this.confirmFile = false; // Reset konfirmasi
         this.openModalFoto(); // Tampilkan modal untuk crop gambar
         console.log(this.file);
+        event.target.value = null
       },
       DataURIToBlob(dataURL) {
         const splitDataURI = dataURL.split(',')

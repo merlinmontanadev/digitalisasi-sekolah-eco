@@ -42,6 +42,7 @@ export default {
       loading: true,
       tokenCheckInterval: null,
       isFullContent: localStorage.getItem("is_fullContent") === "true",
+      loadingError: false,
     };
   },
   setup() {
@@ -64,37 +65,55 @@ computed: {
   beforeUnmount() {
     window.removeEventListener("keydown", this.handleKeyboardShortcut);
     window.removeEventListener("keydown", this.handleFullShortcut);
+    
   },
   methods: {
-    async store(){
-        this.token = Cookies.get('refreshToken');
-        const decodedToken = jwtDecode(this.token);
-        await this.fetchUser(decodedToken?.user_id) 
-        await this.fetchFoto(decodedToken?.user_id)
-        this.loading = false;
-        this.tokenCheckInterval = setInterval(() => {
-        this.checkTokenExpiry();
-        }, 5000);
-    },
-    async checkTokenExpiry(){
-    try {
-      if (this.token){
+    async store() {
+    this.token = Cookies.get('refreshToken');
+    if (this.token) {
         const decodedToken = jwtDecode(this.token);
         const currentTime = Date.now() / 1000;
-        if (decodedToken.exp < currentTime){
-          Cookies.remove('refreshToken');
-          this.toast.info("Token telah kedaluwarsa, silakan login ulang.");
-          this.$router.push('/');
-        }else{
-          return;
+
+        // Cek apakah token masih valid
+        if (decodedToken.exp > currentTime) {
+            try {
+                // Coba fetch user dan foto
+                await this.fetchUser(decodedToken?.user_id);
+                await this.fetchFoto(decodedToken?.user_id);
+
+                // Jika berhasil, set loading menjadi false
+                this.loading = false;
+                this.loadingError = false; // Tidak ada error, jadi reset loadingError
+                
+                // Cek token expiry secara berkala
+                this.tokenCheckInterval = setInterval(() => {
+                    this.checkTokenExpiry();
+                }, 5000);
+            } catch (error) {
+                // Jika error karena backend tidak tersedia
+                console.error('Error fetching data:', error);
+                this.loadingError = true;
+                this.loading = true; // Tetap menampilkan loading jika backend tidak bisa diakses
+            }
+        } else {
+            // Token kedaluwarsa
+            Cookies.remove('refreshToken');
+            this.$router.push('/');
         }
-      }else{
+    } else {
+        // Jika tidak ada token, langsung redirect ke halaman login
         this.$router.push('/');
-        return;
-      }
-    } catch (error) {
-      console.error('Error refreshing token:', error);
-    }  
+    }
+},
+    
+    checkTokenExpiry() {
+        const decodedToken = jwtDecode(this.token);
+        const currentTime = Date.now() / 1000;
+        if (decodedToken.exp < currentTime) {
+            Cookies.remove('refreshToken');
+            this.toast.info("Token telah kedaluwarsa, silakan login ulang.");
+            this.$router.push('/');
+        }
     },
     async fetchUser(item) {
       try {
