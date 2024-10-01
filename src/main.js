@@ -10,6 +10,8 @@ import axios from 'axios';
 import VueTippy from 'vue-tippy';
 import "tippy.js/dist/tippy.css";
 import "@assets/styles/index.css"
+import { createI18n } from 'vue-i18n';
+import { translations } from './translation';
 
 axios.defaults.withCredentials = true;
 
@@ -24,6 +26,11 @@ import VueApexCharts from "vue3-apexcharts";
 
 import router from "./router";
 
+const i18n = createI18n({
+  locale: 'id', // Set default locale
+  messages: translations, // Ganti dengan translations
+});
+
 const vuetify = createVuetify({
     components,
     directives,
@@ -36,6 +43,7 @@ const vuetify = createVuetify({
   }
 
 const app = createApp(App)
+app.use(i18n);
 app.use(VueTippy);
 app.use(VueApexCharts);
 app.use(stores)

@@ -42,7 +42,10 @@ export default {
       return this.user.role;
     }
     return;
-    }
+    },
+    changeLocale(newLocale) {
+      this.$i18n.locale = newLocale; // Mengubah locale
+    },
   },
   data() {
     return {
@@ -52,25 +55,25 @@ export default {
       navItems: [
         {
           href: "/admin/dashboard",
-          label: "Dashboard",
+          label: this.$t('dashboard'),
           children: [],
           icon: HomeIcon
         }, {
           href: "/admin/user-management",
           single: true,
-          label: "User",
-          group: "Master Data",
+          label: this.$t('user'),
+          group: this.$t('Group1'),
           children: [],
           icon: UserGroupIcon,
         }, {
           href: "#",
-          label: "Student",
+          label: this.$t('student'),
           single: false,
           group: "",
           icon: CircleStackIcon,
           children: [{
               href: "/admin/student-management",
-              label: "All Student",
+              label: this.$t('subStudent1'),
               single: false,
               group: "",
               children: [],
@@ -79,10 +82,10 @@ export default {
           ],
         }, {
           href: "#",
-          label: "Teacher & Educator",
+          label: this.$t('teacherEducator'),
           children: [{
               href: "/admin/manajemen-gtk",
-              label: "All Teacher & Educator",
+              label: this.$t('subTeacherEducator'),
               children: [],
               icon: null
             },
@@ -90,10 +93,10 @@ export default {
           icon: CircleStackIcon
         }, {
           href: "#",
-          label: "Alumni",
+          label: this.$t('alumni'),
           children: [{
               href: "/admin/manajemen-alumni",
-              label: "All Data Alumni",
+              label: this.$t('subAlumni'),
               children: [],
               icon: null
             },
@@ -103,17 +106,17 @@ export default {
         {
           href: "#",
           single: true,
-          label: "Absence",
-          group: "Absence",
+          label: this.$t('absence'),
+          group: this.$t('Group2'),
           children: [{
               href: "/admin/absensi/gtk",
-              label: "Absence Teacher & Educator",
+              label: this.$t('subAbsence1'),
               children: [],
               icon: null
             },
             {
               href: "/admin/absensi/murid",
-              label: "Absence Student",
+              label: this.$t('subAbsence2'),
               children: [],
               icon: null
             },
@@ -122,35 +125,35 @@ export default {
         }, {
           href: "/admin/pelanggaran",
           single: true,
-          label: "Violation",
-          group: "Violation",
+          label: this.$t('violation'),
+          group: this.$t('Group5'),
           children: [],
           icon: TagIcon
         }, {
           href: "/admin/poin/pelanggaran",
-          label: "Point Violation",
+          label: this.$t('pointViolation'),
           children: [],
           icon: TagIcon
         }, {
           href: "/admin/kategori-pelanggaran",
-          label: "Category Violation",
+          label: this.$t('categoryViolation'),
           children: [],
           icon: TagIcon
         }, 
         {
           href: "#",
           single: true,
-          label: "BKK",
-          group: "Bursa Kerja Khusus",
+          label: this.$t('bkk'),
+          group: this.$t('Group3'),
           children: [{
               href: "/admin/bkk/list",
-              label: "Data Bursa Kerja Khusus",
+              label: this.$t('subBkk1'),
               children: [],
               icon: null
             },
             {
               href: "/admin/bkk/perusahaan",
-              label: "Data Company",
+              label: this.$t('subBkk2'),
               children: [],
               icon: null
             },
@@ -159,8 +162,8 @@ export default {
         },{
           href: "/admin/setting/sekolah",
           single: true,
-          label: "Settings School",
-          group: "Settings",
+          label: this.$t('settingSchool'),
+          group: this.$t('Group4'),
           children: [],
           icon: Cog6ToothIcon
         },
@@ -235,7 +238,8 @@ export default {
         <div class="relative group h-20 w-20 rounded-full shadow ">
           <img ref="zoomImage" :src="computedUserFile" className="w-20 h-20  border-dashed border border-gray-700 shadow"/>
           <tippy
-                      content="Preview Image"
+          
+          :content="$t('tippyPhoto')" 
                       placement="bottom"
                       arrow
                     >
@@ -295,7 +299,7 @@ export default {
     </div>
     <div v-else>
       <tippy
-                      content="Current Role"
+      :content="$t('tippyRole')"                
                       placement="bottom"
                       arrow
                     >
@@ -316,10 +320,10 @@ export default {
   <div class="flex mt-3">
           <router-link :to="`/admin/user-management/edit/user/${user?.user_id}`" >
             <button class="w-full font-semibold text-sm mt-2 flex bg-gradient-to-r from-blue-500 to-blue-400 text-white px-4 py-2 rounded-l-md">
-            <UserIcon class="mr-2 h-5 w-5 text-white"></UserIcon> Profile
+            <UserIcon class="mr-2 h-5 w-5 text-white"></UserIcon> {{ $t("profile") }}
           </button>
           </router-link>
-          <button @click="logout" class="w-full font-semibold text-sm mt-2 flex bg-gradient-to-r from-red-500 to-red-400 text-white px-4 py-2 rounded-r-md"><ArrowLeftStartOnRectangleIcon class="mr-2 h-5 w-5 text-white"></ArrowLeftStartOnRectangleIcon> Logout</button>
+          <button @click="logout" class="w-full font-semibold text-sm mt-2 flex bg-gradient-to-r from-red-500 to-red-400 text-white px-4 py-2 rounded-r-md"><ArrowLeftStartOnRectangleIcon class="mr-2 h-5 w-5 text-white"></ArrowLeftStartOnRectangleIcon>{{ $t("logout") }}</button>
         </div>
     </div>
 </div>

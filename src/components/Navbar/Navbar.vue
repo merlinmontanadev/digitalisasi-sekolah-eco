@@ -17,7 +17,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                 <ul class="flex items-center text-center text-sm">
                   <li>
                 <tippy
-                      content="Hide Sidebar (Ctrl + B)"
+                      :content="$t('tippyHideSidebar')"
                       placement="bottom"
                       arrow
                     >
@@ -44,12 +44,26 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                     </div>
                 </li> -->
                 <li class="ml-3">
+                  <button
+                      @click="toggleTheme"
+                      class="w-12 h-7 rounded-full bg-white flex items-center transition duration-300 focus:outline-none shadow"
+                    >
+                      <div
+                        id="switch-toggle"
+                        :class="toggleClass"
+                        class="w-7 h-7 relative rounded-full transition duration-500 transform p-1 text-white"
+                      >
+                        <span v-html="currentIcon"></span>
+                      </div>
+                    </button>
+                </li>
+                <li class="ml-3">
                   <tippy
-                      content="Full Content (F11)"
+                      :content="$t('tippyFullContent')"
                       placement="bottom"
                       arrow
                     >
-                  <button type="button" class="md:block hidden dropdown-toggle text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-whi" @click="toggleFullContent">
+                  <button type="button" class="md:block hidden dropdown-toggle text-gray-400 w-8 h-8 rounded items-center justify-center hover:bg-whi" @click="toggleFullContent">
                         <ArrowsPointingOutIcon
                             :class="[
                             'h-6 w-6 shrink-0 text-white'
@@ -60,7 +74,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                 </li>
                 <li class="ml-3">
                   <tippy
-                      content="Notiffication"
+                      :content="$t('tippyFullNotiffication')"
                       placement="bottom"
                       arrow
                     >
@@ -149,7 +163,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
         </template>
         <template v-else>
           <tippy
-                      content="Profile"
+                      :content="$t('tippyFullProfile')"
                       placement="bottom"
                       arrow
                     >
@@ -181,7 +195,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                 ]"
               >
-                <Cog6ToothIcon class="w-5 h-5 mr-2" />Setting
+                <Cog6ToothIcon class="w-5 h-5 mr-2" />{{ $t("setting") }}
               </button>
             </MenuItem>
             <MenuItem v-slot="{ active }">
@@ -192,7 +206,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                 ]"
               >
-                <QuestionMarkCircleIcon class="w-5 h-5 mr-2" />Support
+                <QuestionMarkCircleIcon class="w-5 h-5 mr-2" />{{ $t("support") }}
               </button>
             </MenuItem>
             <div class="border-b border-gray-200"></div>
@@ -203,7 +217,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                 ]"
               >
-                <ArrowRightStartOnRectangleIcon class="w-5 h-5 mr-2" /> Logout
+                <ArrowRightStartOnRectangleIcon class="w-5 h-5 mr-2" />{{ $t("logout") }}
               </button>
             </MenuItem>
           </div>
@@ -234,9 +248,18 @@ export default {
     },
   },
   computed: {
+    toggleClass() {
+      return this.isDarkmode ? 'bg-gray-700 translate-x-full' : 'bg-yellow-500 -translate-x-2';
+    },
+    currentIcon() {
+      return this.isDarkmode ? this.darkIcon : this.lightIcon;
+    },
     computedUserFile() {
       return this.$store.getters.getUserFile || this.userFile || defaultPicture; // Use prop or fallback to Vuex
-    }
+    },
+    changeLocale(newLocale) {
+      this.$i18n.locale = newLocale; // Mengubah locale
+    },
   },
   data() {
     return {
@@ -244,13 +267,34 @@ export default {
       toast: useToast(),  
       showDropDown: false,
       showDropDownNotif: false,
+      isDarkmode: false,
+      darkIcon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>`,
+      lightIcon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>`,
     }
   },
   setup() {
   const toast = useToast();
   return { toast }
 },
+mouted(){
+  const savedMode = localStorage.getItem('isDarkmode') === 'true';
+    this.isDarkmode = savedMode;
+    this.switchTheme(); // Call switchTheme on mounted to set initial state
+},
   methods: {
+    toggleTheme() {
+      this.isDarkmode = !this.isDarkmode;
+      localStorage.setItem('isDarkmode', this.isDarkmode);
+      this.switchTheme();
+    },
+    switchTheme() {
+      // Optional: If you want to add body class changes
+      // document.body.classList.toggle('dark-mode', this.isDarkmode);
+    },
     whatsappSupport(){
       window.open('https://wa.me/628113300057', '_blank');
     },
