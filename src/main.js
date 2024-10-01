@@ -26,8 +26,17 @@ import VueApexCharts from "vue3-apexcharts";
 
 import router from "./router";
 
+let savedLocale = localStorage.getItem('isLangmode');
+
+if (!savedLocale) {
+  savedLocale = 'false';  // Default locale
+  localStorage.setItem('isLangmode', savedLocale); // Simpan nilai default ke localStorage
+}
+
+const locale = savedLocale === 'true' ? 'id' : 'en'; // Mengatur locale
+
 const i18n = createI18n({
-  locale: 'id', // Set default locale
+  locale: locale, // Set default locale
   messages: translations, // Ganti dengan translations
 });
 

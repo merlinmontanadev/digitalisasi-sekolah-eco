@@ -46,13 +46,8 @@ export default {
     changeLocale(newLocale) {
       this.$i18n.locale = newLocale; // Mengubah locale
     },
-  },
-  data() {
-    return {
-      isModalOpenPreview : false,
-      defaultPicture,
-      toast: useToast(),  
-      navItems: [
+    navItems(){
+      return [
         {
           href: "/admin/dashboard",
           label: this.$t('dashboard'),
@@ -167,7 +162,15 @@ export default {
           children: [],
           icon: Cog6ToothIcon
         },
-      ],
+      ]
+      
+    }
+  },
+  data() {
+    return {
+      isModalOpenPreview : false,
+      defaultPicture,
+      toast: useToast(),  
     };
   },
   methods: {
@@ -317,14 +320,14 @@ export default {
     </template>
   </Suspense>
   </div>
-  <div class="flex mt-3">
+  <div class="flex mt-3 text-center items-center">
           <router-link :to="`/admin/user-management/edit/user/${user?.user_id}`" >
             <button class="w-full font-semibold text-sm mt-2 flex bg-gradient-to-r from-blue-500 to-blue-400 text-white px-4 py-2 rounded-l-md">
             <UserIcon class="mr-2 h-5 w-5 text-white"></UserIcon> {{ $t("profile") }}
           </button>
           </router-link>
           <button @click="logout" class="w-full font-semibold text-sm mt-2 flex bg-gradient-to-r from-red-500 to-red-400 text-white px-4 py-2 rounded-r-md"><ArrowLeftStartOnRectangleIcon class="mr-2 h-5 w-5 text-white"></ArrowLeftStartOnRectangleIcon>{{ $t("logout") }}</button>
-        </div>
+  </div>
     </div>
 </div>
 <div style="overflow: auto;">
