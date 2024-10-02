@@ -269,7 +269,6 @@
       <h1 class="text-gray-600">{{ muridData.agama }}</h1>
     </div>
   </div>
-
   <!-- Informasi Alamat -->
   <v-divider class="my-4" />
   <div class="py-2 flex items-center">

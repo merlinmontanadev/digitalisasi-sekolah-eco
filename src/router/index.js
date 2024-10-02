@@ -173,7 +173,7 @@ const router = createRouter({
   }
 });
 
-router.afterEach((to) => {
+router.afterEach((to, from, next) => {
   // Cari rute dengan meta.title
   const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
 
@@ -181,13 +181,10 @@ router.afterEach((to) => {
     // Gunakan i18n untuk mengambil terjemahan dari kunci di meta.title
     const title = i18n.global.t(nearestWithTitle.meta.title)
     document.title = `${title} | Digitalisasi Sekolah`
+    next()
   }
 });
 
-router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title} | Digitalisasi Sekolah`
-  next()
-})
 
 router.beforeEach((to, from, next) => {
   const refreshToken = Cookies.get('refreshToken');

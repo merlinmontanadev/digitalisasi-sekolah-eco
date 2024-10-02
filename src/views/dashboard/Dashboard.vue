@@ -2,11 +2,13 @@
 import Statistik from '@/components/Dashboard/Statistik/Statistik.vue';
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs.vue';
 import Notiffication from '@/components/Notification/Notification.vue';
+import InformationSchool from '@/components/Dashboard/InformationSchool/InformationSchool.vue';
 </script>
 
 <template>
       <Notiffication />
-      <div class="flex item-center justify-between">
+      <InformationSchool />
+      <div class="flex item-center justify-between mt-4">
       <h1 class="font-bold text-3xl text-black">Dashobard</h1>
       <!-- <Breadcrumbs/> -->
       </div>
