@@ -1,5 +1,7 @@
 export const translations = {
     en: {
+        //meta
+        dashboardTitle: "Dashboard",
         //Sidebar
         profile: "Profile",
         logout: "Logout",
@@ -37,6 +39,8 @@ export const translations = {
         tippyFullProfile: "Profile",
     },
     id: {
+        //meta
+        dashboardTitle: "Dasbor",
         //Sidebar
         profile: "Profil",
         logout: "Keluar",

@@ -60,3 +60,5 @@ app.use(Toast, options);
 app.use(vuetify)
 app.use(createPinia())
 app.use(router).mount("#app");
+
+export { i18n };

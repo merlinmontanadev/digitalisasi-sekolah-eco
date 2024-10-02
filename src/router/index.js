@@ -18,6 +18,7 @@ import BKKPerushaan from "@/views/bkk/perusahaan/Perusahaan.vue";
 import Cropper from "@/views/cropper/Cropper.vue";
 import KelolaSekolah from "@/views/kelola_sekolah/KelolaSekolah.vue";
 import Cookies from 'js-cookie';
+import { i18n } from '../main.js'; // pastikan untuk mengimpor i18n dari file utama Anda
 
 // routes
 const routes = [
@@ -25,7 +26,7 @@ const routes = [
     path: '/admin',
     redirect: '/admin/dashboard',
     component: AdminLayout,
-    meta: { title: 'Dashboard', requiresAuth: true},
+    meta: { title: 'dashboardTitle', requiresAuth: true},
     children: [
       // Tambahkan rute-rute yang terkait dengan dashboard di sini
       {
@@ -34,7 +35,7 @@ const routes = [
         name: 'Dashboard',
         props: true,
         component: ()=> import('@/views/dashboard/Dashboard.vue'),
-        meta: { title: 'Dashboard', requiresAuth: true }
+        meta: { title: 'dashboardTitle', requiresAuth: true }
       },    
       {
         path: 'users',
@@ -149,8 +150,6 @@ const routes = [
     path: "/admin/*",
     redirect: "/admin/dashboard",
   },
-
-
   {
     path: "/login",
     name: 'Login',
@@ -171,6 +170,17 @@ const router = createRouter({
   routes,
   scrollBehavior(to, from, savedPosition) {
     return savedPosition || { left: 0, top: 0 }
+  }
+});
+
+router.afterEach((to) => {
+  // Cari rute dengan meta.title
+  const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+
+  if (nearestWithTitle) {
+    // Gunakan i18n untuk mengambil terjemahan dari kunci di meta.title
+    const title = i18n.global.t(nearestWithTitle.meta.title)
+    document.title = `${title} | Digitalisasi Sekolah`
   }
 });
 
