@@ -8,7 +8,7 @@ import { ChartBarIcon } from "@heroicons/vue/24/solid";
               <div :class="['h-6 w-6 flex items-center justify-center rounded-full bg-gray-400']">
                 <ChartBarIcon class="h-4 w-4 text-gray-100"></ChartBarIcon> 
               </div>
-              <div class="ml-2 font-bold text-sm md:text-normal">Pelanggaran Murid </div>
+              <div class="ml-2 font-bold text-sm md:text-normal">{{ $t('charts4') }}</div>
             </div>
             <div class="flex px-2 py-2 items-center justify-center">
                 <apexchart

@@ -8,7 +8,7 @@ import { ChartBarIcon } from "@heroicons/vue/24/solid";
               <div :class="['h-6 w-6 flex items-center justify-center rounded-full bg-gray-400']">
                 <ChartBarIcon class="h-4 w-4 text-gray-100"></ChartBarIcon> 
               </div>
-              <div class="ml-2 font-bold text-sm md:text-normal">Pendidikan Guru dan Tenaga Pendidik </div>
+              <div class="ml-2 font-bold text-sm md:text-normal">{{ $t('charts1') }}</div>
             </div>
             <div class="flex px-4 py-4 items-center justify-center">
               <Bar :data="data" :options="chartOptions" :style="myStyles"/>

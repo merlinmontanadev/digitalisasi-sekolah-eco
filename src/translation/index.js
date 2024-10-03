@@ -22,9 +22,9 @@ export const translations = {
         violation: "Violation",
         pointViolation: "Violation Points",
         categoryViolation: "Violation Category",
-        Group3: "Bursa Kerja Khusus",
-        bkk: "BKK",
-        subBkk1: "Data BKK",
+        Group3: "Job Fair",
+        bkk: "Job Fair",
+        subBkk1: "Data Job Fair",
         subBkk2: "Data Company",
         Group4: "Settings",
         settingSchool: "Settings School",
@@ -37,6 +37,32 @@ export const translations = {
         tippyFullContent: "Full Content (F11)",
         tippyFullNotiffication: "Notification",
         tippyFullProfile: "Profile",
+        //Dashboard
+        wellcomeGreeting: "Welcome to",
+        infoSchool: "School Information",
+        btnShowDashboard: "Show Dashboard",
+        tittleDashboard: "Dashboard",
+        //Statistik Sub Dashboard
+        userStatistics: "User",
+        gtkStatistics: "Teacher",
+        studentStatistics: "Student",
+        bkkStatistics: "BKK",
+        violationStatistics: "Violation",
+        alumniStatistics: "Alumni",
+        //Charts Sub Dashboard
+        tittleChart: "Charts",
+        charts1: "Teacher and Educator Education",
+        charts2: "Total Students by Gender",
+        charts3: "Total Students by Class",
+        charts4: "Violation of Student",
+        //Quick Actions Sub Dashboard
+        tittleQuickAction: "Quick Actions",
+        btnQA1: "Score",
+        btnQA2: "Study",
+        btnQA3: "Violation",
+        btnQA4: "Class",
+        btnQA5: "Job Fair",
+        btnQA6: "Absence",
     },
     id: {
         //meta
@@ -76,5 +102,31 @@ export const translations = {
         tippyFullProfile: "Profil",
         tippyPhoto: "Lihat Gambar",
         tippyRole: "Role Sekarang",
+        //Dashboard
+        wellcomeGreeting: "Selamat Datang di",
+        infoSchool: "Informasi Sekolah",
+        btnShowDashboard: "Tampilkan Dasbor",
+        tittleDashboard: "Dasbor",
+        //Statistik Sub Dashboard
+        userStatistics: "Pengguna",
+        gtkStatistics: "GTK",
+        studentStatistics: "Murid",
+        bkkStatistics: "BKK",
+        violationStatistics: "Pelanggaran",
+        alumniStatistics: "Alumni",
+        //Charts Sub Dashboard
+        tittleChart: "Bagan",
+        charts1: "Pendidikan Guru dan Tenaga Pendidik",
+        charts2: "Total Murid Berdasarkan Jenis Kelamin",
+        charts3: "Total Murid Berdasarkan Kelas",
+        charts4: "Pelanggaran Murid",
+        //Quick Actions Sub Dashboard
+        tittleQuickAction: "Tindakan Cepat",
+        btnQA1: "Nilai",
+        btnQA2: "Mata Pelajaran",
+        btnQA3: "Pelanggaran",
+        btnQA4: "Kelas",
+        btnQA5: "Bursa Kerja Khusus",
+        btnQA6: "Absensi",
     }
 };

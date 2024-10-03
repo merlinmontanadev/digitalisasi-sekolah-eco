@@ -1,38 +1,3 @@
-<script setup>
-import { DocumentCheckIcon, FolderIcon, TagIcon, BuildingOfficeIcon, ClockIcon, UserGroupIcon } from "@heroicons/vue/24/solid";
-const data = 
-[{
-  label: "Nilai",
-  link: "/admin",
-  icon: DocumentCheckIcon
-},
-{
-  label: "Mata Pelajaran",
-  link: "/admin/manajemen-pengguna",
-  icon: FolderIcon
-},
-{
-  label: "Pelanggaran",
-  link: "#",
-  icon: TagIcon
-},
-{
-  label: "Kelas",
-  link: "#",
-  icon: UserGroupIcon
-},
-{
-  label: "Bursa Kerja Khusus" ,
-  link: "#",
-  icon: BuildingOfficeIcon
-},
-{
-  label: "Absensi" ,
-  link: "#",
-  icon: ClockIcon
-}
-]
-</script>
 <template>
 <div class="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-4 mt-4">
   <div v-for="(item, index) in data" :key="index">
@@ -54,5 +19,54 @@ const data =
 </div>
 </template>
 <script>
-</script>
+import { DocumentCheckIcon, FolderIcon, TagIcon, BuildingOfficeIcon, ClockIcon, UserGroupIcon } from "@heroicons/vue/24/solid";
+import { mapState } from 'vuex'; // Jika Anda menggunakan Vuex untuk state management
 
+export default {
+  data() {
+    return {
+      rawData: [
+        {
+          label: "btnQA1",
+          link: "#",
+          icon: DocumentCheckIcon
+        },
+        {
+          label: "btnQA2",
+          link: "#",
+          icon: FolderIcon
+        },
+        {
+          label: "btnQA3",
+          link: "#",
+          icon: TagIcon
+        },
+        {
+          label: "btnQA4",
+          link: "#",
+          icon: UserGroupIcon
+        },
+        {
+          label: "btnQA5",
+          link: "#",
+          icon: BuildingOfficeIcon
+        },
+        {
+          label: "btnQA6",
+          link: "#",
+          icon: ClockIcon
+        }
+      ]
+    };
+  },
+  computed: {
+    data() {
+      // Ganti label dengan terjemahan
+      return this.rawData.map(item => ({
+        ...item,
+        label: this.$t(item.label) // Menggunakan $t dari i18n
+      }));
+    }
+  }
+};
+</script>

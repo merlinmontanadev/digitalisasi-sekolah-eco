@@ -8,7 +8,7 @@ import { ChartPieIcon } from "@heroicons/vue/24/solid";
               <div :class="['h-6 w-6 flex items-center justify-center rounded-full bg-gray-400']">
                 <ChartPieIcon class="h-4 w-4 text-gray-100"></ChartPieIcon> 
               </div>
-              <div class="ml-2 font-bold text-sm md:text-normal">Total Murid Berdasarkan Kelas </div>
+              <div class="ml-2 font-bold text-sm md:text-normal">{{ $t('charts3') }}</div>
             </div>
             <div class="flex px-4 py-4 items-center justify-center">
               <apexchart

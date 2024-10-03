@@ -7,16 +7,17 @@ import InformationSchool from '@/components/Dashboard/InformationSchool/Informat
 
 <template>
       <Notiffication />
-      <InformationSchool />
+      <InformationSchool @show-dashboard="handleShowDashboard"/>
+      <div v-if="showDashboard">
       <div class="flex item-center justify-between mt-4">
-      <h1 class="font-bold text-3xl text-black">Dashobard</h1>
+      <h1 class="font-bold text-3xl text-black">{{ $t('tittleDashboard') }}</h1>
       <!-- <Breadcrumbs/> -->
       </div>
       <!-- Statistik -->
-      <Statistik class="mt-4"/>
+      <Statistik class="mt-4" :totalUsers="totalUsers" :totalMurids="totalMurids"/>
       <div class="border-b border-gray-200 mt-8"></div>
       <div class="flex item-center justify-between mt-4">
-      <h1 class="font-bold text-3xl text-black">Charts</h1>
+      <h1 class="font-bold text-3xl text-black">{{ $t('tittleChart') }}</h1>
       </div>
       <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-4">
         <!-- Chart 1 -->
@@ -28,10 +29,11 @@ import InformationSchool from '@/components/Dashboard/InformationSchool/Informat
         <!--Chart 4-->
         <ChartPelanggaran />
       </div>
-      <!-- Quick Action -->
       <div class="border-b border-gray-200 mt-8"></div>
+    </div>
+    <!-- Quick Action -->
       <div class="flex item-center justify-between mt-4">
-      <h1 class="font-bold text-3xl text-black">Quick Actions</h1>
+      <h1 class="font-bold text-3xl text-black">{{ $t('tittleQuickAction') }}</h1>
       </div>
         <QuickAction />
   </template>
@@ -41,6 +43,9 @@ import ChartPendidikanGTKVue from '@/components/Dashboard/ChartPendidikanGTK/Cha
 import ChartTotalMuridVue from '@/components/Dashboard/ChartTotalMurid/ChartTotalMurid.vue';
 import ChartPelanggaran from '@/components/Dashboard/ChartPelanggaran/ChartPelanggaran.vue';
 import QuickAction from '@/components/QuickAction/QuickAction.vue';
+import { fetchCountData } from '@/services/pengguna/Pengguna.js';
+import { fetchCountDataMurid } from '@/services/murid/Murid.js'
+import { ref } from 'vue';
 
 export default {
   components: {
@@ -49,6 +54,45 @@ export default {
     ChartTotalMuridVue,
     ChartPelanggaran,
     QuickAction
+  },
+    data() {
+      return {
+        showDashboard: false,
+        isMinimized: false,
+        totalUsers: null,
+        totalMurids: null,
+        loading: true
+      };
+    },
+    methods: {
+      minimize() {
+        this.isMinimized = !this.isMinimized;
+      },
+      async handleShowDashboard(){
+        this.showDashboard = true;
+        await this.fetchTotalMurid();
+        await this.fetchTotalPengguna();
+      },
+      async fetchTotalPengguna() {
+      try {
+        const dataUser = await fetchCountData(); // Panggil fungsi fetchDataFromAPI
+        // Ambil nilai total pengguna dari data API
+        this.totalUsers = dataUser.total;
+        this.loading = false;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    async fetchTotalMurid(){
+      try {
+        const dataMurid = await fetchCountDataMurid(); // Panggil fungsi fetchDataFromAPI
+        // Ambil nilai total pengguna dari data API
+        this.totalMurids = dataMurid.total;
+        this.loading = false;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+    }
   }
-}
 </script>

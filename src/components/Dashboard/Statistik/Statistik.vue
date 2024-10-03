@@ -20,7 +20,7 @@ import { AcademicCapIcon, BuildingOffice2Icon, UsersIcon, UserGroupIcon, FlagIco
     <template v-else>
       <div :class="['max-w-2xl rounded-md overflow-hidden shadow-md md:col-span-1 flex justify-between bg-emerald-400']">
       <div class="px-6 py-4">
-        <p class="text-white font-bold">Pengguna</p>
+        <p class="text-white font-bold">{{ $t('userStatistics') }}</p>
         <div class="font-bold text-xl mb-2 text-white">{{totalUsers}}</div>
       </div>
       <div class="flex items-center px-6 py-6">
@@ -49,7 +49,7 @@ import { AcademicCapIcon, BuildingOffice2Icon, UsersIcon, UserGroupIcon, FlagIco
     <template v-else>
     <div :class="['max-w-2xl rounded-md overflow-hidden shadow-md md:col-span-1 flex justify-between bg-violet-400']">
       <div class="px-6 py-4">
-        <p class="text-white font-bold">GTK</p>
+        <p class="text-white font-bold">{{ $t('gtkStatistics') }}</p>
         <div class="font-bold text-xl mb-2 text-white">0</div>
       </div>
       <div class="flex items-center px-6 py-6">
@@ -78,7 +78,7 @@ import { AcademicCapIcon, BuildingOffice2Icon, UsersIcon, UserGroupIcon, FlagIco
     <template v-else>
       <div :class="['max-w-2xl rounded-md overflow-hidden shadow-md md:col-span-1 flex justify-between bg-pink-400']">
       <div class="px-6 py-4">
-        <p class="text-white font-bold">Murid</p>
+        <p class="text-white font-bold">{{ $t('studentStatistics') }}</p>
         <div class="font-bold text-xl mb-2 text-white">{{totalMurids}}</div>
       </div>
       <div class="flex items-center px-6 py-6">
@@ -107,7 +107,7 @@ import { AcademicCapIcon, BuildingOffice2Icon, UsersIcon, UserGroupIcon, FlagIco
     <template v-else>
     <div :class="['max-w-2xl rounded-md overflow-hidden shadow-md md:col-span-1 flex justify-between bg-indigo-400']">
       <div class="px-6 py-4">
-        <p class="text-white font-bold">BKK</p>
+        <p class="text-white font-bold">{{ $t('bkkStatistics') }}</p>
         <div class="font-bold text-xl mb-2 text-white">0</div>
       </div>
       <div class="flex items-center px-6 py-6">
@@ -136,7 +136,7 @@ import { AcademicCapIcon, BuildingOffice2Icon, UsersIcon, UserGroupIcon, FlagIco
     <template v-else>
     <div :class="['max-w-2xl rounded-md overflow-hidden shadow-md md:col-span-1 flex justify-between bg-red-400']">
       <div class="px-6 py-4">
-        <p class="text-white font-bold">Pelanggaran</p>
+        <p class="text-white font-bold">{{ $t('violationStatistics') }}</p>
         <div class="font-bold text-xl mb-2 text-white">0</div>
       </div>
       <div class="flex items-center px-6 py-6">
@@ -165,7 +165,7 @@ import { AcademicCapIcon, BuildingOffice2Icon, UsersIcon, UserGroupIcon, FlagIco
     <template v-else>
     <div :class="['max-w-2xl rounded-md overflow-hidden shadow-md md:col-span-1 flex justify-between bg-yellow-400']">
       <div class="px-6 py-4">
-        <p class="text-white font-bold">Almuni</p>
+        <p class="text-white font-bold">{{ $t('alumniStatistics') }}</p>
         <div class="font-bold text-xl mb-2 text-white">0</div>
       </div>
       <div class="flex items-center px-6 py-6">
@@ -201,45 +201,26 @@ import { AcademicCapIcon, BuildingOffice2Icon, UsersIcon, UserGroupIcon, FlagIco
 </style>
 
 <script>
-import { fetchCountData } from '@/services/pengguna/Pengguna.js';
-import { fetchCountDataMurid } from '@/services/murid/Murid.js'
-
 export default {
-
+  props: {
+    totalUsers: {
+      type: Number,
+      required: true,
+    },
+    totalMurids: {
+      type: Number,
+      required: true,
+    },
+  },
   data() {
     return {
-      totalUsers: null, // Variabel untuk menyimpan total pengguna
-      totalMurids: null,
       loading: true
     };
   },
   async mounted() {
-    await this.fetchTotalPengguna();
-    await this.fetchTotalMurid();
+    setTimeout(() => {
+      this.loading = false;
+    }, 1000);
   },
-
-  methods: {
-    async fetchTotalPengguna() {
-      try {
-        const dataUser = await fetchCountData(); // Panggil fungsi fetchDataFromAPI
-        // Ambil nilai total pengguna dari data API
-        this.totalUsers = dataUser.total;
-        this.loading = false;
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    },
-    async fetchTotalMurid(){
-      try {
-        const dataMurid = await fetchCountDataMurid(); // Panggil fungsi fetchDataFromAPI
-        // Ambil nilai total pengguna dari data API
-        this.totalMurids = dataMurid.total;
-        this.loading = false;
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
-  }
 };
-
 </script>
