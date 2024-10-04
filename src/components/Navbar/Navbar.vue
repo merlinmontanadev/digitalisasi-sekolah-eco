@@ -23,9 +23,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                     >
                 <button type="button" class="items-center text-lg text-white sidebar-toggle" @click="toggleSidebar">
                 <Bars3Icon
-                    :class="[
-                    'h-6 w-6 shrink-0',
-                    ]"
+                    :class="['h-6 w-6 shrink-0',]"
                 />
             </button>
             </tippy>
@@ -86,72 +84,52 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                         />
                     </button>
                   </tippy>
-                    <div class="absolute right-[27px] md:right-[60px] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10 max-w-xs md:max-w-lg w-full bg-white rounded-md border border-gray-100" v-show="showDropDownNotif">
-                        <div class="flex items-center px-4 pt-4 border-b border-b-gray-100 notification-tab">
-                            <button type="button" data-tab="notification" data-tab-page="notifications" class="text-gray-400 font-medium text-[13px] hover:text-gray-600 border-b-2 border-b-transparent mr-4 pb-1 active">Notifications</button>
-                            <button type="button" data-tab="notification" data-tab-page="messages" class="text-gray-400 font-medium text-[13px] hover:text-gray-600 border-b-2 border-b-transparent mr-4 pb-1">Messages</button>
-                        </div>
-                        <div class="my-2">
-                            <ul class="max-h-64 overflow-y-auto" data-tab-for="notification" data-page="notifications">
-                                <li>
-                                    <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
-                                        <div class="ml-2">
-                                            <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">New order</div>
-                                            <div class="text-[11px] text-gray-400">from a user</div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="max-h-64 overflow-y-auto hidden" data-tab-for="notification" data-page="messages">
-                                <li>
-                                    <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
-                                        <div class="ml-2">
-                                            <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
-                                            <div class="text-[11px] text-gray-400">Hello there!</div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
-                                        <div class="ml-2">
-                                            <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
-                                            <div class="text-[11px] text-gray-400">Hello there!</div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
-                                        <div class="ml-2">
-                                            <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
-                                            <div class="text-[11px] text-gray-400">Hello there!</div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
-                                        <div class="ml-2">
-                                            <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
-                                            <div class="text-[11px] text-gray-400">Hello there!</div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
-                                        <div class="ml-2">
-                                            <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
-                                            <div class="text-[11px] text-gray-400">Hello there!</div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                  <div class="absolute right-[27px] md:right-[60px] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10 max-w-xs md:max-w-lg w-full bg-white rounded-md border border-gray-100" v-show="showDropDownNotif">
+    <div class="flex items-center px-4 pt-4 border-b border-b-gray-100 notification-tab">
+      <button 
+        type="button" 
+        class="text-gray-400 font-medium text-[13px] hover:text-gray-600 border-b-2 border-b-transparent mr-4 pb-1"
+        :class="{ 'active border-blue-500 text-blue-600': activeTab === 'notifications' }"
+        @click="setActiveTab('notifications')">
+        Notifications
+      </button>
+      <button 
+        type="button" 
+        class="text-gray-400 font-medium text-[13px] hover:text-gray-600 border-b-2 border-b-transparent mr-4 pb-1"
+        :class="{ 'active border-blue-500 text-blue-600': activeTab === 'messages' }"
+        @click="setActiveTab('messages')">
+        Messages
+      </button>
+    </div>
+    <div class="my-2">
+      <!-- Notifications Tab Content -->
+      <ul v-show="activeTab === 'notifications'" class="max-h-64 overflow-y-auto">
+        <li>
+          <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
+            <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
+            <div class="ml-2">
+              <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">New order</div>
+              <div class="text-[11px] text-gray-400">from a user</div>
+            </div>
+          </a>
+        </li>
+      </ul>
+
+      <!-- Messages Tab Content -->
+      <ul v-show="activeTab === 'messages'" class="max-h-64 overflow-y-auto">
+        <li>
+          <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
+            <img src="#" alt="" class="w-8 h-8 rounded block object-cover align-middle">
+            <div class="ml-2">
+              <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
+              <div class="text-[11px] text-gray-400">Hello there!</div>
+            </div>
+          </a>
+        </li>
+        <!-- Add more message list items here -->
+      </ul>
+    </div>
+  </div>
                 </li>
                 <li class="ml-3">
                     <Menu as="div" class="relative inline-block text-left">
@@ -263,6 +241,8 @@ export default {
   },
   data() {
     return {
+      activeTab: 'notifications',
+      showDropDownNotif: true,
       defaultPicture,
       toast: useToast(),  
       showDropDown: false,
@@ -282,6 +262,9 @@ mouted(){
     this.switchLang(); // Memanggil switchLang untuk mengatur bahasa awal
 },
   methods: {
+    setActiveTab(tab) {
+      this.activeTab = tab; // update active tab
+    },
     getLangMode() {
       const mode = localStorage.getItem('isLangmode');
       return mode === 'true'; // Kembalikan nilai boolean

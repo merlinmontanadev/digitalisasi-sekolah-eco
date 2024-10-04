@@ -275,9 +275,11 @@
     <h2 class="text-gray-800 font-bold text-lg">Address</h2><a class="ml-3 font-semibold text-blue-500 text-sm cursor-pointer" @click="editNipdForm">Edit</a>
   </div>
   <div class="flex justify-between items-center py-2">
-    <p class="text-gray-600 font-semibold">Alamat Lengkap</p>
+    <div class="text-left">
+      <p class="text-gray-600 font-semibold">Alamat</p>
+    </div>
     <div class="text-right">
-      <p class="text-gray-600 font-medium">{{ muridData.alamat }}, {{ muridData.kel_des }}, {{ muridData.kec }}, {{ muridData.kab }}</p>
+      <p class="text-gray-600 font-medium">{{ muridData.alamat }}, {{ muridData.kel_des }}, {{ muridData.kec }}, {{ muridData.kab }}, {{ getProvinsiID(muridData.prov) }}</p>
     </div>
   </div>
   <v-divider class="my-4" />
@@ -286,7 +288,11 @@
     <h2 class="text-gray-800 font-bold text-lg">Informasi Kontak</h2><a class="ml-3 font-semibold text-blue-500 text-sm cursor-pointer" @click="editNipdForm">Edit</a>
   </div>
   <div class="flex justify-between items-center py-2">
-    <p class="text-gray-600 font-semibold">Telepon</p>
+    <div class="text-left">
+      <p class="text-gray-600 font-semibold">Telepon</p>
+      <p class="text-gray-600 font-semibold">No. HP</p>
+      <p class="text-gray-600 font-semibold">Email</p>
+    </div>
     <div class="text-right">
       <p class="text-gray-600 font-medium">{{ muridData.telepon }}</p>
       <p class="text-gray-600 font-medium">{{ muridData.hp }}</p>
@@ -430,6 +436,7 @@
       isModalOpen: false,
       isUploading: false,
       show: false,
+      provinsiList: []
     };
   },
   setup() {
@@ -439,8 +446,33 @@
   created() {
     // Ketika komponen dibuat, panggil metode untuk mengambil data pengguna
     this.fetchMuridData(this.$route.params.id_murid);
+    this.fetchProvinsi();
   }, 
   methods: {
+    fetchProvinsi() {
+            fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json`)
+            .then(response => response.json())
+            .then(provinces => {this.provinsiList = provinces;})
+        },
+        getProvinsiID(id){
+          const provinsi = this.provinsiList.find(name => name.id === id)
+          return provinsi ? provinsi.name : null;
+        },
+        fetchKabupaten(){
+            fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${this.selectedProvinsi}.json`)
+            .then(response => response.json())
+            .then(regencies => {this.kabupatenList = regencies;})
+        },
+        fetchKecamatan(){
+            fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${this.selectedKabupaten}.json`)
+            .then(response => response.json())
+            .then(districts => {this.kecamatanList = districts;})
+        },
+        fetchDesa(){
+            fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${this.selectedKecamatan}.json`)
+            .then(response => response.json())
+            .then(villages => {this.desaList = villages;})
+        },
     async uploadFile() {
         this.isUploading = true;
         try {
