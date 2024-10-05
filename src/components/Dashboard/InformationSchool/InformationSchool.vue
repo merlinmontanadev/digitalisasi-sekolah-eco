@@ -28,7 +28,7 @@ const showDashboard = () => {
         <div class="flex bg-white flex-col px-4 py-4 items-center justify-center">
           <img src="@/assets/img/smkdharmawirawanlogo.png" alt="Logo Sekolah" class="h-72 mb-2 rounded">
           <h3 class="md:text-lg text-xs font-bold text-black">SMK (SMKK) DHARMA WIRAWAN BOJONEGORO</h3>
-          <h6 class="md:text- text-xs text-black">JL. Rajekwesi 21, Kel. Klangon, Kec. Bojonegoro, Kab. Bojonegoro Prov. Jawa Timur</h6>
+          <h6 class="md:text- text-xs text-black">JL. Rajekwesi 21, Kel. Klangon, Kec. Bojonegoro, Kab. Bojonegoro, Prov. Jawa Timur</h6>
           <h6 class="md:text- text-xs text-black">Telp. (0353) 887723</h6>
         </div>
   </div>
