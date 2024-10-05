@@ -90,8 +90,7 @@
                                   <!-- Cropper here -->
                                   <img
                                     class="h-full w-full mx-auto"
-                                    :src="userFile ? userFile : defaultPicture"
-                                  />
+                                    :src="userFile ? userFile : defaultPicture"/>
                                 </div>
                               </div>
                             </div>
@@ -181,7 +180,6 @@
                                                                 class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
                                                                 name="role" />
                                           </div>
-                                          
                                           <div class="mb-2" v-if="editJK">
                                                             <div ref="dropdownWrapper"  
                                                                 @focusout="handleFocusOut"
@@ -215,7 +213,6 @@
                                                                 class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
                                                                 name="jk" />
                                           </div>
-
                                           <div class="mb-2" v-if="editContact">
                                                             <Field :rules="validateEmail" type="text" name="email"
                                                                 id="email" placeholder="Masukan Email....." v-model="computedEmail"
@@ -233,7 +230,6 @@
                                           </div>
                                         </div>
                                       </div>
-
                                       <div class="flex float-right gap-2 mt-5 mb-5">
                                         <v-btn
                                             class="hover:shadow-form rounded-full bg-gradient-to-r from-blue-700 to-blue-500 px-4 py-2 text-center font-semibold text-sm text-white outline-none"
@@ -254,25 +250,31 @@
                     </TransitionRoot>
                   </div>
                 </div>
-                <div class="w-3/6 p-4 ">
-                  <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">UserID</p>
+                <div class="w-3/6 p-4">
+                  <div class="py-2 flex items-center">
+                    <h2 class="text-gray-800 font-bold text-lg">Identitas Pengguna</h2><a class="ml-3 font-semibold text-blue-500 text-sm cursor-pointer" @click="editRoleForm">Edit</a>
+                  </div>
+                  <div class="flex justify-between">
+                    <div class="text-left">
+                    <p class="text-gray-600 font-semibold flex items-center text-center mb-1">ID</p>
+                    </div>
                     <div class="text-right">
-                      <h1 class="text-gray-600">{{ userData.user_id }}</h1>
+                      <h1 class="text-gray-600 mb-1">{{ userData.user_id }}</h1>
                     </div>
                   </div>
-                  <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">Username</p>
-                      <h1 class="text-gray-600">{{ userData.username }}</h1>
+                  <div class="flex justify-between">
+                    <div class="text-left">
+                    <p class="text-gray-600 font-semibold flex items-center text-center mb-1">Username</p>
+                    </div>
+                    <div class="text-right">
+                      <h1 class="text-gray-600 mb-1">{{ userData.username }}</h1>
+                    </div>
                   </div>
-                  <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold flex items-center text-center">
-                      Role
-                      <a class="ml-3 text-blue-500 text-sm cursor-pointer" @click="editRoleForm">
-                        Edit
-                      </a>
-                    </p>
-                              <div class="text-right">
+                  <div class="flex justify-between">
+                      <div class="text-left">
+                      <p class="text-gray-600 font-semibold flex items-center text-center mb-1">Role</p>
+                      </div>
+                      <div class="text-right">
                                   <tippy
                                   content="Current Role"
                                   placement="bottom"
@@ -281,21 +283,40 @@
                                 {{ userData.role }}
                                 </button>
                                 </tippy>
-                            </div>
+                      </div>
                   </div>
                   <v-divider class="my-4" />
-                  <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">Contact Information<a class="ml-3 text-blue-500 text-sm cursor-pointer" @click="editContactForm">Edit</a></p>
+                  <div class=" justify-between items-center">
+                  <div class="py-2 flex items-center">
+                    <h2 class="text-gray-800 font-bold text-lg">Informasi Kontak</h2><a class="ml-3 font-semibold text-blue-500 text-sm cursor-pointer" @click="editContactForm">Edit</a>
+                  </div>
+                  <div class="flex justify-between">
+                    <div class="text-left">
+                    <p class="text-gray-600 font-semibold flex items-center text-center mb-1">Email</p>
+                    </div>
                     <div class="text-right">
-                      <p class="text-gray-600 font-medium">{{ userData.email }}</p>
-                      <p class="text-gray-600 font-medium">{{ userData.nohp }}</p>
+                      <h1 class="text-gray-600 mb-1">{{ userData.email }}</h1>
                     </div>
                   </div>
-                  <v-divider class="my-4" />
-                  <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">Gender<a class="ml-3 text-blue-500 text-sm cursor-pointer" @click="editJkForm">Edit</a></p>
+                  <div class="flex justify-between">
+                    <div class="text-left">
+                    <p class="text-gray-600 font-semibold flex items-center text-center mb-1">No. HP</p>
+                    </div>
                     <div class="text-right">
-                      <p class="text-gray-600 font-medium flex gap-2 items-center justify-end" v-if="userData.jk">
+                      <h1 class="text-gray-600 mb-1">{{ userData.nohp }}</h1>
+                    </div>
+                  </div>
+                  </div>
+                  <v-divider class="my-4" />
+                  <div class="py-2 flex items-center">
+                    <h2 class="text-gray-800 font-bold text-lg">Jenis Kelamin</h2><a class="ml-3 font-semibold text-blue-500 text-sm cursor-pointer" @click="editJkForm">Edit</a>
+                  </div>
+                    <div class="flex justify-between items-center text-center">
+                    <div class="text-left">
+                    <p class="text-gray-600 font-semibold flex mb-1">Gender</p>
+                    </div>
+                    <div class="text-right">
+                      <p class="text-gray-600 font-medium flex gap-2 items-center justify-end  mb-1" v-if="userData.jk">
                         <span :class="userData.jk === 'Pria' ? 'mdi-gender-male text-blue-500' : 'mdi-gender-female text-pink-500'"
                           class="mdi text-xl"></span>
                           {{ jk(userData.jk) }}
@@ -303,29 +324,29 @@
                     </div>
                   </div>
                   <v-divider class="my-4" />
-                  <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">Created Date</p>
-                    <div class="text-right" v-if="userData.createdAt">
-                      <p class="text-gray-600  flex items-center justify-end gap-2">
-                        <CalendarDaysIcon class="h-4 w-4 text-gray-700 text-center justify-center items-center">
-                        </CalendarDaysIcon><span class="font-bold">{{ formatDate(userData.createdAt) }}</span>
+                  <div class="flex justify-between">
+                    <div class="text-left"> 
+                      <p class="text-gray-600 font-semibold mb-1">Created Date</p>
+                    </div>
+                    <div class="text-right">
+                      <p class="text-gray-600 flex items-center justify-end gap-2 mb-1">
+                        <CalendarDaysIcon class="h-4 w-4 text-gray-700"></CalendarDaysIcon>{{ formatDate(userData.createdAt) }}
                       </p>
-                      <p class="text-gray-600  flex items-center justify-end gap-2">
-                        <ClockIcon class="h-4 w-4 text-gray-700 text-center justify-center items-center"></ClockIcon>
-                        {{ formatTime(userData.createdAt) }}
+                      <p class="text-gray-600 flex items-center justify-end gap-2 mb-1">
+                        <ClockIcon class="h-4 w-4 text-gray-700"></ClockIcon>{{ formatTime(userData.createdAt) }}
                       </p>
                     </div>
                   </div>
-                  <div class="flex justify-between items-center py-2">
-                    <p class="text-gray-600 font-semibold">Updated Date</p>
-                    <div class="text-right" v-if="userData.updatedAt">
-                      <p class="text-gray-600  flex items-center justify-end gap-2">
-                        <CalendarDaysIcon class="h-4 w-4 text-gray-700 text-center justify-center items-center">
-                        </CalendarDaysIcon><span class="font-bold">{{ formatDate(userData.updatedAt) }}</span>
+                  <div class="flex justify-between">
+                    <div class="text-left"> 
+                      <p class="text-gray-600 font-semibold mb-1">Updated Date</p>
+                    </div>
+                    <div class="text-right">
+                      <p class="text-gray-600 flex items-center justify-end gap-2 mb-1">
+                        <CalendarDaysIcon class="h-4 w-4 text-gray-700"></CalendarDaysIcon>{{ formatDate(userData.updatedAt) }}
                       </p>
-                      <p class="text-gray-600  flex items-center justify-end gap-2">
-                        <ClockIcon class="h-4 w-4 text-gray-700 text-center justify-center items-center"></ClockIcon>
-                        {{ formatTime(userData.updatedAt) }}
+                      <p class="text-gray-600 flex items-center justify-end gap-2 mb-1">
+                        <ClockIcon class="h-4 w-4 text-gray-700"></ClockIcon>{{ formatTime(userData.updatedAt) }}
                       </p>
                     </div>
                   </div>

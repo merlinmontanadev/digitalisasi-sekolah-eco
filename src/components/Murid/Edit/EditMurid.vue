@@ -170,7 +170,6 @@
                                       class="flex text-red-500 text-sm bg-red-200 w-full h-full p-2 mt-2 rounded"
                                       name="jk" />
                                   </div>
-
                                   <div class="mb-2" v-if="editContact">
                                     <Field :rules="validateEmail" type="text" name="email" id="email"
                                       placeholder="Masukan Email....." v-model="computedEmail"
@@ -214,42 +213,44 @@
   <div class="py-2 flex items-center">
     <h2 class="text-gray-800 font-bold text-lg">Identitas Murid</h2><a class="ml-3 font-semibold text-blue-500 text-sm cursor-pointer" @click="editNipdForm">Edit</a>
   </div>
-  <div class="flex justify-between items-center py-2">
-    <p class="text-gray-600 font-semibold">MuridID</p>
+  <div class="flex justify-between">
+    <div class="text-left">
+    <p class="text-gray-600 font-semibold flex items-center text-center mb-1">ID</p>
+    </div>
     <div class="text-right">
-      <h1 class="text-gray-600">{{ muridData.id_murid }}</h1>
+      <h1 class="text-gray-600 mb-1">{{ muridData.id_murid }}</h1>
     </div>
   </div>
-  <div class="flex justify-between items-center py-2">
-    <p class="text-gray-600 font-semibold flex items-center text-center">
-      NIPD
-    </p>
+  <div class="flex justify-between">
+    <div class="text-left">
+    <p class="text-gray-600 font-semibold flex items-center text-center mb-1">NIPD</p>
+    </div>
     <div class="text-right">
-      <h1 class="text-gray-600">{{ muridData.nipd }}</h1>
+      <h1 class="text-gray-600 mb-1">{{ muridData.nipd }}</h1>
     </div>
   </div>
-  <div class="flex justify-between items-center py-2">
-    <p class="text-gray-600 font-semibold flex items-center text-center">
-      NIS
-    </p>
+  <div class="flex justify-between">
+    <div class="text-left">
+    <p class="text-gray-600 font-semibold flex items-center text-center mb-1">NIS</p>
+    </div>
     <div class="text-right">
-      <h1 class="text-gray-600">{{ muridData.nis }}</h1>
+      <h1 class="text-gray-600 mb-1">{{ muridData.nis }}</h1>
     </div>
   </div>
-  <div class="flex justify-between items-center py-2">
-    <p class="text-gray-600 font-semibold flex items-center text-center">
-      NISN
-    </p>
+  <div class="flex justify-between">
+    <div class="text-left">
+    <p class="text-gray-600 font-semibold flex items-center text-center mb-1">NISN</p>
+    </div>
     <div class="text-right">
-      <h1 class="text-gray-600">{{ muridData.nisn }}</h1>
+      <h1 class="text-gray-600 mb-1">{{ muridData.nisn }}</h1>
     </div>
   </div>
-  <div class="flex justify-between items-center py-2">
-    <p class="text-gray-600 font-semibold flex items-center text-center">
-      Nama Murid
-    </p>
+  <div class="flex justify-between">
+    <div class="text-left">
+    <p class="text-gray-600 font-semibold flex items-center text-center mb-1">Nama Murid</p>
+    </div>
     <div class="text-right">
-      <h1 class="text-gray-600">{{ muridData.nama_lengkap }}</h1>
+      <h1 class="text-gray-600 mb-1">{{ muridData.nama_lengkap }}</h1>
     </div>
   </div>
   <v-divider class="my-4" />
@@ -257,16 +258,20 @@
   <div class="py-2 flex items-center">
     <h2 class="text-gray-800 font-bold text-lg">Informasi Pribadi</h2><a class="ml-3 font-semibold text-blue-500 text-sm cursor-pointer" @click="editNipdForm">Edit</a>
   </div>
-  <div class="flex justify-between items-center py-2">
-    <p class="text-gray-600 font-semibold">Tempat, Tanggal Lahir</p>
+  <div class="flex justify-between">
+    <div class="text-left">
+    <p class="text-gray-600 font-semibold mb-1">Tempat, Tanggal Lahir</p>
+  </div>
     <div class="text-right">
-      <h1 class="text-gray-600">{{ muridData.tempat_lahir }}, {{ muridData.tanggal_lahir }}</h1>
+      <h1 class="text-gray-600 mb-1">{{ muridData.tempat_lahir }}, {{ muridData.tanggal_lahir }}</h1>
     </div>
   </div>
-  <div class="flex justify-between items-center py-2">
-    <p class="text-gray-600 font-semibold">Agama</p>
+  <div class="flex justify-between">
+    <div class="text-left">
+    <p class="text-gray-600 font-semibold mb-1">Agama</p>
+  </div>
     <div class="text-right">
-      <h1 class="text-gray-600">{{ muridData.agama }}</h1>
+      <h1 class="text-gray-600 mb-1">{{ muridData.agama }}</h1>
     </div>
   </div>
   <!-- Informasi Alamat -->
@@ -274,12 +279,44 @@
   <div class="py-2 flex items-center">
     <h2 class="text-gray-800 font-bold text-lg">Address</h2><a class="ml-3 font-semibold text-blue-500 text-sm cursor-pointer" @click="editNipdForm">Edit</a>
   </div>
-  <div class="flex justify-between items-center py-2">
+  <div class="flex justify-between">
     <div class="text-left">
-      <p class="text-gray-600 font-semibold">Alamat</p>
+      <p class="text-gray-600 font-semibold mb-1">Alamat</p>
     </div>
     <div class="text-right">
-      <p class="text-gray-600 font-medium">{{ muridData.alamat }}, {{ muridData.kel_des }}, {{ muridData.kec }}, {{ muridData.kab }}, {{ getProvinsiID(muridData.prov) }}</p>
+      <p class="text-gray-600 font-medium mb-1">{{ muridData.alamat }}</p>
+    </div>
+  </div>
+  <div class="flex justify-between">
+    <div class="text-left">
+      <p class="text-gray-600 font-semibold mb-1">Desa</p>
+    </div>
+    <div class="text-right">
+      <p class="text-gray-600 font-medium mb-1">{{ muridData.kel_des }}</p>
+    </div>
+  </div>
+  <div class="flex justify-between">
+    <div class="text-left">
+      <p class="text-gray-600 font-semibold mb-1">Kecamatan</p>
+    </div>
+    <div class="text-right">
+      <p class="text-gray-600 font-medium mb-1">{{ muridData.kec }}</p>
+    </div>
+  </div>
+  <div class="flex justify-between">
+    <div class="text-left">
+      <p class="text-gray-600 font-semibold mb-1">Kabupaten</p>
+    </div>
+    <div class="text-right">
+      <p class="text-gray-600 font-medium mb-1">{{ muridData.kab }}</p>
+    </div>
+  </div>
+  <div class="flex justify-between">
+    <div class="text-left">
+      <p class="text-gray-600 font-semibold mb-1">Provinsi</p>
+    </div>
+    <div class="text-right">
+      <p class="text-gray-600 font-medium mb-1">{{ getProvinsiID(muridData.prov) }}</p>
     </div>
   </div>
   <v-divider class="my-4" />
@@ -287,16 +324,28 @@
   <div class="py-2 flex items-center">
     <h2 class="text-gray-800 font-bold text-lg">Informasi Kontak</h2><a class="ml-3 font-semibold text-blue-500 text-sm cursor-pointer" @click="editNipdForm">Edit</a>
   </div>
-  <div class="flex justify-between items-center py-2">
+  <div class="flex justify-between">
     <div class="text-left">
-      <p class="text-gray-600 font-semibold">Telepon</p>
-      <p class="text-gray-600 font-semibold">No. HP</p>
-      <p class="text-gray-600 font-semibold">Email</p>
+      <p class="text-gray-600 font-semibold mb-1">Telepon</p>
     </div>
     <div class="text-right">
-      <p class="text-gray-600 font-medium">{{ muridData.telepon }}</p>
-      <p class="text-gray-600 font-medium">{{ muridData.hp }}</p>
-      <p class="text-gray-600 font-medium">{{ muridData.email }}</p>
+      <p class="text-gray-600 font-medium mb-1">{{ muridData.telepon }}</p>
+    </div>
+  </div>
+  <div class="flex justify-between">
+    <div class="text-left">
+      <p class="text-gray-600 font-semibold mb-1">No. HP</p>
+    </div>
+    <div class="text-right">
+      <p class="text-gray-600 font-medium mb-1">{{ muridData.hp }}</p>
+    </div>
+  </div>
+  <div class="flex justify-between">
+    <div class="text-left">
+      <p class="text-gray-600 font-semibold mb-1">Email</p>
+    </div>
+    <div class="text-right">
+      <p class="text-gray-600 font-medium mb-1">{{ muridData.email }}</p>
     </div>
   </div>
   <!-- Jenis Kelamin -->
@@ -304,47 +353,46 @@
   <div class="py-2 flex items-center">
     <h2 class="text-gray-800 font-bold text-lg">Jenis Kelamin</h2><a class="ml-3 font-semibold text-blue-500 text-sm cursor-pointer" @click="editNipdForm">Edit</a>
   </div>
-  <div class="flex justify-between items-center py-2">
-    <p class="text-gray-600 font-semibold">Jenis Kelamin</p>
+  <div class="flex justify-between">
+    <div class="text-left">
+    <p class="text-gray-600 font-semibold mb-1">Jenis Kelamin</p>
+    </div>
     <div class="text-right">
-      <p class="text-gray-600 font-medium flex gap-2 items-center justify-end" v-if="muridData.jenis_kelamin">
+      <p class="text-gray-600 font-medium flex gap-2 items-center justify-end mb-1" v-if="muridData.jenis_kelamin">
         <span :class="muridData.jenis_kelamin === 'Pria' ? 'mdi-gender-male text-blue-500' : 'mdi-gender-female text-pink-500'" class="mdi text-xl"></span>
         {{ muridData.jenis_kelamin }}
       </p>
     </div>
   </div>
-
   <v-divider class="my-4" />
-
   <!-- Tanggal Created & Updated -->
-  <div class="py-2">
-    <h2 class="text-gray-800 font-bold text-lg">Tanggal</h2>
-  </div>
-  <div class="flex justify-between items-center py-2">
-    <p class="text-gray-600 font-semibold">Created Date</p>
-    <div class="text-right" v-if="muridData.createdAt">
-      <p class="text-gray-600 flex items-center justify-end gap-2">
+  <div class="flex justify-between">
+    <div class="text-left"> 
+      <p class="text-gray-600 font-semibold mb-1">Created Date</p>
+    </div>
+    <div class="text-right">
+      <p class="text-gray-600 flex items-center justify-end gap-2 mb-1">
         <CalendarDaysIcon class="h-4 w-4 text-gray-700"></CalendarDaysIcon>{{ formatDate(muridData.createdAt) }}
       </p>
-      <p class="text-gray-600 flex items-center justify-end gap-2">
+      <p class="text-gray-600 flex items-center justify-end gap-2 mb-1">
         <ClockIcon class="h-4 w-4 text-gray-700"></ClockIcon>{{ formatTime(muridData.createdAt) }}
       </p>
     </div>
   </div>
-  <div class="flex justify-between items-center py-2">
-    <p class="text-gray-600 font-semibold">Updated Date</p>
-    <div class="text-right" v-if="muridData.updatedAt">
-      <p class="text-gray-600 flex items-center justify-end gap-2">
+  <div class="flex justify-between">
+    <div class="text-left"> 
+      <p class="text-gray-600 font-semibold mb-1">Updated Date</p>
+    </div>
+    <div class="text-right">
+      <p class="text-gray-600 flex items-center justify-end gap-2 mb-1">
         <CalendarDaysIcon class="h-4 w-4 text-gray-700"></CalendarDaysIcon>{{ formatDate(muridData.updatedAt) }}
       </p>
-      <p class="text-gray-600 flex items-center justify-end gap-2">
+      <p class="text-gray-600 flex items-center justify-end gap-2 mb-1">
         <ClockIcon class="h-4 w-4 text-gray-700"></ClockIcon>{{ formatTime(muridData.updatedAt) }}
       </p>
     </div>
   </div>
-  
   <v-divider class="my-4" />
-  
   <!-- Status -->
   <div class="py-2">
     <p class="text-gray-600 font-semibold">Status</p>
@@ -369,8 +417,51 @@
             <button :class="ButtonClassStatus(muridData.status)">
               {{ muridData.status }}
             </button>
-            <button class="text-gray-600">
-              <Cog6ToothIcon class="h-6 w-6 text-gray-600 mr-1" /></button>
+            <Menu as="div" class="relative inline-block text-left">
+  <MenuButton
+    class="flex h-8 w-8 rounded-full justify-center items-center text-sm font-semibold text-gray-600 "
+  >
+    <Cog6ToothIcon class="h-6 w-6 text-gray-600" />
+  </MenuButton>
+  <transition
+        enter-active-class="transition duration-100 ease-out"
+        enter-from-class="transform scale-95 opacity-0"
+        enter-to-class="transform scale-100 opacity-100"
+        leave-active-class="transition duration-75 ease-in"
+        leave-from-class="transform scale-100 opacity-100"
+        leave-to-class="transform scale-95 opacity-0"
+      >
+      <MenuItems
+          class="absolute right-0 w-56 z-50 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
+        >
+        <div class="px-1 py-1">
+            <MenuItem v-slot="{ active }">  
+      <button
+        :class="[
+          active ? 'bg-gradient-to-r from-blue-500 to-blue-400 text-white' : 'text-gray-600',
+          'group flex w-full items-center rounded-md px-2 py-2 text-sm'
+        ]"
+        @click="toggleStatus"
+      >
+        <PencilSquareIcon class="w-5 h-5 mr-2" />
+        Change Status
+      </button>
+            </MenuItem>
+            <div class="border-b border-gray-200"></div>
+            <MenuItem v-slot="{ active }">
+              <button @click="HandleDeleteMurid(muridData.id_murid)"
+                :class="[
+                  active ? 'bg-gradient-to-r from-red-500 to-red-400 text-white' : 'text-gray-600',
+                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                ]"
+              >
+                <TrashIcon class="w-5 h-5 mr-2" />Delete Murid
+              </button>
+            </MenuItem>
+          </div>
+        </MenuItems>
+      </transition>
+</Menu>
           </div>
         </div>
       </div>
@@ -385,6 +476,8 @@
 <script>
         import {
           changeFoto,
+          changeStatus,
+          deleteMurid
         } from '@/services/murid/Murid.js';
         import { Form, Field, ErrorMessage } from 'vee-validate';
         import {
@@ -449,6 +542,72 @@
     this.fetchProvinsi();
   }, 
   methods: {
+    async rubahStatus(item) {
+        Swal.fire({
+          title: "Are you sure?",
+          text: `You will change the status of this murid!`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#1A55AE",
+          cancelButtonColor: "#D1CFCE",
+          confirmButtonText: "Yes, Change Status!",
+          cancelButtonText: "Cancel"
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            const response = await changeStatus(item);
+            if (!response) {
+              Swal.fire({
+                icon: "error",
+                title: "Status changed failed",
+                showConfirmButton: false,
+                timer: 1500
+              })
+              return;
+            } else {
+              Swal.fire({
+                title: 'Success',
+                text: 'Murid status changed successfully',
+                icon: 'success'
+              });
+              this.fetchMuridData(this.$route.params.id_murid);
+            }
+          }
+        });
+      },
+      async HandleDeleteMurid(item) {
+      try {
+        const result = await Swal.fire({
+          title: "Anda yakin?",
+          text: `Anda tidak akan dapat mengembalikan ini!`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#AE1A1A",
+          cancelButtonColor: "#D1CFCE",
+          confirmButtonText: "Ya, hapus!",
+          cancelButtonText: "Batal"
+        }).then((result) => {
+          if (result.isConfirmed) {
+          Swal.fire({
+            title: "Deleted!",
+            text: `${item.nama_lengkap} has been deleted.`,
+            icon: "success"
+          });
+        }
+        deleteMurid(this.$route.params.id_murid);
+        });
+      } catch (error) {
+        console.error('Failed to delete murid:', error);
+        Swal.fire({
+          title: "Error",
+          text: `Failed to delete ${item.nama_lengkap}. Please try again later.`,
+          icon: "error"
+        });
+      }
+    },
+    toggleStatus() {
+      const newStatus = this.muridData.status === 'Active' ? 'Inactive' : 'Active';
+      this.rubahStatus(this.muridData.id_murid, newStatus);
+    },
     fetchProvinsi() {
             fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json`)
             .then(response => response.json())
@@ -624,7 +783,7 @@
       return date.toLocaleTimeString('en-US', options);
     },
     
-    async fetchMuridData(item) {
+  async fetchMuridData(item) {
       setTimeout(async () => {
         const murid = await getMuridsById(item);
         this.muridData = murid;
@@ -646,7 +805,7 @@
         }
       }, 500); // Contoh waktu penundaan 2 detik
   },
-  
+
   },
 };
 
